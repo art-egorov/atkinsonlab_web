@@ -1,0 +1,83 @@
+
+:root {
+    --blue: #168AB2;
+    --yellow: #FFD167;
+    --red: #dc3545;
+}
+
+.form-label.required:after {
+    content: "*";
+    color: --red;
+}
+
+.preserve-line-breaks {
+    white-space: pre;
+}
+
+.spinner-border {
+    margin-right: 10px;
+}
+
+@font-face {
+    font-family: GreycliffCF-ExtraBold;
+    src: url("/static/css/GreycliffCF-ExtraBold.ttf") format('truetype');
+}
+
+.uorf4u_logo_svg:hover .st3, .uorf4u_logo_svg:hover .st2 {
+    stroke: #FFD167;
+}
+
+.uorf4u_logo_svg:hover .st7, .uorf4u_logo_svg:hover .st3 {
+    fill: #FFD167;
+}
+
+.uorf4u_logo_svg:hover .st6, .uorf4u_logo_svg:hover .st5 {
+    stroke: #168AB2;
+}
+
+.uorf4u_logo_svg:hover .st6 {
+    fill: #168AB2;
+}
+
+.navbar-brand:hover {
+    color: #FFD167;
+}
+
+
+.navbar-brand:hover .st1 {
+    stroke: #f2a49c;
+}
+
+.navbar .nav-link:hover {
+    color: #FFD167; /* your desired color */
+}
+
+
+.spinner-mine {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 9px solid;
+    border-color: #blue;
+    border-right-color: #yellow;
+    animation: spinner-d3wgkg 1s infinite linear;
+}
+
+@keyframes spinner-d3wgkg {
+    to {
+        transform: rotate(1turn);
+    }
+}
+
+body {
+    background-image: url("/static/img/bacground_test.png");
+    background-repeat: repeat;
+    background-size: 60%;
+
+}
+
+.no-background {
+    background: white;
+}
+
+

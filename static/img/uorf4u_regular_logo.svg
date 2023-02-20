@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 27.1.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 375.6 162.1" style="enable-background:new 0 0 375.6 162.1;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#EAE0D5;stroke-width:16;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:11.3386;}
+	.st1{fill:none;stroke:#FFD167;stroke-width:16;stroke-linejoin:round;}
+	.st2{fill:#FFD167;}
+	.st3{fill:none;stroke:#FFFFFF;stroke-width:2;stroke-miterlimit:11.3386;}
+	.st4{fill:none;stroke:#168AB2;stroke-width:16;stroke-linejoin:round;}
+	.st5{fill:#168AB2;}
+	.st6{font-family:'GreycliffCF-ExtraBold';}
+	.st7{font-size:65px;}
+	.st8{fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linejoin:round;stroke-miterlimit:11.3386;}
+	.st9{fill:#EAE0D5;}
+	.st10{font-size:35.065px;}
+</style>
+<g>
+	<path class="st0" d="M95.3,35.9 M177,39.3c0-0.1,0,0.2-0.1,0.2c-5.3-17-21.2-29.5-39.9-29.5c-10.7,0-20.4,3.8-27.8,10.4
+		c-2.2,1.7-9.5,7.9-13.8,15.3C90.7,27.9,81.6,20.8,81,20.3c0,0,0,0,0,0l0,0C73.6,13.9,64,9.9,53.5,9.9C34.8,9.9,19,22.3,13.6,39.3
+		c0,0.1,0,0.1-0.1,0.2C-3.8,90.7,95.3,145.3,95.3,145.3S194.3,90.5,177,39.3z"/>
+	<g>
+		<g>
+			<path class="st1" d="M95.3,145.3c0,0,24.8-13.7,47.4-33.9"/>
+			<g>
+				<polygon class="st2" points="150.9,126.6 159.6,94.3 127.3,102.9 				"/>
+			</g>
+		</g>
+	</g>
+	<polyline class="st3" points="126,102.1 161.1,92.9 151.5,127.9 	"/>
+	<g>
+		<g>
+			<path class="st4" d="M23.5,84.9c23.2,33.7,71.8,60.5,71.8,60.5"/>
+			<g>
+				<polygon class="st5" points="82.9,157.6 116.4,157 99.1,128.3 				"/>
+			</g>
+		</g>
+	</g>
+	<g>
+		<text transform="matrix(1 0 0 1 171.3406 155.334)" class="st2 st6 st7">uORF</text>
+	</g>
+	<line class="st8" x1="16" y1="88.8" x2="29.7" y2="79.4"/>
+	<text transform="matrix(1 0 0 1 333.4449 123.4849)" class="st9 st6 st7">U</text>
+	<line class="st3" x1="102.3" y1="131.7" x2="110.6" y2="145.5"/>
+	<text transform="matrix(1 0 0 1 315.1121 103.7467)" class="st9 st6 st10">4</text>
+</g>
+</svg>

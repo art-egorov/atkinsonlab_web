@@ -1,0 +1,225 @@
+// Custom.scss
+// Option A: Include all of Bootstrap
+
+// Include any default variable overrides here (though functions won't be available)
+
+$blue: #126e8e;
+$yellow: #FFD167;
+$lightpink: #f2a49c;
+$pink: #f28482;
+$darkblue: #84A59D;
+$webflags_red: #C24765;
+$webflags_blue: #1E93B2;
+$webflags_red_sp: #C24765CC;
+$webflags_blue_sp: #1E93B2E6;
+$red: #C24765;
+
+
+@import "../bootstrap-5.3.0/scss/bootstrap";
+
+.form-label.required:after {
+  content: "*";
+  color: $red;
+}
+
+.preserve-line-breaks {
+  white-space: pre-wrap;
+  font-size: $font-size-base * .95;
+}
+
+.spinner-border {
+  margin-right: 10px;
+}
+
+@font-face {
+  font-family: GreycliffCF-Bold;
+  src: url("/static/fonts/GreycliffCF-Bold.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: GreycliffCF-ExtraBold;
+  src: url("/static/fonts/GreycliffCF-ExtraBold.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: GreycliffCF-Medium;
+  src: url("/static/fonts/GreycliffCF-Medium.ttf") format('truetype');
+}
+
+.uorf4u_logo_svg:hover .st2 {
+  stroke: $yellow;
+}
+
+.uorf4u_logo_svg:hover .st7, .uorf4u_logo_svg:hover .st3 {
+  fill: $yellow;
+}
+
+.uorf4u_logo_svg:hover .st5 {
+  stroke: $blue;
+}
+
+.uorf4u_logo_svg:hover .st6 {
+  fill: $blue;
+}
+
+.msa4u_logo_svg .stm7, .msa4u_logo_svg .stm8 {
+  fill: #e9dfd4;
+  opacity: 90%;
+}
+
+.msa4u_logo_svg:hover .stm7 {
+  fill: $pink;
+}
+
+.msa4u_logo_svg:hover .stm8 {
+  fill: $lightpink;
+}
+
+.msa4u_logo_svg:hover .stm1 {
+  fill: $darkblue;
+}
+
+.webflags_logo_svg .stf8, .webflags_logo_svg .stf4 {
+  opacity: 85%;
+}
+
+.webflags_logo_svg:hover .stf8, .webflags_logo_svg:hover .stf4 {
+  opacity: 100%;
+}
+
+
+.navbar-brand:hover, .navbar-brand:hover .fw-bold {
+  color: $yellow;
+}
+
+.navbar-brand:hover .tal {
+  color: $blue;
+}
+
+.navbar-brand:hover .st1 {
+  stroke: $lightpink;
+}
+
+.navbar .nav-link:hover {
+  color: $yellow;
+}
+
+
+@keyframes spinner-d3wgkg {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+.spinner-uorf4u {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 9px solid;
+  border-color: $blue;
+  border-right-color: $yellow;
+  animation: spinner-d3wgkg 1s infinite linear;
+}
+
+.spinner-uorf4u_small {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: 5px solid;
+  border-color: $blue;
+  border-right-color: $yellow;
+  animation: spinner-d3wgkg 1s infinite linear;
+}
+
+.spinner-msa4u {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 9px solid;
+  border-color: $lightpink;
+  border-right-color: $darkblue;
+  animation: spinner-d3wgkg 1s infinite linear;
+}
+
+.spinner-msa4u_small {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: 5px solid;
+  border-color: $lightpink;
+  border-right-color: $darkblue;
+  animation: spinner-d3wgkg 1s infinite linear;
+}
+
+.spinner-webflags {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 9px solid;
+  border-color: $webflags_blue_sp;
+  border-right-color: $webflags_red_sp ;
+  animation: spinner-d3wgkg 1s infinite linear;
+}
+
+.spinner-webflags_small {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: 5px solid;
+  border-color: $webflags_blue_sp;
+  border-right-color: $webflags_red_sp;
+  animation: spinner-d3wgkg 1s infinite linear;
+}
+
+body.uorf4u {
+  background-image: url("/static/img/background_uorf4u.svg");
+  background-repeat: repeat;
+  background-size: 100%;
+  background-attachment: fixed;
+}
+
+body.msa4u {
+  background-image: url("/static/img/background_msa4u.svg");
+  background-repeat: repeat;
+  background-size: 100%;
+  background-attachment: fixed;
+}
+
+body.webflags {
+  background-image: url("/static/img/background_webflags.svg");
+  background-repeat: repeat;
+  background-size: 100%;
+  background-attachment: fixed;
+}
+
+body.main {
+  background-image: url("/static/img/background_main.svg");
+  background-repeat: repeat;
+  background-size: 100%;
+  background-attachment: fixed;
+}
+
+.no-background {
+  background: white;
+}
+
+.frey_bg {
+  background: #eae0d5;
+}
+
+.fs-5_5 {
+  font-size: 1.15rem !important;
+}
+
+.border-yellow {
+  color: $yellow;
+}
+
+a:hover {
+  color: $yellow; /* color of link when hovered over */
+}
+
+nav {
+  background-color: #212C31;
+}
+

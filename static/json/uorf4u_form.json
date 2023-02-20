@@ -1,0 +1,597 @@
+{
+  "mandatory_arguments": [
+    "accession_number",
+    "homologues_list_file",
+    "fasta",
+    "homologues_list"
+  ],
+  "order": [
+    "mandatory_arguments_header",
+    "accession_number",
+    "homologues_list_file",
+    "fasta",
+    "homologues_list",
+    "mandatory_arguments_error",
+    "optional_arguments_header",
+    "blastp_hit_list_size",
+    "blastp_pident_to_query_length_cutoff",
+    "max_number_of_assemblies",
+    "assemblies_list",
+    "upstream_region_length",
+    "downstream_region_length",
+    "check_assembly_annotation",
+    "alternative_start_codons",
+    "filter_by_sd",
+    "alignment_type",
+    "orfs_presence_cutoff",
+    "config",
+    "config_file",
+    "run_parameters_header",
+    "email",
+    "run_name",
+    "queue_pass"
+  ],
+  "float_variables": [
+    "blastp_pident_to_query_length_cutoff",
+    "orfs_presence_cutoff"
+  ],
+  "int_variables": [
+    "blastp_hit_list_size",
+    "max_number_of_assemblies",
+    "upstream_region_length",
+    "downstream_region_length"
+  ],
+  "files_to_keep": {},
+  "top_warning_message": "",
+  "elements": {
+    "mandatory_arguments_header": {
+      "div_class": "col-md-12",
+      "subelements": [
+        "header",
+        "header_info"
+      ],
+      "header": {
+        "text": "Mandatory arguments"
+      },
+      "header_info": {
+        "text": "Select <b>only one</b><span style=\"color:#C24765;\">*</span>of the allowed input formats."
+      }
+    },
+    "accession_number": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "label",
+        "input",
+        "invalid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label",
+        "for": "an"
+      },
+      "label_value": "Accession number",
+      "input": {
+        "class": "form-control q",
+        "name": "accession_number",
+        "id": "an",
+        "pattern": "^[ANYXW]P_\\d+\\.\\d$",
+        "type": "text"
+      },
+      "required": 0,
+      "invalid_feedback": "",
+      "form-text": "RefSeq protein accession number. (Pattern: <i>^[ANYXW]P_[0-9]+.[0-9]$</i>)."
+    },
+    "homologues_list_file": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "label",
+        "input",
+        "invalid_feedback",
+        "valid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label",
+        "for": "hlf"
+      },
+      "label_value": "List of accession numbers",
+      "input": {
+        "class": "form-control",
+        "name": "homologues_list_file",
+        "id": "hlf",
+        "type": "file",
+        "accept": ".txt,.tsv",
+        "size": "512000"
+      },
+      "required": 0,
+      "invalid_feedback": "",
+      "valid_feedback": "",
+      "form-text": "File with list of accession numbers.<br>File format: .txt or .tsv, one accession number per line, no header."
+    },
+    "fasta": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "label",
+        "input",
+        "invalid_feedback",
+        "valid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label",
+        "for": "fa"
+      },
+      "label_value": "Fasta file",
+      "input": {
+        "class": "form-control",
+        "name": "fasta",
+        "id": "fa",
+        "type": "file",
+        "accept": ".fa,.fasta",
+        "size": "512000"
+      },
+      "required": 0,
+      "invalid_feedback": "",
+      "valid_feedback": "",
+      "form-text": "Fasta file with upstream sequences.<br>File format: .fa or .fasta; no more than 200 sequences with max sequence length: 1000 nt."
+    },
+    "homologues_list": {
+      "div_class": "col-md-6",
+      "subelements": [
+        "label",
+        "textarea",
+        "invalid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label",
+        "for": "hl"
+      },
+      "label_value": "List of accession numbers",
+      "textarea": {
+        "class": "form-control",
+        "name": "homologues_list",
+        "id": "hl",
+        "type": "text",
+        "rows": "2"
+      },
+      "textarea_value": "",
+      "invalid_feedback": "",
+      "form-text": "Space (or linebreak) separated list of proteins accession numbers. Max number of values is 200."
+    },
+    "mandatory_arguments_error": {
+      "div_class": "col-md-12",
+      "subelements": [
+        "error_alert"
+      ],
+      "error_text": ""
+    },
+    "optional_arguments_header": {
+      "div_class": "col-md-12",
+      "subelements": [
+        "header"
+      ],
+      "header": {
+        "text": "Optional arguments"
+      }
+    },
+    "blastp_hit_list_size": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "label",
+        "input",
+        "invalid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label required",
+        "for": "bh"
+      },
+      "label_value": "Max number of blastp hits",
+      "input": {
+        "class": "form-control",
+        "name": "blastp_hit_list_size",
+        "id": "bh",
+        "type": "number",
+        "min": "10",
+        "max": "200",
+        "value": "200"
+      },
+      "required": 1,
+      "invalid_feedback": "",
+      "form-text": "Max number of blastp hits in homologue searching. Allowed values: [10:200]."
+    },
+    "blastp_pident_to_query_length_cutoff": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "label",
+        "input",
+        "invalid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label required",
+        "for": "bid"
+      },
+      "label_value": "Identity cutoff for Blastp searching",
+      "input": {
+        "class": "form-control",
+        "name": "blastp_pident_to_query_length_cutoff",
+        "id": "bid",
+        "type": "text",
+        "min": "0",
+        "max": "1",
+        "value": "0.5",
+        "pattern": "^0*(\\.\\d+)?$"
+      },
+      "required": 1,
+      "invalid_feedback": "",
+      "form-text": "Identity cutoff for Blastp searching to your query protein. Allowed values: [0:1]."
+    },
+    "max_number_of_assemblies": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "label",
+        "input",
+        "invalid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label required",
+        "for": "mna"
+      },
+      "label_value": "Max number of assemblies per protein",
+      "input": {
+        "class": "form-control",
+        "name": "max_number_of_assemblies",
+        "id": "mna",
+        "type": "number",
+        "min": "1",
+        "max": "3",
+        "value": "1"
+      },
+      "required": 1,
+      "invalid_feedback": "",
+      "form-text": "Max number of assemblies to analyse where the protein sequence is identical. Allowed values: [0-3]."
+    },
+    "assemblies_list": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "label",
+        "input",
+        "invalid_feedback",
+        "valid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label",
+        "for": "al"
+      },
+      "label_value": "Assemblies list file",
+      "input": {
+        "class": "form-control",
+        "name": "assemblies_list",
+        "id": "al",
+        "type": "file",
+        "accept": ".tsv"
+      },
+      "required": 0,
+      "invalid_feedback": "",
+      "valid_feedback": "",
+      "form-text": "Assemblies list file. Filtered table with assemblies generated by uorf4u run."
+    },
+    "upstream_region_length": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "label",
+        "input",
+        "invalid_feedback",
+        "valid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label required",
+        "for": "ul"
+      },
+      "label_value": "Upstream region length",
+      "input": {
+        "class": "form-control",
+        "name": "upstream_region_length",
+        "id": "ul",
+        "type": "number",
+        "min": "50",
+        "max": "1000",
+        "value": "500"
+      },
+      "required": 1,
+      "invalid_feedback": "",
+      "valid_feedback": "",
+      "form-text": "Length of upstream sequences to retrieve. Allowed values: [50:1000]."
+    },
+    "downstream_region_length": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "label",
+        "input",
+        "invalid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label required",
+        "for": "dl"
+      },
+      "label_value": "Downstream region length",
+      "input": {
+        "class": "form-control",
+        "name": "downstream_region_length",
+        "id": "dl",
+        "type": "number",
+        "min": "0",
+        "max": "300",
+        "value": "100"
+      },
+      "required": 1,
+      "invalid_feedback": "",
+      "form-text": "Length of downstream sequences (gene's CDS) to retrieve. Allowed values: [0:300]."
+    },
+    "check_assembly_annotation": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "check_subdiv_open",
+        "label",
+        "check-input",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-check-label",
+        "for": "annot"
+      },
+      "label_value": "Retrieve sequence annotation",
+      "check-input": {
+        "class": "form-check-input",
+        "name": "check_assembly_annotation",
+        "id": "annot",
+        "type": "checkbox",
+        "role": "switch",
+        "value": "true"
+      },
+      "checked": 1,
+      "form-text": "Retrieve sequence annotation (to show when a predicted ORF overlaps with a previously annotated ORF)."
+    },
+    "alternative_start_codons": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "check_subdiv_open",
+        "label",
+        "check-input",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-check-label",
+        "for": "asc"
+      },
+      "label_value": "Alternative start codons",
+      "check-input": {
+        "class": "form-check-input",
+        "name": "alternative_start_codons",
+        "id": "asc",
+        "type": "checkbox",
+        "role": "switch",
+        "value": "true"
+      },
+      "checked": 0,
+      "form-text": "Include alternative start codons in uORF annotation. List based on selected NCBI genetic code. (Standard: ATG, TTG, CTG)."
+    },
+    "filter_by_sd": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "check_subdiv_open",
+        "label",
+        "check-input",
+        "form-text",
+        "check_subdiv_close"
+      ],
+      "label": {
+        "class": "form-check-label",
+        "for": "sd"
+      },
+      "label_value": "Filter ORFs by SD sequence presence",
+      "check-input": {
+        "class": "form-check-input",
+        "name": "filter_by_sd",
+        "id": "sd",
+        "type": "checkbox",
+        "role": "switch",
+        "value": "true"
+      },
+      "checked": 1,
+      "form-text": "Annotation is based on the calculation of the SD-antiSD interaction Gibbs free energy. (Will be auto-deactivated if 'eukaryotes mode' is selected)."
+    },
+    "alignment_type": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "label",
+        "select",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label",
+        "for": "at"
+      },
+      "label_value": "Alignment type",
+      "select": {
+        "class": "form-select",
+        "name": "alignment_type",
+        "id": "at",
+        "aria-label": "Default select example"
+      },
+      "options": {
+        "aa": "Protein sequence",
+        "nt": "Nucleotide sequence"
+      },
+      "selected": "aa",
+      "form-text": "Alignment type used by in conservation analysis step."
+    },
+    "orfs_presence_cutoff": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "label",
+        "input",
+        "invalid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label required",
+        "for": "pc"
+      },
+      "label_value": "ORF conservation cutoff",
+      "input": {
+        "class": "form-control",
+        "name": "orfs_presence_cutoff",
+        "id": "pc",
+        "type": "text",
+        "min": "0",
+        "max": "1",
+        "value": "0.4",
+        "pattern": "^0*(\\.\\d+)?$"
+      },
+      "required": 1,
+      "invalid_feedback": "",
+      "form-text": "Fraction of sequences that should contain the ORF for it to be called conserved. Allowed values: [0-1]."
+    },
+    "config": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "label",
+        "select",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label",
+        "for": "c"
+      },
+      "label_value": "Config file type",
+      "select": {
+        "class": "form-select",
+        "name": "config",
+        "id": "c",
+        "aria-label": "Default select example"
+      },
+      "options": {
+        "bacteria": "Bacteria (default)",
+        "eukaryotes": "Eukaryotes (default)",
+        "uploaded": "Uploaded"
+      },
+      "selected": "bacteria",
+      "form-text": "Configuration file with other parameters. You can choose a premade config file or upload yours based on a template. "
+    },
+    "config_file": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "label",
+        "input",
+        "invalid_feedback",
+        "valid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label",
+        "for": "cf"
+      },
+      "label_value": "Config file",
+      "input": {
+        "class": "form-control",
+        "name": "config_file",
+        "id": "cf",
+        "type": "file",
+        "accept": ".cfg"
+      },
+      "required": 0,
+      "invalid_feedback": "",
+      "valid_feedback": "",
+      "form-text": "Upload file if 'Uploaded' option is selected for <i>Config file type</i>. Use one of the premade config files as a template: <a href='static/tools_config_files/uorf4u_bacteria.cfg'>Bacteria</a>, <a href='static/tools_config_files/uorf4u_eukaryotes.cfg'>Eukaryotes</a>"
+    },
+    "run_parameters_header": {
+      "div_class": "col-md-12",
+      "subelements": [
+        "header"
+      ],
+      "header": {
+        "text": "Run parameters"
+      }
+    },
+    "email": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "label",
+        "input",
+        "invalid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label required",
+        "for": "email"
+      },
+      "label_value": "E-mail",
+      "input": {
+        "class": "form-control",
+        "name": "email",
+        "id": "email",
+        "type": "email"
+      },
+      "required": 1,
+      "invalid_feedback": "",
+      "form-text": "Please, enter your e-mail address to receive your results link."
+    },
+    "run_name": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "label",
+        "input",
+        "invalid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label",
+        "for": "run_name"
+      },
+      "label_value": "Run name",
+      "input": {
+        "class": "form-control",
+        "name": "run_name",
+        "id": "run_name",
+        "type": "text",
+        "pattern": "^[^\\\\/:*?\"<>|\\r\\n]+$",
+        "value": "uorf4u_{current_date}"
+      },
+      "required": 0,
+      "invalid_feedback": "",
+      "form-text": "Will be used in output folder name."
+    },
+    "queue_pass": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "label",
+        "input",
+        "invalid_feedback",
+        "valid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label",
+        "for": "key"
+      },
+      "label_value": "Queue pass \uD83D\uDDDD️",
+      "input": {
+        "class": "form-control",
+        "name": "queue_pass",
+        "id": "key",
+        "type": "text"
+      },
+      "required": 0,
+      "invalid_feedback": "",
+      "valid_feedback": "Your key is accepted \uD83D\uDE1C",
+      "form-text": "Perform calculations in our high-priority queue \uD83D\uDE80"
+    }
+  }
+}

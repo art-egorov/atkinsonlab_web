@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Verification...{% endblock %}
+{% block head %}
+{% endblock %}
+{% block body_class %} class="{{ tool }}"{% endblock %}
+{% block content %}
+    <div class="container" style="height: 90vh;">
+        <div class="row align-items-center h-100 justify-content-center text-center">
+            <div class="col-md-7 align-middle">
+                <p></p>
+                {% if status['status'] != "finished" %}
+                    <h1 class="display-5"> Your request is being validated...</h1>
+                    <p class="fs-5 text-muted">You will be redirected in few seconds</p>
+                    <div class="d-flex align-items-center">
+                        <div class="spinner-{{ tool }} mx-auto"></div>
+                    </div>
+                {% endif %}
+                <p></p>
+            </div>
+        </div>
+    </div>
+
+    {%- if status['status'] != "finished" %}
+        <script>
+            var job_id = "{{ id }}";
+            var current_status = "{{ status['status'] }}";
+        </script>
+        <script src="{{ url_for('static', filename='js/page_updates.js') }}"></script>
+    {% endif -%}
+{% endblock %}

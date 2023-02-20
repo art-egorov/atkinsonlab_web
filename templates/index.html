@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% block title %}The Atkinson Lab{% endblock %}
+{% block head %}
+{% endblock %}
+{% block body_class %} class="main"{% endblock %}
+{% block content %}
+    <div class="container ">
+        <div class="row justify-content-center">
+            <div class="col-10 text-center">
+                <h1 class="display-5"><a class="text-decoration-none" href="https://atkinson-lab.com">The Atkinson
+                    Lab</a>
+                    Server Portal</h1>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-10 no-background shadow">
+                <div class="row g-2">
+                    <div class="col-12">
+                        <p></p>
+                        <h3>Welcome!</h3>
+                        <p class="fs-5"><span class="fw-medium"></span> This server portal provides access to our online
+                            tools
+                            and services.<br>
+                        </p>
+                        <hr style="margin: 0">
+                    </div>
+                    <div class="col-12">
+                        <h3>Tools</h3>
+                    </div>
+                    <div class="col-12">
+                        <div class="card border-0" style="margin-left: 0;">
+                            <div class="row g-1" style="margin-left: 0;">
+                                <div class="col-md-9 text-left" style="margin-left: 0;">
+                                    <h5 class="card-title text-left"><a href="/webflags"
+                                                                        class="fw-bold text-decoration-none">webFlaGs</a>
+                                    </h5>
+                                    <p class="card-text fs-5_5">Predicting protein functional association in microbial
+                                        and
+                                        viral genomes by analysis of conservation of genomic context (Flanking
+                                        Genes).
+                                    </p>
+                                </div>
+                                <div class="col-md-3 align-self-center mx-auto">
+                                    <a href="/webflags">
+                                        <img width="90%"
+                                             src="{{ url_for('static', filename='img/webflags_logo_short.png') }}"
+                                             class="img-fluid" style="max-width: 20rem;"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="border opacity-50">
+                    </div>
+                    <div class="col-12">
+                        <div class="card border-0" style="margin-left: 0;">
+                            <div class="row g-1" style="margin-left: 0;">
+                                <div class="col-md-9 text-left" style="margin-left: 0;">
+                                    <h5 class="card-title text-left"><a href="/uorf4u"
+                                                                        class="fw-bold text-decoration-none">uORF4u</a>
+                                    </h5>
+                                    <p class="card-text fs-5_5">A bioinformatics tool for conserved uORF annotation in
+                                        5′
+                                        upstream
+                                        sequences of a user-defined protein of interest or a set of protein homologues.
+                                        It
+                                        can also be used to find small ORFs within a set of nucleotide sequences.</p>
+                                </div>
+                                <div class="col-md-3 align-self-center mx-auto">
+                                    <a href="/uorf4u">
+                                        <img width="90%" src="{{ url_for('static', filename='img/uorf4u_logo.png') }}"
+                                             class="img-fluid" style="max-width: 20rem;"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="border opacity-50">
+                    </div>
+                    <div class="col-12">
+                        <div class="card border-0" style="margin-left: 0;">
+                            <div class="row g-1" style="margin-left: 0;">
+                                <div class="col-md-9 text-left" style="margin-left: 0;">
+                                    <h5 class="card-title text-left"><a href="/msa4u"
+                                                                        class="fw-bold text-decoration-none">MSA4u</a>
+                                    </h5>
+                                    <p class="card-text fs-5_5">A simple visualisation tool for Multiple Sequence
+                                        Alignments.<br> <span class="fw-medium">Supported input</span>: Multiple
+                                        sequence
+                                        alignments or unaligned sequences in fasta format.</p>
+                                </div>
+                                <div class="col-md-3 align-self-center mx-auto">
+                                    <a href="/msa4u">
+                                        <img width="90%"
+                                             src="{{ url_for('static', filename='img/msa4u_logo_short.png') }}"
+                                             class="img-fluid" style="max-width: 20rem;"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+
+                    <div class="col-md-6">
+                        <a class="twitter-timeline" width="95%" height="550"
+                           href="https://twitter.com/gem__atkinson?ref_src=twsrc%5Etfw">Tweets by gem__atkinson</a>
+                        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                    </div>
+                    <div class="col-md-6">
+                        <h3>Contact</h3>
+                        <p class="fs-5_5"><span class="fw-medium">The Atkinson lab <a class="text-decoration-none"
+                                                                                      href="https://atkinson-lab.com">Home Page</a></span>
+                        </p>
+
+                        <p class="fs-5_5">We are located at the BMC as part of the Faculty of Medicine, Lund
+                            University.</p>
+                        <p class="fs-6"><span class="fw-semibold fs-5">Mailing address:</span><br>
+                            Gemma Atkinson<br>BMC, Lund University<br> Sölvegatan 17, C13, 223 62 Lund, Sweden</p>
+                        <p class="fs-6" style="margin-bottom: 0.2rem"><span class="fw-semibold fs-5">You can also contact us by e-mail:</span>
+                        </p>
+                        <p class="fs-6" style="margin-bottom: 0.3rem"><span
+                                class="fw-bold">Gemma C. Atkinson</span>, Group Leader<br>
+                            <a class="text-decoration-none" href="mailto:gemma-dot-atkinson-wow-med.lu.se ">gemma.atkinson(at)med.lu.se</a>
+                        </p>
+
+                        <p class="fs-6"><span class="fw-semibold">Artyom A. Egorov</span>, PhD student and developer<br>
+                            <a class="text-decoration-none" href="mailto:artem-dot-egorov-wow-med.lu.se ">artem.egorov(at)med.lu.se</a>
+                            (for technical questions)
+                    </div>
+                    <p></p>
+                </div>
+            </div>
+            <p></p>
+            <div class="col-lg-10 bg-light-subtle shadow">
+                <div class="row g-3">
+                    <div class="col-12">
+                        <p></p>
+                        <h4>News & updates</h4>
+                        <p class="fs-6" style="margin-bottom: 0.3rem;"><span class="fw-bold">2023.02.11:</span> Updated
+                            webFlaGs is now available.</p>
+                        <p class="fs-6"><span class="fw-bold">2023.01.22: </span> First release is now online; Currently
+                            uORF4u and MSA4u are available; new version of webFlaGs is under construction.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <p></p>
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid" style="margin-right: 1rem; margin-left: 1rem;">
+            <div class="navbar-expand ml-auto navbar-text ">
+            </div>
+            <div class="navbar-expand ml-auto navbar-text fw-medium">The Atkinson Lab Server Portal | Feb 2023 v1.02
+            </div>
+        </div>
+    </nav>
+{% endblock %}

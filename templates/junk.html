@@ -1,0 +1,587 @@
+<div class="col-12">
+    <h4>Status</h4>
+    <div class="d-flex justify-content-center">
+        {% if status['status'] != "finished" %}
+            <div class="spinner-border" role="status"></div>
+            Your request is being processed...
+        {% endif %}
+    </div>
+    {{ status['status'] }}
+</div>
+
+{% if status['status'] == "queued" %} Position: {{ status['position'] }}{% endif %}</h4>
+
+{% if status['status'] == "started" or status['status'] == "finished" %}
+    <h4>Logs:</h4>
+    <hr>
+    <pre>{{ status['meta']['log'] }}</pre>
+{% endif %}
+<hr>
+{% if status['status'] == "finished" %}
+    <a class="btn btn-outline-primary" href="{{ d_link }}">Download ZIP
+        archive with results</a>
+    <p></p>
+{% endif %}
+
+
+
+                            <div class="p-3  border bg-body-tertiary rounded">
+                            <p class="fw-light font-monospace preserve-line-breaks">{{ status['meta']['log'] }}</p>
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
+----
+
+            <div class="col-12">
+                <h3>Tools</h3>
+            </div>
+            <div class="col-md-6 text-center">
+                <svg class="mx-auto d-block" width="85%" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                     xmlns:xlink="http://www.w3.org/1999/xlink"
+                     viewBox="0 0 570.1 137.4" style="enable-background:new 0 0 570.1 137.4;" xml:space="preserve">
+            <style type="text/css">
+                .stf0 {
+                    fill: none;
+                }
+
+                .stf1 {
+                    fill: #1A8AB2;
+                }
+
+                .stf2 {
+                    font-family: 'GreycliffCF-ExtraBold';
+                }
+
+                .stf3 {
+                    font-size: 27px;
+                }
+
+                .stf4 {
+                    fill: #1E93B2;
+                }
+
+                .stf5 {
+                    fill: #FFFFFF;
+                }
+
+                .stf6 {
+                    font-family: 'GreycliffCF-Bold';
+                }
+
+                .stf7 {
+                    font-size: 48.2763px;
+                }
+
+                .stf8 {
+                    fill: #C24765;
+                }
+            </style>
+                    <g class="webflags_logo_svg">
+                        <a xlink:href="/webflags">
+                    <g>
+                        <path class="stf0" d="M323.8,127.3"/>
+                    </g>
+                            <rect x="10.2" y="8.9" class="stf0" width="551.7" height="98.7"/>
+                            <text transform="matrix(1 0 0 1 10.2315 28.2405)"><tspan x="0" y="0" class="stf1 stf2 stf3">Predicting protein functional association by </tspan>
+                                <tspan x="0" y="30"
+                                       class="stf1 stf2 stf3">analysis of conservation of genomic context</tspan></text>
+                            <path class="stf4"
+                                  d="M154.5,127.3H10.2v-52h144.3c34.3,26,34.3,26,34.3,26S188.7,101.3,154.5,127.3z"/>
+                            <g>
+                        <text transform="matrix(1 0 0 1 36.0179 115.1397)" class="stf5 stf6 stf7">web</text>
+                    </g>
+                            <path class="stf8"
+                                  d="M368.7,127.3h-177v-52h177c34.3,26,34.3,26,34.3,26S402.9,101.3,368.7,127.3z"/>
+                            <g>
+	<text transform="matrix(1 0 0 1 221.4235 117.5851)" class="stf5 stf6 stf7">FlaGs</text>
+</g>
+                        </a></g>
+</svg>
+            </div>
+            <div class="col-md-6">
+                <svg class="mx-auto d-block" width="90%" xmlns="http://www.w3.org/2000/svg"
+                     xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                     y="0px"
+                     viewBox="0 0 655.29 168.92" style="enable-background:new 0 0 655.29 168.92;"
+                     xml:space="preserve">
+            <style type="text/css">
+                .st0 {
+                    fill: none;
+                    stroke: #EAE0D5;
+                    stroke-width: 16;
+                    stroke-linecap: square;
+                    stroke-linejoin: round;
+                    stroke-miterlimit: 11.3386;
+                }
+
+                .st1 {
+                    fill: none;
+                }
+
+                .st2 {
+                    fill: none;
+                    stroke: #e9dfd4;
+                    stroke-width: 16;
+                    stroke-linejoin: round;
+                }
+
+                .st3 {
+                    fill: #e9dfd4;
+                }
+
+
+                .st4 {
+                    fill: none;
+                    stroke: #FFFFFF;
+                    stroke-width: 2;
+                    stroke-miterlimit: 11.3386;
+                }
+
+                .st5 {
+                    fill: none;
+                    stroke: #e9dfd4;
+                    stroke-width: 16;
+                    stroke-linejoin: round;
+                }
+
+                .st6 {
+                    fill: #e9dfd4;
+                }
+
+                .st7 {
+                    font-family: 'GreycliffCF-ExtraBold';
+                    fill: #FFD167;
+                }
+
+                .st8 {
+                    font-size: 65px;
+                }
+
+                .st9 {
+                    fill: none;
+                    stroke: #FFFFFF;
+                    stroke-width: 2;
+                    stroke-linejoin: round;
+                    stroke-miterlimit: 11.3386;
+                }
+
+                .st10 {
+                    fill: #EAE0D5;
+                    font-family: 'GreycliffCF-ExtraBold';
+                }
+
+                .st11 {
+                    font-size: 35.065px;
+                }
+
+                .st12 {
+                    fill: #1A8AB2;
+                    font-family: 'GreycliffCF-ExtraBold';
+                }
+
+                .st13 {
+                    font-size: 27px;
+                }
+            </style>
+                    <g class="uorf4u_logo_svg">
+                        <a xlink:href="/uorf4u">
+            <path class="st0" d="M104.74,41.45 M186.44,44.87c-0.02-0.06-0.04,0.24-0.06,0.18c-5.34-17.02-21.17-29.53-39.86-29.53
+                c-10.68,0-20.44,3.76-27.83,10.4c-2.17,1.74-9.53,7.92-13.82,15.34c-4.71-7.78-13.82-14.9-14.4-15.34
+                c-0.01-0.01-0.02-0.01-0.02-0.02l-0.01-0.01c-7.35-6.47-16.97-10.38-27.51-10.38c-18.69,0-34.52,12.33-39.86,29.35
+                c-0.02,0.06-0.04,0.11-0.06,0.18c-17.33,51.23,81.73,105.87,81.73,105.87S203.76,96.1,186.44,44.87z"/>
+                            <g>
+                <path class="st1" d="M418.9,154.17"/>
+            </g>
+                            <g>
+                <g>
+                    <path class="st2" d="M104.74,150.92c0,0,24.81-13.74,47.42-33.89"/>
+                    <g>
+                        <polygon class="st3" points="160.32,132.21 169.1,99.88 136.71,108.43 			"/>
+                    </g>
+                </g>
+            </g>
+                            <polyline class="st4" points="135.41,107.67 170.52,98.48 160.94,133.47 "/>
+                            <g>
+                <g>
+                    <path class="st5" d="M32.96,90.44c23.16,33.67,71.77,60.48,71.77,60.48"/>
+                    <g>
+                        <polygon class="st6" points="92.34,163.22 125.84,162.57 108.53,133.88 			"/>
+                    </g>
+                </g>
+            </g>
+                            <g>
+                <text transform="matrix(1 0 0 1 180.7972 160.9114)" class="st3_1 st7 st8">uORF</text>
+            </g>
+                            <line class="st9" x1="25.44" y1="94.42" x2="39.14" y2="84.94"/>
+                            <text transform="matrix(1 0 0 1 342.9015 129.0622)" class="st10  st8">U</text>
+                            <line class="st4" x1="111.76" y1="137.3" x2="120.06" y2="151.05"/>
+                            <text transform="matrix(1 0 0 1 324.5687 109.3241)" class="st10  st11">4</text>
+                            <rect x="208.82" y="15.52" class="st1" width="452.86" height="64.31"/>
+                            <text transform="matrix(1 0 0 1 208.8228 34.8242)"><tspan x="0" y="0" class="st12 st13">A bioinformatics tool for conserved </tspan>
+                                <tspan x="0" y="30" class="st12 st13">upstream ORF annotation</tspan></text>
+                        </a></g>
+            </svg>
+            </div>
+            <div class="col-md-6">
+                <svg class="mx-auto d-block" width="85%" xmlns="http://www.w3.org/2000/svg"
+                     xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                     y="0px"
+                     viewBox="0 0 604.86 167.82" style="enable-background:new 0 0 604.86 167.82;"
+                     xml:space="preserve">
+            <style type="text/css">
+                .stm0 {
+                    fill: none;
+                    stroke: #E9DFD4;
+                    stroke-width: 15;
+                    stroke-linecap: square;
+                    stroke-linejoin: round;
+                    stroke-miterlimit: 11.3386;
+                }
+
+                .stm1 {
+                    fill: #84A59D;
+                }
+
+                .stm1a {
+                    fill: #84A59D;
+                }
+
+                .stm2 {
+                    font-family: 'GreycliffCF-ExtraBold';
+                }
+
+                .stm3 {
+                    font-size: 65px;
+                }
+
+                .stm4 {
+                    fill: none;
+                    stroke: #FFFFFF;
+                    stroke-width: 3;
+                    stroke-linecap: round;
+                    stroke-linejoin: round;
+                    stroke-miterlimit: 10;
+                }
+
+                .stm5 {
+                    opacity: 0.8;
+                    fill: #5DA5DA;
+                    stroke: #FFFFFF;
+                    stroke-width: 3;
+                    stroke-linecap: round;
+                    stroke-linejoin: round;
+                    stroke-miterlimit: 10;
+                }
+
+                .stm6 {
+                    opacity: 0.8;
+                    fill: #DECF3F;
+                    stroke: #FFFFFF;
+                    stroke-width: 3;
+                    stroke-linecap: round;
+                    stroke-linejoin: round;
+                    stroke-miterlimit: 10;
+                }
+
+                .stm7 {
+                    fill: #F28482;
+                    stroke: #FFFFFF;
+                    stroke-width: 3;
+                    stroke-linecap: round;
+                    stroke-linejoin: round;
+                    stroke-miterlimit: 10;
+                }
+
+                .stm8 {
+                    fill: #F5CAC3;
+                    stroke: #FFFFFF;
+                    stroke-width: 3;
+                    stroke-linecap: round;
+                    stroke-linejoin: round;
+                    stroke-miterlimit: 10;
+                }
+
+                .stm9 {
+                    fill: #E9DFD4;
+                }
+
+                .stm10 {
+                    font-size: 35.065px;
+                }
+
+                .stm11 {
+                    fill: none;
+                }
+
+                .stm12 {
+                    font-size: 27px;
+                }
+            </style>
+                    <g class="msa4u_logo_svg">
+                        <a xlink:href="/msa4u">
+                <path class="stm0" d="M109.61,44.24 M191.31,47.65c-0.02-0.06-0.04,0.24-0.06,0.18c-5.34-17.02-21.17-29.53-39.86-29.53
+                c-10.68,0-20.44,3.76-27.83,10.4c-2.17,1.74-9.53,7.92-13.82,15.34c-4.71-7.78-13.82-14.9-14.4-15.34
+                c-0.01-0.01-0.02-0.01-0.02-0.02l-0.01-0.01C87.96,22.22,78.34,18.3,67.81,18.3c-18.69,0-34.52,12.33-39.86,29.35
+                c-0.02,0.06-0.04,0.11-0.06,0.18c-17.33,51.23,81.73,105.87,81.73,105.87S208.63,98.89,191.31,47.65z"/>
+                            <g>
+                <text transform="matrix(1 0 0 1 193.342 162.0677)" class="stm1 stm2 stm3">MSA</text>
+            </g>
+                            <polygon class="stm4" points="192.71,57.45 192.71,53.11 192.71,53.11 192.71,57.45 192.71,57.45 192.71,67.27 192.71,67.27
+                192.71,57.45 "/>
+                            <path class="stm4" d="M169.64,80.52h-23.07h0H123.5V57.45v0V34.38v0v-5.63c0,0,0,0,0,0v5.63v0v23.07v0v23.07h-23.07h0H77.36V57.45v0
+                V34.38v0V19.41c0,0,0,0,0,0v14.98v0v23.07v0v23.07H54.3h0H31.23V57.45v0V39.99c0,0,0,0,0,0v17.46v0v23.07h-0.61c0,0,0,0,0,0h0.61
+                v1.33c0,0,0,0,0,0v-1.34H54.3h0h23.07v23.07v0v23.07h-7.23c0,0,0,0,0,0h7.23v5.68c0,0,0,0,0,0v-5.68h23.07h0h23.07v18.55
+                c0,0,0,0,0,0v-18.55h23.07h0h2.44c0,0,0,0,0,0h-2.44h0H123.5v-23.07v0V80.52h23.07h0L169.64,80.52L169.64,80.52l18.89,0c0,0,0,0,0,0
+                H169.64L169.64,80.52z M123.5,103.59L123.5,103.59v23.07h-23.07h0H77.36v-23.07v0V80.52h23.07h0h23.07V103.59z"/>
+                            <polygon class="stm5" points="192.71,57.45 192.71,57.45 193.25,57.45 193.25,57.45 "/>
+                            <polygon class="stm5" points="192.71,57.45 192.71,57.45 193.25,57.45 193.25,57.45 "/>
+                            <rect x="100.43" y="80.52" class="stm6" width="0" height="23.07"/>
+                            <rect x="100.43" y="103.59" class="stm6" width="23.07" height="0"/>
+                            <rect x="100.43" y="103.59" class="stm6" width="0" height="0"/>
+                            <g>
+                <path class="stm7" d="M54.3,20.55c-7.72,2.65-14.42,7.51-19.36,13.83H54.3V20.55z"/>
+                                <polygon class="stm7" points="54.3,34.38 54.3,20.55 54.3,20.55 54.3,34.38 	"/>
+                                <path class="stm7" d="M100.43,34.38V33.1c-2.68-2.51-4.82-4.19-5.09-4.4c-0.01-0.01-0.02-0.01-0.02-0.02l-0.01-0.01
+                    c-5.06-4.45-11.19-7.69-17.95-9.28v14.98H100.43z"/>
+                                <polygon class="stm7" points="100.43,34.38 100.43,33.1 100.43,33.1 100.43,34.38 	"/>
+                                <path class="stm7" d="M184.15,34.38c-3.88-4.95-8.84-9.01-14.51-11.82v11.82H184.15z"/>
+                                <polygon class="stm7"
+                                         points="169.64,34.38 169.64,22.57 169.64,22.57 169.64,34.38 	"/>
+                                <path class="stm7" d="M31.23,39.99c-1.33,2.42-2.43,4.98-3.28,7.66c-0.02,0.06-0.04,0.11-0.06,0.18c-1.08,3.2-1.71,6.41-1.94,9.62
+                    h5.27V39.99z"/>
+                                <path class="stm7"
+                                      d="M54.3,57.45V34.38H34.93c-1.38,1.76-2.62,3.63-3.71,5.61v17.46H54.3z"/>
+                                <polygon class="stm7" points="54.3,34.38 34.93,34.38 34.93,34.38 54.3,34.38 	"/>
+                                <polygon class="stm7" points="54.3,34.38 34.93,34.38 34.93,34.38 54.3,34.38 	"/>
+                                <rect x="54.3" y="34.38" class="stm7" width="0" height="23.07"/>
+                                <rect x="54.3" y="34.38" class="stm7" width="0" height="0"/>
+                                <rect x="54.3" y="34.38" class="stm7" width="0" height="0"/>
+                                <rect x="77.36" y="34.38" class="stm7" width="23.07" height="23.07"/>
+                                <rect x="77.36" y="34.38" class="stm7" width="23.07" height="0"/>
+                                <rect x="77.36" y="34.38" class="stm7" width="23.07" height="0"/>
+                                <rect x="100.43" y="34.38" class="stm7" width="0" height="23.07"/>
+                                <rect x="100.43" y="34.38" class="stm7" width="0" height="0"/>
+                                <rect x="100.43" y="34.38" class="stm7" width="0" height="0"/>
+                                <path class="stm7" d="M169.64,57.45h23.07v-4.34c-0.33-1.82-0.78-3.64-1.4-5.46c-0.02-0.06-0.04,0.24-0.06,0.18
+                    c-1.55-4.93-3.98-9.47-7.1-13.45h-14.51V57.45z"/>
+                                <polygon class="stm7"
+                                         points="169.64,34.38 184.15,34.38 184.15,34.38 169.64,34.38 	"/>
+                                <polygon class="stm7"
+                                         points="169.64,34.38 184.15,34.38 184.15,34.38 169.64,34.38 	"/>
+                                <rect x="169.64" y="34.38" class="stm7" width="0" height="23.07"/>
+                                <rect x="169.64" y="34.38" class="stm7" width="0" height="0"/>
+                                <rect x="169.64" y="34.38" class="stm7" width="0" height="0"/>
+                                <path class="stm7" d="M193.25,57.45c-0.1-1.45-0.28-2.89-0.55-4.34v4.34H193.25z"/>
+                                <path class="stm7" d="M31.23,57.45h-5.27c-0.55,7.76,1.26,15.52,4.66,23.07h0.61V57.45z"/>
+                                <polygon class="stm7" points="31.23,57.45 25.96,57.45 25.96,57.45 31.23,57.45 	"/>
+                                <polygon class="stm7" points="31.23,57.45 25.96,57.45 25.96,57.45 31.23,57.45 	"/>
+                                <rect x="31.23" y="57.45" class="stm7" width="23.07" height="23.07"/>
+                                <rect x="31.23" y="57.45" class="stm7" width="23.07" height="0"/>
+                                <rect x="31.23" y="57.45" class="stm7" width="23.07" height="0"/>
+                                <rect x="54.3" y="57.45" class="stm7" width="0" height="23.07"/>
+                                <rect x="54.3" y="57.45" class="stm7" width="0" height="0"/>
+                                <rect x="54.3" y="57.45" class="stm7" width="0" height="0"/>
+                                <rect x="77.36" y="57.45" class="stm7" width="23.07" height="23.07"/>
+                                <rect x="77.36" y="57.45" class="stm7" width="23.07" height="0"/>
+                                <rect x="77.36" y="57.45" class="stm7" width="23.07" height="0"/>
+                                <rect x="100.43" y="57.45" class="stm7" width="0" height="23.07"/>
+                                <rect x="100.43" y="57.45" class="stm7" width="0" height="0"/>
+                                <rect x="100.43" y="57.45" class="stm7" width="0" height="0"/>
+                                <path class="stm7"
+                                      d="M169.64,57.45v23.07h18.89c1.97-4.36,3.42-8.79,4.18-13.25v-9.82H169.64z"/>
+                                <rect x="169.64" y="57.45" class="stm7" width="23.07" height="0"/>
+                                <rect x="169.64" y="57.45" class="stm7" width="23.07" height="0"/>
+                                <rect x="169.64" y="57.45" class="stm7" width="0" height="23.07"/>
+                                <rect x="169.64" y="57.45" class="stm7" width="0" height="0"/>
+                                <rect x="169.64" y="57.45" class="stm7" width="0" height="0"/>
+                                <path class="stm7" d="M192.71,67.27c0.56-3.26,0.76-6.54,0.55-9.82h-0.55V67.27z"/>
+                                <path class="stm7" d="M30.61,80.52c0.2,0.45,0.4,0.89,0.61,1.33v-1.33H30.61z"/>
+                                <path class="stm7"
+                                      d="M54.3,80.52H31.23v1.34c3.59,7.53,8.73,14.84,14.69,21.73h8.38V80.52z"/>
+                                <rect x="54.3" y="80.52" class="stm7" width="0" height="23.07"/>
+                                <rect x="77.36" y="80.52" class="stm7" width="23.07" height="23.07"/>
+                                <rect x="100.43" y="80.52" class="stm7" width="23.07" height="23.07"/>
+                                <rect x="100.43" y="80.52" class="stm7" width="0" height="23.07"/>
+                                <path class="stm7"
+                                      d="M169.64,103.59h3.56c6.32-7.3,11.71-15.07,15.33-23.07h-18.89V103.59z"/>
+                                <rect x="169.64" y="80.52" class="stm7" width="0" height="23.07"/>
+                                <path class="stm7" d="M45.92,103.59c2.65,3.07,5.47,6.05,8.38,8.93v-8.93H45.92z"/>
+                                <polygon class="stm7" points="54.3,103.59 45.92,103.59 45.92,103.59 54.3,103.59 	"/>
+                                <polygon class="stm7" points="54.3,103.59 45.92,103.59 45.92,103.59 54.3,103.59 	"/>
+                                <polygon class="stm7" points="54.3,103.59 54.3,112.52 54.3,112.52 54.3,103.59 	"/>
+                                <rect x="54.3" y="103.59" class="stm7" width="0" height="0"/>
+                                <rect x="54.3" y="103.59" class="stm7" width="0" height="0"/>
+                                <rect x="77.36" y="103.59" class="stm7" width="23.07" height="23.07"/>
+                                <rect x="77.36" y="103.59" class="stm7" width="23.07" height="0"/>
+                                <rect x="77.36" y="103.59" class="stm7" width="23.07" height="0"/>
+                                <rect x="100.43" y="103.59" class="stm7" width="0" height="23.07"/>
+                                <rect x="100.43" y="103.59" class="stm7" width="0" height="0"/>
+                                <rect x="100.43" y="103.59" class="stm7" width="0" height="0"/>
+                                <path class="stm7" d="M169.64,107.55c1.21-1.3,2.4-2.62,3.55-3.96h-3.55V107.55z"/>
+                                <polygon class="stm7"
+                                         points="169.64,103.59 173.19,103.59 173.19,103.59 169.64,103.59 	"/>
+                                <polygon class="stm7"
+                                         points="169.64,103.59 173.19,103.59 173.19,103.59 169.64,103.59 	"/>
+                                <polygon class="stm7"
+                                         points="169.64,103.59 169.64,107.55 169.64,107.55 169.64,103.59 	"/>
+                                <rect x="169.64" y="103.59" class="stm7" width="0" height="0"/>
+                                <rect x="169.64" y="103.59" class="stm7" width="0" height="0"/>
+                                <path class="stm7"
+                                      d="M77.36,126.66v5.68c8.87,6.72,17.13,12.17,23.07,15.88v-21.56H77.36z"/>
+                                <polygon class="stm7"
+                                         points="100.43,126.66 100.43,148.22 100.43,148.22 100.43,126.66 	"/>
+            </g>
+                            <g>
+                <path class="stm8"
+                      d="M77.36,34.38V19.41c-3.07-0.72-6.27-1.1-9.56-1.1c-4.73,0-9.27,0.79-13.51,2.25v13.83H77.36z"/>
+                                <polygon class="stm8" points="54.3,34.38 54.3,20.55 54.3,20.55 54.3,34.38 	"/>
+                                <path class="stm8" d="M101.77,34.38c-0.46-0.45-0.9-0.88-1.34-1.28v1.28H101.77z"/>
+                                <path class="stm8" d="M123.5,28.75c-1.12,0.9-3.53,2.91-6.19,5.63h6.19V28.75z"/>
+                                <polygon class="stm8" points="100.43,34.38 100.43,33.1 100.43,33.1 100.43,34.38 	"/>
+                                <path class="stm8"
+                                      d="M146.57,34.38V18.57c-8.79,0.96-16.75,4.5-23.01,10.13c-0.02,0.01-0.04,0.03-0.06,0.05v5.63H146.57z"/>
+                                <path class="stm8"
+                                      d="M169.64,34.38V22.57c-5.51-2.72-11.7-4.26-18.25-4.26c-1.63,0-3.24,0.1-4.82,0.27v15.81H169.64z"/>
+                                <polygon class="stm8"
+                                         points="146.57,34.38 146.57,18.57 146.57,18.57 146.57,34.38 	"/>
+                                <polygon class="stm8"
+                                         points="146.57,34.38 146.57,18.57 146.57,18.57 146.57,34.38 	"/>
+                                <polygon class="stm8"
+                                         points="169.64,34.38 169.64,22.57 169.64,22.57 169.64,34.38 	"/>
+                                <rect x="54.3" y="34.38" class="stm8" width="23.07" height="23.07"/>
+                                <rect x="54.3" y="34.38" class="stm8" width="23.07" height="0"/>
+                                <rect x="54.3" y="34.38" class="stm8" width="23.07" height="0"/>
+                                <rect x="54.3" y="34.38" class="stm8" width="0" height="23.07"/>
+                                <rect x="54.3" y="34.38" class="stm8" width="0" height="0"/>
+                                <rect x="54.3" y="34.38" class="stm8" width="0" height="0"/>
+                                <path class="stm8" d="M100.43,57.45h23.07V34.38h-6.19c-2.61,2.67-5.46,6.01-7.57,9.66c-2.15-3.55-5.21-6.96-7.97-9.66h-1.34V57.45z
+                    "/>
+                                <polygon class="stm8" points="123.5,34.38 117.31,34.38 117.31,34.38 123.5,34.38 	"/>
+                                <polygon class="stm8" points="123.5,34.38 117.31,34.38 117.31,34.38 123.5,34.38 	"/>
+                                <polygon class="stm8"
+                                         points="100.43,34.38 101.77,34.38 101.77,34.38 100.43,34.38 	"/>
+                                <polygon class="stm8"
+                                         points="100.43,34.38 101.77,34.38 101.77,34.38 100.43,34.38 	"/>
+                                <rect x="100.43" y="34.38" class="stm8" width="0" height="23.07"/>
+                                <rect x="100.43" y="34.38" class="stm8" width="0" height="0"/>
+                                <rect x="100.43" y="34.38" class="stm8" width="0" height="0"/>
+                                <rect x="123.5" y="34.38" class="stm8" width="23.07" height="23.07"/>
+                                <rect x="123.5" y="34.38" class="stm8" width="23.07" height="0"/>
+                                <rect x="123.5" y="34.38" class="stm8" width="23.07" height="0"/>
+                                <rect x="146.57" y="34.38" class="stm8" width="23.07" height="23.07"/>
+                                <rect x="146.57" y="34.38" class="stm8" width="23.07" height="0"/>
+                                <rect x="146.57" y="34.38" class="stm8" width="23.07" height="0"/>
+                                <rect x="146.57" y="34.38" class="stm8" width="0" height="23.07"/>
+                                <rect x="146.57" y="34.38" class="stm8" width="0" height="23.07"/>
+                                <rect x="146.57" y="34.38" class="stm8" width="0" height="0"/>
+                                <rect x="146.57" y="34.38" class="stm8" width="0" height="0"/>
+                                <rect x="146.57" y="34.38" class="stm8" width="0" height="0"/>
+                                <rect x="146.57" y="34.38" class="stm8" width="0" height="0"/>
+                                <rect x="169.64" y="34.38" class="stm8" width="0" height="23.07"/>
+                                <rect x="169.64" y="34.38" class="stm8" width="0" height="0"/>
+                                <rect x="169.64" y="34.38" class="stm8" width="0" height="0"/>
+                                <rect x="54.3" y="57.45" class="stm8" width="23.07" height="23.07"/>
+                                <rect x="54.3" y="57.45" class="stm8" width="23.07" height="0"/>
+                                <rect x="54.3" y="57.45" class="stm8" width="23.07" height="0"/>
+                                <rect x="54.3" y="57.45" class="stm8" width="0" height="23.07"/>
+                                <rect x="54.3" y="57.45" class="stm8" width="0" height="0"/>
+                                <rect x="54.3" y="57.45" class="stm8" width="0" height="0"/>
+                                <rect x="100.43" y="57.45" class="stm8" width="23.07" height="23.07"/>
+                                <rect x="100.43" y="57.45" class="stm8" width="23.07" height="0"/>
+                                <rect x="100.43" y="57.45" class="stm8" width="23.07" height="0"/>
+                                <rect x="100.43" y="57.45" class="stm8" width="0" height="23.07"/>
+                                <rect x="100.43" y="57.45" class="stm8" width="0" height="0"/>
+                                <rect x="100.43" y="57.45" class="stm8" width="0" height="0"/>
+                                <rect x="123.5" y="57.45" class="stm8" width="23.07" height="23.07"/>
+                                <rect x="123.5" y="57.45" class="stm8" width="23.07" height="0"/>
+                                <rect x="123.5" y="57.45" class="stm8" width="23.07" height="0"/>
+                                <rect x="146.57" y="57.45" class="stm8" width="23.07" height="23.07"/>
+                                <rect x="146.57" y="57.45" class="stm8" width="23.07" height="0"/>
+                                <rect x="146.57" y="57.45" class="stm8" width="23.07" height="0"/>
+                                <rect x="146.57" y="57.45" class="stm8" width="0" height="23.07"/>
+                                <rect x="146.57" y="57.45" class="stm8" width="0" height="23.07"/>
+                                <rect x="146.57" y="57.45" class="stm8" width="0" height="0"/>
+                                <rect x="146.57" y="57.45" class="stm8" width="0" height="0"/>
+                                <rect x="146.57" y="57.45" class="stm8" width="0" height="0"/>
+                                <rect x="146.57" y="57.45" class="stm8" width="0" height="0"/>
+                                <rect x="169.64" y="57.45" class="stm8" width="0" height="23.07"/>
+                                <rect x="169.64" y="57.45" class="stm8" width="0" height="0"/>
+                                <rect x="169.64" y="57.45" class="stm8" width="0" height="0"/>
+                                <rect x="54.3" y="80.52" class="stm8" width="23.07" height="23.07"/>
+                                <rect x="54.3" y="80.52" class="stm8" width="0" height="23.07"/>
+                                <rect x="123.5" y="80.52" class="stm8" width="23.07" height="23.07"/>
+                                <rect x="146.57" y="80.52" class="stm8" width="23.07" height="23.07"/>
+                                <rect x="146.57" y="80.52" class="stm8" width="0" height="23.07"/>
+                                <rect x="146.57" y="80.52" class="stm8" width="0" height="23.07"/>
+                                <rect x="169.64" y="80.52" class="stm8" width="0" height="23.07"/>
+                                <path class="stm8"
+                                      d="M77.36,103.59H54.3v8.93c5.1,5.05,10.49,9.79,15.83,14.14h7.23V103.59z"/>
+                                <rect x="54.3" y="103.59" class="stm8" width="23.07" height="0"/>
+                                <rect x="54.3" y="103.59" class="stm8" width="23.07" height="0"/>
+                                <polygon class="stm8" points="54.3,103.59 54.3,112.52 54.3,112.52 54.3,103.59 	"/>
+                                <rect x="54.3" y="103.59" class="stm8" width="0" height="0"/>
+                                <rect x="54.3" y="103.59" class="stm8" width="0" height="0"/>
+                                <rect x="100.43" y="103.59" class="stm8" width="23.07" height="23.07"/>
+                                <rect x="100.43" y="103.59" class="stm8" width="23.07" height="0"/>
+                                <rect x="100.43" y="103.59" class="stm8" width="0" height="23.07"/>
+                                <rect x="100.43" y="103.59" class="stm8" width="0" height="0"/>
+                                <rect x="123.5" y="103.59" class="stm8" width="23.07" height="23.07"/>
+                                <rect x="123.5" y="103.59" class="stm8" width="23.07" height="0"/>
+                                <rect x="123.5" y="103.59" class="stm8" width="23.07" height="0"/>
+                                <path class="stm8"
+                                      d="M146.57,103.59v23.07h2.44c7.05-5.74,14.19-12.19,20.63-19.11v-3.96H146.57z"/>
+                                <rect x="146.57" y="103.59" class="stm8" width="23.07" height="0"/>
+                                <rect x="146.57" y="103.59" class="stm8" width="23.07" height="0"/>
+                                <rect x="146.57" y="103.59" class="stm8" width="0" height="23.07"/>
+                                <rect x="146.57" y="103.59" class="stm8" width="0" height="23.07"/>
+                                <rect x="146.57" y="103.59" class="stm8" width="0" height="0"/>
+                                <rect x="146.57" y="103.59" class="stm8" width="0" height="0"/>
+                                <rect x="146.57" y="103.59" class="stm8" width="0" height="0"/>
+                                <rect x="146.57" y="103.59" class="stm8" width="0" height="0"/>
+                                <polygon class="stm8"
+                                         points="169.64,103.59 169.64,107.55 169.64,107.55 169.64,103.59 	"/>
+                                <rect x="169.64" y="103.59" class="stm8" width="0" height="0"/>
+                                <rect x="169.64" y="103.59" class="stm8" width="0" height="0"/>
+                                <path class="stm8" d="M70.13,126.66c2.43,1.98,4.86,3.88,7.23,5.68v-5.68H70.13z"/>
+                                <path class="stm8"
+                                      d="M100.43,126.66v21.56c0.86,0.54,1.67,1.04,2.43,1.5h13.49c2.03-1.24,4.44-2.76,7.14-4.52v-18.55H100.43z"/>
+                                <polygon class="stm8"
+                                         points="100.43,126.66 100.43,148.22 100.43,148.22 100.43,126.66 	"/>
+                                <path class="stm8"
+                                      d="M123.5,126.66v18.55c6.5-4.23,14.64-9.89,23.07-16.58v-1.96H123.5z"/>
+                                <path class="stm8" d="M146.57,128.62c0.81-0.64,1.62-1.3,2.44-1.96h-2.44V128.62z"/>
+                                <polygon class="stm8"
+                                         points="146.57,126.66 146.57,128.62 146.57,128.62 146.57,126.66 	"/>
+                                <polygon class="stm8"
+                                         points="146.57,126.66 146.57,128.62 146.57,128.62 146.57,126.66 	"/>
+                                <path class="stm8"
+                                      d="M109.62,153.71c0,0,2.54-1.41,6.73-3.98h-13.49C107.07,152.29,109.62,153.71,109.62,153.71z"/>
+                                <polygon class="stm8"
+                                         points="102.87,149.73 116.36,149.73 116.36,149.73 102.87,149.73 	"/>
+                                <polygon class="stm8"
+                                         points="102.87,149.73 116.36,149.73 116.36,149.73 102.87,149.73 	"/>
+            </g>
+                            <text transform="matrix(1 0 0 1 323.5449 132.2592)" class="stm9 stm2 stm3">U</text>
+                            <text transform="matrix(1 0 0 1 305.2121 112.5211)" class="stm9 stm2 stm10">4</text>
+                            <rect x="216.32" y="16.21" class="stm11" width="403.71" height="128.63"/>
+                            <text transform="matrix(1 0 0 1 216.3216 35.5106)"><tspan x="0" y="0" class="stm1a stm2 stm12">A simple visualisation tool for </tspan>
+                                <tspan x="0" y="30" class="stm1a stm2 stm12">Multiple Sequence Alignments</tspan></text>
+                        </a></g>
+            </svg>
+            </div>
+            <div class="col-12">
+                <p></p>
+                <p class="fs-5_5 fw-light">Source code of our software is available at the
+                    <a class="text-decoration-none" href="https://github.com/GCA-VH-lab/"><i class="fab fa-github"></i>
+                        GitHub Page</a></p>
+                <hr style="margin: 0">
+            </div>

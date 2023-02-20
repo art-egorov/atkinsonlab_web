@@ -1,0 +1,439 @@
+{
+  "mandatory_arguments": [
+    "accession_number",
+    "protein_sequence",
+    "list_file",
+    "homologues_list"
+  ],
+  "order": [
+    "mandatory_arguments_header",
+    "accession_number",
+    "protein_sequence",
+    "list_file",
+    "homologues_list",
+    "mandatory_arguments_error",
+    "optional_arguments_header",
+    "blastp_hit_list_size",
+    "blastp_pident_to_query_length_cutoff",
+    "blastp_evalue",
+    "flags_evalue",
+    "jackhmmer_iterations",
+    "num_of_flanking_genes",
+    "output_type",
+    "run_parameters_header",
+    "email",
+    "run_name",
+    "queue_pass"
+  ],
+  "float_variables": [
+    "blastp_pident_to_query_length_cutoff",
+    "orfs_presence_cutoff",
+    "blastp_evalue",
+    "flags_evalue"
+  ],
+  "int_variables": [
+    "blastp_hit_list_size",
+    "max_number_of_assemblies",
+    "jackhmmer_iterations",
+    "num_of_flanking_genes"
+  ],
+  "files_to_keep": {},
+  "top_warning_message": "",
+  "elements": {
+    "mandatory_arguments_header": {
+      "div_class": "col-md-12",
+      "subelements": [
+        "header",
+        "header_info"
+      ],
+      "header": {
+        "text": "Mandatory arguments"
+      },
+      "header_info": {
+        "text": "<p>Select <b>only one</b><span style=\"color:#C24765;\">*</span>of the allowed input formats.</p>"
+      }
+    },
+    "empty": {
+      "div_class": "col-12"
+    },
+    "accession_number": {
+      "div_class": "col-md-5",
+      "subelements": [
+        "label",
+        "input",
+        "invalid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label",
+        "for": "an"
+      },
+      "label_value": "Accession number",
+      "input": {
+        "class": "form-control q",
+        "name": "accession_number",
+        "id": "an",
+        "pattern": "^[ANYXW]P_\\d+\\.\\d$",
+        "type": "text"
+      },
+      "required": 0,
+      "invalid_feedback": "",
+      "form-text": "RefSeq protein accession number.<br>In this case, BlastP will be run to find homologues in the RefSeq database. BlastP parameters can be changed below. (Pattern: <i>^[ANYXW]P_[0-9]+.[0-9]$</i>)"
+    },
+    "protein_sequence": {
+      "div_class": "col-md-6",
+      "subelements": [
+        "label",
+        "textarea",
+        "invalid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label",
+        "for": "ps"
+      },
+      "label_value": "Protein sequence",
+      "textarea": {
+        "class": "form-control",
+        "name": "protein_sequence",
+        "id": "ps",
+        "type": "text",
+        "rows": "2"
+      },
+      "textarea_value": "",
+      "invalid_feedback": "",
+      "form-text": "Amino acid sequence in fasta format or just as a sequence (without <i>>id</i> line; can be multiple lines). BlastP will be run to find homologues in the RefSeq database."
+    },
+    "list_file": {
+      "div_class": "col-md-5",
+      "subelements": [
+        "label",
+        "input",
+        "invalid_feedback",
+        "valid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label",
+        "for": "hlf"
+      },
+      "label_value": "List of accession numbers",
+      "input": {
+        "class": "form-control",
+        "name": "list_file",
+        "id": "hlf",
+        "type": "file",
+        "accept": ".txt,.tsv",
+        "size": "512000"
+      },
+      "required": 0,
+      "invalid_feedback": "",
+      "valid_feedback": "",
+      "form-text": "File with list of accession numbers.<br>File format: .txt or .tsv, one accession number, or space separated assembly id and accession number per line, no header."
+    },
+    "homologues_list": {
+      "div_class": "col-md-6",
+      "subelements": [
+        "label",
+        "textarea",
+        "invalid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label",
+        "for": "hl"
+      },
+      "label_value": "List of accession numbers (with or without assemblies)",
+      "textarea": {
+        "class": "form-control",
+        "name": "homologues_list",
+        "id": "hl",
+        "type": "text",
+        "rows": "2"
+      },
+      "textarea_value": "",
+      "invalid_feedback": "",
+      "form-text": "Linebreak separated list of proteins accession numbers.<br>If you want to specify an assembly for each protein use space separated format: <i>assembly_id  protein_id</i> in each line. Max number of values is 200."
+    },
+    "mandatory_arguments_error": {
+      "div_class": "col-md-12",
+      "subelements": [
+        "error_alert"
+      ],
+      "error_text": ""
+    },
+    "optional_arguments_header": {
+      "div_class": "col-md-12",
+      "subelements": [
+        "header"
+      ],
+      "header": {
+        "text": "Optional arguments"
+      }
+    },
+    "blastp_hit_list_size": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "label",
+        "input",
+        "invalid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label required",
+        "for": "bh"
+      },
+      "label_value": "Max number of Blastp hits",
+      "input": {
+        "class": "form-control",
+        "name": "blastp_hit_list_size",
+        "id": "bh",
+        "type": "number",
+        "min": "2",
+        "max": "200",
+        "value": "30"
+      },
+      "required": 1,
+      "invalid_feedback": "",
+      "form-text": "Max number of Blastp hits in homologue searching. Allowed values: [2:200]"
+    },
+    "blastp_pident_to_query_length_cutoff": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "label",
+        "input",
+        "invalid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label required",
+        "for": "bid"
+      },
+      "label_value": "Identity cutoff for Blastp searching",
+      "input": {
+        "class": "form-control",
+        "name": "blastp_pident_to_query_length_cutoff",
+        "id": "bid",
+        "type": "text",
+        "min": "0",
+        "max": "1",
+        "value": "0.5",
+        "pattern": "^0*(\\.\\d+)?$"
+      },
+      "required": 1,
+      "invalid_feedback": "",
+      "form-text": "Identity cutoff for Blastp searching to your query protein. Allowed values: [0:1]"
+    },
+    "blastp_evalue": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "label",
+        "input",
+        "invalid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label required",
+        "for": "bpe"
+      },
+      "label_value": "E-value cutoff for Blastp searching",
+      "input": {
+        "class": "form-control",
+        "name": "blastp_evalue",
+        "id": "bpe",
+        "type": "text",
+        "value": "1e-3",
+        "pattern": "^0*(\\d+(\\.\\d+)?|\\.\\d+)([eE][-+]?\\d+)?$"
+      },
+      "required": 1,
+      "invalid_feedback": "",
+      "form-text": "E-value cutoff for Blastp searching to your query protein. This parameter makes sense only in case of short query protein. "
+    },
+    "flags_evalue": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "label",
+        "input",
+        "invalid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label required",
+        "for": "evalue"
+      },
+      "label_value": "Jackhmmer E-value",
+      "input": {
+        "class": "form-control",
+        "name": "flags_evalue",
+        "id": "evalue",
+        "type": "text",
+        "value": "1e-10",
+        "pattern": "^0*(\\d+(\\.\\d+)?|\\.\\d+)([eE][-+]?\\d+)?$"
+      },
+      "required": 1,
+      "invalid_feedback": "",
+      "form-text": ""
+    },
+    "jackhmmer_iterations": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "label",
+        "input",
+        "invalid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label required",
+        "for": "jhi"
+      },
+      "label_value": "Number of jackhmmer iterations",
+      "input": {
+        "class": "form-control",
+        "name": "jackhmmer_iterations",
+        "id": "jhi",
+        "type": "number",
+        "min": "1",
+        "max": "5",
+        "value": "3"
+      },
+      "required": 1,
+      "invalid_feedback": "",
+      "form-text": "Allowed values: [1-5]"
+    },
+    "num_of_flanking_genes": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "label",
+        "input",
+        "invalid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label required",
+        "for": "nfg"
+      },
+      "label_value": "Number of flanking genes",
+      "input": {
+        "class": "form-control",
+        "name": "num_of_flanking_genes",
+        "id": "nfg",
+        "type": "number",
+        "min": "1",
+        "max": "15",
+        "value": "4"
+      },
+      "required": 1,
+      "invalid_feedback": "",
+      "form-text": "Allowed values: [1-15]"
+    },
+    "output_type": {
+      "div_class": "col-md-6",
+      "subelements": [
+        "label",
+        "select",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label",
+        "for": "ot"
+      },
+      "label_value": "Output type",
+      "select": {
+        "class": "form-select",
+        "name": "output_type",
+        "id": "ot",
+        "aria-label": "Default select example"
+      },
+      "disabled1": 1,
+      "options": {
+        "tree_tree_order": "With phylogenetic tree and query showed as tree order",
+        "tree_input_order": "With phylogenetic tree but query showed as input order",
+        "no_tree": "No phylogenetic tree and query showed as input order "
+      },
+      "selected": "tree_tree_order",
+      "form-text": "For options with phylogenetic tree input accessions should be homologous. <br> <i>We're sorry, this option currently is not available.</i>"
+    },
+    "run_parameters_header": {
+      "div_class": "col-md-12",
+      "subelements": [
+        "header"
+      ],
+      "header": {
+        "text": "Run parameters"
+      }
+    },
+    "email": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "label",
+        "input",
+        "invalid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label required",
+        "for": "email"
+      },
+      "label_value": "E-mail",
+      "input": {
+        "class": "form-control",
+        "name": "email",
+        "id": "email",
+        "type": "email"
+      },
+      "required": 1,
+      "invalid_feedback": "",
+      "form-text": "Please, enter your e-mail address to receive your results link."
+    },
+    "run_name": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "label",
+        "input",
+        "invalid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label",
+        "for": "run_name"
+      },
+      "label_value": "Run name",
+      "input": {
+        "class": "form-control",
+        "name": "run_name",
+        "id": "run_name",
+        "type": "text",
+        "pattern": "^[^\\\\/:*?\"<>|\\r\\n]+$",
+        "value": "webFlaGs_{current_date}"
+      },
+      "required": 0,
+      "invalid_feedback": "",
+      "form-text": "Will be used in output folder name."
+    },
+    "queue_pass": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "label",
+        "input",
+        "invalid_feedback",
+        "valid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label",
+        "for": "key"
+      },
+      "label_value": "Queue pass \uD83D\uDDDD️",
+      "input": {
+        "class": "form-control",
+        "name": "queue_pass",
+        "id": "key",
+        "type": "text"
+      },
+      "required": 0,
+      "invalid_feedback": "",
+      "valid_feedback": "Your key is accepted \uD83D\uDE1C",
+      "form-text": "Perform calculations in our high-priority queue \uD83D\uDE80"
+    }
+  }
+}

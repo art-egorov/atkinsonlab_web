@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}Results{% endblock %}
+{% block head %}
+{% endblock %}
+{% block body_class %} class="uorf4u"{% endblock %}
+{% block content %}
+    <div class="container-md">
+        <p></p>
+        <div class="row  justify-content-center">
+            <div class="col-lg-10 no-background shadow">
+                <p></p>
+                <div class="row">
+                    <div class="col-12">
+                        <h2>Status</h2>
+                    </div>
+                    {% if status['status'] == "queued" %}
+                        <div class="col-12">
+                            <p class="fs-5">Your request was successfully validated and queued!
+                                {%- if status["meta"]["log"] != "" %}<br>
+                                    It's a retry of your job, first time it was failed, let's hope this time it will
+                                    work 🤞🏻
+                                {% endif -%}
+                            </p>
+                        </div>
+                        <div class="col-12">
+                            <p class="fs-5"><span class="fw-medium">Position in the queue:</span> {{ status['position'] }}<br>
+                                <span class="fw-medium">Queued at:</span> {{ status['enqueued_at'] }}</p>
+                        </div>
+                    {% endif %}
+                    {% if status['status'] == "started" %}
+                        <div class="col-12">
+                            <p class="fs-5">Your job is started! </p>
+                        </div>
+                        <div class="col-12">
+                            <p class="fs-5"><span class="fw-medium">Queued at:</span> {{ status['enqueued_at'] }}<br>
+                                <span class="fw-medium">Started at:</span> {{ status['started_at'] }}</p>
+                        </div>
+                    {% endif %}
+                    {% if status['status'] == "finished" %}
+                        <div class="col-12">
+                            <p class="fs-5">Your job is finished! </p>
+                        </div>
+                        <div class="col-12">
+                            <p class="fs-5">
+                                <span class="fw-medium">Started at:</span> {{ status["started_at"] }}<br>
+                                <span class="fw-medium">Finished at:</span> {{ status["ended_at"] }}</p>
+                         <p class="fs-5">This page will be available until <span class="fst-italic">{{ status["stored_until"] }}</span></p>
+                        </div>
+                    {% endif %}
+                    {% if status['status'] == "failed" %}
+                        <p class="fs-5">Something went wrong, we're sorry 😿 <br> Please, resubmit your job. </p>
+                        <p class="fs-5 fw-light">Сontact us if the problem remains, we store traceback of each
+                            run and we'll be happy to help!</p>
+                    {% endif %}
+                    {% if (status['status'] == "finished" or  status['status'] == "started" or status['status'] == "failed")  and  status['meta']['log'] != '' %}
+                        <hr>
+                        <div class="col-12">
+                            <h2>Logs</h2>
+                        </div>
+                        <div class="col-12">
+                            <p class="fs-5">Progress and warning messages</p>
+                            <div class="p-3  border bg-body-tertiary rounded">
+                                <p class="fw-light font-monospace text-muted preserve-line-breaks"
+                                style="margin: 0;" >{{ status['meta']['log'] }}</p>
+                            </div>
+                        </div>
+                        <p></p>
+                    {% endif %}
+                    {% if status["status"] != "finished" and status["status"] != "failed" %}
+                        <hr>
+                        <div class="col-auto">
+                            <p class="fs-5 fw-light">This page will be auto reloaded if status of your job is
+                                changed...</p>
+                        </div>
+                        <div class="col-auto">
+                            <div class="spinner-uorf4u_small"></div>
+                        </div>
+                    {% endif %}
+                    {% if status['status'] == "finished" %}
+                        <hr>
+                        <div class="col-12">
+                            <h2>Download</h2>
+                        </div>
+                        <div class="col-12">
+                            <a class="btn btn-outline-primary" href="{{ url_for('download_zip', id = id, tool = "uorf4u") }}">
+                                ZIP archive with results</a>
+                        </div>
+                        <p></p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <p></p>
+    </div>
+    {%- if status['status'] != "finished" and status['status'] != "failed" %}
+        <script>
+            var job_id = "{{ id }}";
+            var current_status = "{{ status['status'] }}";
+            var current_position = "{{ status['position'] }}"
+            var current_logs = "{{ status['meta']['cleanlog']}}"
+        </script>
+        <script src="{{ url_for('static', filename='js/page_updates_results.js') }}"></script>
+    {% endif -%}
+
+{% endblock %}
