@@ -1,0 +1,1 @@
+{"id": "G433#G9#G3#G6#DUF4065", "type": "A", "description": "putative replication initiation protein", "at": {"YP_007237226.1-YP_007237225.1": "YP_007237225.1-YP_007237226.1.pdb", "WP_153857122.1-WP_153857123.1": "WP_153857123.1-WP_153857122.1.pdb"}, "jose_domains": [["cdd", "Fur_like"], ["pdb", "2V79_A"], ["pfam", "RepA_N.14"]]}

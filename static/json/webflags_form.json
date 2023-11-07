@@ -13,9 +13,10 @@
     "homologues_list",
     "mandatory_arguments_error",
     "optional_arguments_header",
+    "blastp_database",
     "blastp_hit_list_size",
-    "blastp_pident_to_query_length_cutoff",
     "blastp_evalue",
+    "empty",
     "flags_evalue",
     "jackhmmer_iterations",
     "num_of_flanking_genes",
@@ -26,7 +27,6 @@
     "queue_pass"
   ],
   "float_variables": [
-    "blastp_pident_to_query_length_cutoff",
     "orfs_presence_cutoff",
     "blastp_evalue",
     "flags_evalue"
@@ -170,6 +170,32 @@
       "header": {
         "text": "Optional arguments"
       }
+    },
+    "blastp_database": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "label",
+        "select",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label",
+        "for": "at"
+      },
+      "label_value": "blastp database",
+      "select": {
+        "class": "form-select",
+        "name": "blastp_database",
+        "id": "bdb",
+        "aria-label": "Default select example"
+      },
+      "options": {
+        "refseq_select": "refseq_select (representative records)",
+        "refseq_protein": "refseq_protein (full)",
+        "reduced": "Our reduced database"
+      },
+      "selected": "refseq_select",
+      "form-text": "Blastp database to perform blastp searching.<br> <a class='text-decoration-none' href='static/txt/included_taxa_webflags.txt' target='_blank'>Our reduced BLAST database</a> contains around 52 million protein sequences which were found in 13548 bacterial, 467 archaeal and 10449 viral genomes. "
     },
     "blastp_hit_list_size": {
       "div_class": "col-md-4",

@@ -10,7 +10,8 @@
             <div class="col-10">
                 <div class="row justify-content-center">
                     <div class="col-lg-5 text-center">
-                        <img class="mx-auto" width="75%" src="{{ url_for("static", filename="img/webflags_logo_short.png") }}">
+                        <img class="mx-auto" width="75%"
+                             src="{{ url_for("static", filename="img/webflags_logo_short.png") }}">
                     </div>
                     <p></p>
                 </div>
@@ -30,7 +31,6 @@
                             the groups, a graphical visualization of the gene neighbourhood and its conservation, and
                             optionally, a phylogenetic tree annotated with flanking gene conservation.
                         </p>
-
                         <img width="100%" src="{{ url_for('static', filename='img/flags_pipeline.png') }}"
                              style="max-width: 43rem;">
 
@@ -38,6 +38,89 @@
                             available at the
                             <a class="text-decoration-none" href="https://github.com/GCA-VH-lab/FlaGs2"><i
                                     class="fab fa-github"></i> GitHub Page</a>.</p>
+
+                        <hr>
+                        <h4>Output examples</h4>
+                        <div class="row g-0 justify-content-center">
+                            <div class="col-md-6">
+                                <div id="carouselExampleDark1" class="carousel slide"
+                                     data-bs-ride="carousel" style="margin: 0; width: 98%; margin: 0 auto;">
+                                    <div class="carousel-indicators">
+                                        <button type="button" data-bs-target="#carouselExampleDark1"
+                                                data-bs-slide-to="0"
+                                                class="active" aria-current="true" aria-label="Slide 1"></button>
+                                        <button type="button" data-bs-target="#carouselExampleDark1"
+                                                data-bs-slide-to="1"
+                                                aria-label="Slide 2"></button>
+                                        <button type="button" data-bs-target="#carouselExampleDark1"
+                                                data-bs-slide-to="2"
+                                                aria-label="Slide 3"></button>
+                                    </div>
+                                    <div class="carousel-inner">
+                                        <div class="carousel-item active">
+                                            <img src="{{ url_for("static", filename="img/examples/T1.png") }}"
+                                                 class="d-block w-100">
+                                        </div>
+                                        <div class="carousel-item">
+                                            <img src="{{ url_for("static", filename="img/examples/T2.png") }}"
+                                                 class="d-block w-100">
+                                        </div>
+                                        <div class="carousel-item">
+                                            <img src="{{ url_for("static", filename="img/examples/T3.png") }}"
+                                                 class="d-block w-100">
+                                        </div>
+                                    </div>
+                                    <button class="carousel-control-prev" type="button"
+                                            data-bs-target="#carouselExampleDark1"
+                                            data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button"
+                                            data-bs-target="#carouselExampleDark1"
+                                            data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div id="carouselExampleDark" class="carousel slide"
+                                     data-bs-ride="carousel" style="margin: 0; width: 98%; margin: 0 auto;">
+                                    <div class="carousel-indicators">
+                                        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0"
+                                                aria-label="Slide 1" class="active" aria-current="true"></button>
+                                        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1"
+                                                aria-label="Slide 2"></button>
+                                    </div>
+                                    <div class="carousel-inner">
+
+                                        <div class="carousel-item active">
+                                            <img src="{{ url_for("static", filename="img/examples/T5.png") }}"
+                                                 class="d-block w-100">
+                                        </div>
+                                        <div class="carousel-item">
+                                            <img src="{{ url_for("static", filename="img/examples/T4.png") }}"
+                                                 class="d-block w-100">
+                                        </div>
+                                    </div>
+                                    <button class="carousel-control-prev" type="button"
+                                            data-bs-target="#carouselExampleDark"
+                                            data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button"
+                                            data-bs-target="#carouselExampleDark"
+                                            data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
+                                </div>
+                            </div>
+
+
+                        </div>
 
                     </div>
                     <div class="col-12" style="margin: 0">
@@ -55,7 +138,7 @@
                         </p>
                         <hr style="margin-bottom:0;">
                     </div>
-                    <div class="col-12">
+                    <div class="col-lg-12">
                         <h3>Authors & Contact </h3>
                         <p class="fs-6">FlaGs was first made by Chayan Kumar Saha and Gemma C. Atkinson. It is now
                             developed by the Atkinson FlaGs team: Jose Nakamoto, Artyom Egorov and Veda Bojar at the
@@ -66,12 +149,26 @@
                             don't hesitate to share your ideas or
                             feature requests.
                         </p>
-                        <hr id="webflags_form_start">
+                        <p class="fs-6"> Please contact us by <a class="text-decoration-none"
+                                                                 href="mailto:gemma-dot-atkinson-wow-med.lu.se ">e-mail</a>
+                            or use
+                            <a class="text-decoration-none" href="https://github.com/GCA-VH-lab/FlaGs2/issues">GitHub
+                                Issues</a> to report any technical problems related to FlaGs.</p>
+                    </div>
+                    <div class="col-lg-6">
+
+                    </div>
+                    <div class="col-12" style="margin: 0;">
+                        <hr style="margin-top: 0;" id="webflags_form_start">
                     </div>
                     <div class="col-12" id="webflags_form" style="margin-top: 0">
                         <h3>Submission form</h3>
                         <p class="fs-6 fw-medium">You can <a href="{{ url_for("tool",tool="webflags", demo=True) }}">
                             try an example</a> with a set of proteins.</p>
+                        <p class="fs-6 fw-medium">For creating an input file for FlaGs from the results of an online
+                            BlastP or PSI-Blast search at the NCBI, you can use
+                            <a href="{{ url_for("static", filename="pdf/FlaGs_input_from_BlastP.pdf") }}"
+                               target="_blank">this guideline</a>.</p>
                         <p></p>
                         {%- if form["top_warning_message"] -%}
                             <p></p>

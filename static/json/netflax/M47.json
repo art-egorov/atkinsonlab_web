@@ -1,0 +1,1 @@
+{"id": "G259#G3#G12#DUF4065", "type": "T", "description": "PIN domain-containing protein", "at": {"WP_034271331.1-WP_034271328.1": "WP_034271331.1-WP_034271328.1.pdb", "WP_162453237.1-WP_162453236.1": "WP_162453237.1-WP_162453236.1.pdb"}, "jose_domains": [["cdd", "PIN_MtVapC25_VapC33-like"], ["pdb", "7VWO_I"], ["pfam", "PIN.24"]]}

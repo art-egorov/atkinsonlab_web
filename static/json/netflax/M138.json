@@ -1,0 +1,1 @@
+{"id": "G128#G1#G2#G9#DUF4065", "type": "A", "description": "DUF4428 domain-containing protein", "at": {"WP_009164221.1-WP_083798230.1": "WP_083798230.1-WP_009164221.1.pdb", "WP_035051623.1-WP_051910429.1": "WP_051910429.1-WP_035051623.1.pdb"}, "jose_domains": [["cdd", "LysW"], ["pdb", "5N7Y_A"], ["pfam", "SHOCT.12"]]}

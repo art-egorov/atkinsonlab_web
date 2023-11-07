@@ -448,6 +448,7 @@ def webflags_form_validation(request):
 
         elif key == "protein_sequence":
             try:
+                value = value.strip()
                 form["elements"][key]["textarea_value"] = value.strip()
                 form["elements"][key]["textarea"]["rows"] = value.count("\n") + 1
                 if value.count(">") == 0:

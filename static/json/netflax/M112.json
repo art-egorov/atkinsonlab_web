@@ -1,0 +1,1 @@
+{"id": "G330#G20#G13#G12#DUF4065", "type": "A", "description": "AAA family ATPase", "at": {"WP_013703333.1-WP_013703332.1": "WP_013703332.1-WP_013703333.1.pdb", "WP_013013700.1-WP_013013699.1": "WP_013013699.1-WP_013013700.1.pdb"}, "jose_domains": [["cdd", "TrwB_TraG_TraD_VirD4"], ["pdb", "7NPT_C1"], ["pfam", "T4SS-DNA_transf.17"]]}

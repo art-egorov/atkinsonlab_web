@@ -41,7 +41,7 @@ def enqueue_for_run(parsed_arguments, tool):
                                                         on_failure=atkinsonlab_web.applications.msa4u_on_failure)
     elif tool == "webflags":
         job = queues[parsed_arguments["queue"]].enqueue(atkinsonlab_web.applications.run_webflags, parsed_arguments,
-                                                        job_timeout="30m", result_ttl=app.config["RESULTS_TTL"],
+                                                        job_timeout="2h", result_ttl=app.config["RESULTS_TTL"],
                                                         failure_ttl=app.config["RESULTS_TTL"],
                                                         meta=dict(log="", cleanlog=""),
                                                         on_success=atkinsonlab_web.applications.webflags_on_success,

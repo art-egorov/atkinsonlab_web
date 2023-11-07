@@ -1,0 +1,1 @@
+{"id": "G10#G7#G3#G24#G15#G1#G12#DUF4065", "type": "T", "description": "multidrug effflux MFS transporter", "at": {"WP_157860154.1-WP_011021859.1": "WP_011021859.1-WP_157860154.1.pdb", "WP_080503093.1-WP_011035019.1": "WP_011035019.1-WP_080503093.1.pdb"}, "jose_domains": [["cdd", "MFS_LacY"], ["pdb", "6KKL_A"], ["pfam", "MFS_3.16"]]}

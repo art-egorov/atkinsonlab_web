@@ -1,0 +1,1 @@
+{"id": "G61#DUF4065", "type": "T", "description": "HD domain-containing protein", "at": {"WP_011639622.1-WP_049750071.1": "WP_049750071.1-WP_011639622.1.pdb", "WP_134219355.1-WP_134219356.1": "WP_134219356.1-WP_134219355.1.pdb", "WP_104372764.1-WP_104372807.1": "WP_104372807.1-WP_104372764.1.pdb"}, "jose_domains": [["cdd", "HDc"], ["pdb", "2HEK_A"], ["pfam", "HD_assoc_2.2"]]}

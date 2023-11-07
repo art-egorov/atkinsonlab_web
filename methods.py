@@ -58,9 +58,9 @@ def remove_results(job_folder):
     return None
 
 
-def send_email(html, to_address, results_link, subject):
+def send_email(html, to_address, results_link, run_name, subject):
     with open(html) as file:
-        html_body = file.read().replace("%link%", results_link)
+        html_body = file.read().replace("%link%", results_link).replace("%run_name%", run_name)
     msg = email.message.EmailMessage()
     msg["Subject"] = subject
     msg["From"] = "atkinson-lab@med.lu.se"
@@ -75,6 +75,7 @@ def send_email(html, to_address, results_link, subject):
 
 def uorf4u_demo_form():
     request = {'accession_number': '', 'homologues_list': ' ', 'blastp_hit_list_size': '200',
+               "blastp_database": "refseq_select",
                'blastp_pident_to_query_length_cutoff': '0.5', 'max_number_of_assemblies': '1',
                'upstream_region_length': '400', 'downstream_region_length': '100', 'check_assembly_annotation': 'true',
                'filter_by_sd': 'true', 'alignment_type': 'aa', 'orfs_presence_cutoff': '0.4', 'config': 'bacteria',
@@ -136,6 +137,7 @@ def msa4u_demo_form():
 
 def webflags_demo_form():
     request = {'accession_number': '', 'homologues_list': ' ', 'blastp_hit_list_size': '15',
+               "blastp_database": "refseq_select",
                'blastp_pident_to_query_length_cutoff': '0.5', 'blastp_evalue': '1e-3', 'flags_evalue': '1e-10',
                'jackhmmer_iterations': '3', 'num_of_flanking_genes': '4', 'output_type': 'tree_tree_order', 'email': '',
                'run_name': 'webFlaGs_{current_date}', 'queue_pass': ''}
@@ -163,3 +165,8 @@ def webflags_demo_form():
             form["elements"][key]["selected"] = value
 
     return form
+
+
+def sort_by_number(s):
+    """Helper function to extract the number from a string and return it as an int"""
+    return int(''.join(filter(str.isdigit, s)))

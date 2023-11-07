@@ -1,0 +1,1 @@
+{"id": "G19#G1#G2#G9#DUF4065", "type": "A", "description": "3'-5' exonuclease", "at": {"WP_018368061.1-WP_018368060.1": "WP_018368060.1-WP_018368061.1.pdb", "WP_025728468.1-WP_025728466.1": "WP_025728466.1-WP_025728468.1.pdb"}, "jose_domains": [["cdd", "DNA_pol_III_epsilon_like"], ["pdb", "5M1S_D"], ["pfam", "RNase_T.27"]]}

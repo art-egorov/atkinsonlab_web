@@ -1,0 +1,1 @@
+{"id": "G36#G28#G15#G1#G12#DUF4065", "type": "T", "description": "type II toxin-antitoxin system VapC family toxin", "at": {"WP_097079278.1-WP_097079279.1": "WP_097079278.1-WP_097079279.1.pdb", "WP_068788500.1-WP_068788501.1": "WP_068788500.1-WP_068788501.1.pdb"}, "jose_domains": [["cdd", "PIN_Sll0205-like"], ["pdb", "5ECD_B"], ["pfam", "PIN.24"]]}

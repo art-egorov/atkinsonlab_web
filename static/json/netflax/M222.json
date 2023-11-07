@@ -1,0 +1,1 @@
+{"id": "G3#G15#G3#G24#G15#G1#G12#DUF4065", "type": "T", "description": "ABC transporter ATP-binding protein", "at": {"WP_050453385.1-WP_083452146.1": "WP_083452146.1-WP_050453385.1.pdb", "WP_074173600.1-WP_062611109.1": "WP_062611109.1-WP_074173600.1.pdb"}, "jose_domains": [["cdd", "ABC_Mj1267_LivG_branched"], ["pdb", "4F4C_A"], ["pfam", "SMC_N.22"]]}

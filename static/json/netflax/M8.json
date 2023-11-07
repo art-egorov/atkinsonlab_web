@@ -1,0 +1,1 @@
+{"id": "G135#DUF4065", "type": "T", "description": "hypothetical protein", "at": {"WP_165782565.1-WP_125226288.1": "WP_125226288.1-WP_165782565.1.pdb", "WP_004776877.1-WP_141598805.1": "WP_141598805.1-WP_004776877.1.pdb", "WP_004479190.1-WP_004474866.1": "WP_004474866.1-WP_004479190.1.pdb"}, "jose_domains": [["cdd", "CHD"], ["pdb", "4CLF_A"], ["pfam", "Guanylate_cyc.23"]]}

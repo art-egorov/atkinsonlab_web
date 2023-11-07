@@ -1,0 +1,1 @@
+{"id": "G356#DUF4065", "type": "T", "description": "TrmB family transcriptional regulator", "at": {"WP_006165776.1-WP_006165775.1": "WP_006165775.1-WP_006165776.1.pdb", "WP_050049451.1-WP_079977878.1": "WP_079977878.1-WP_050049451.1.pdb"}, "jose_domains": [["cdd", "PLDc_like_TrmB_middle"], ["pdb", "7E0M_A"], ["pfam", "Regulator_TrmB.11"]]}

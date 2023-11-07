@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}NetFlax {{ node }}{% endblock %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/rowreorder/1.3.3/css/rowReorder.bootstrap5.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/rowreorder/1.3.3/js/dataTables.rowReorder.min.js"></script>
+    <script src="https://3Dmol.org/build/3Dmol-min.js"></script>
+    <script src="https://3Dmol.org/build/3Dmol.ui-min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
+    <!-- Load DataTables CSS and JavaScript -->
+{% endblock %}
+{% block body_class %} class="netflax"{% endblock %}
+{% block content %}
+    <div class="container-md">
+        <p></p>
+        <div class="row  justify-content-center">
+            <div class="col-lg-11 no-background shadow">
+                <p></p>
+                <div class="row">
+                    <div class="col-12">
+                        <p><span class="fs-3 {% if json_data['type'] == "T" -%}netflax_toxin{%- endif -%}
+                        {% if json_data['type'] == "A" -%}netflax_antitoxin{%- endif -%}"><span
+                                class="fw-semibold">{{ node }}</span> (
+                            {%- if json_data['type'] == "T" -%}Toxin{%- endif -%}
+                            {%- if json_data['type'] == "A" -%}Antitoxin{%- endif -%})</span>
+                            <span class="fs-3"> -
+                                {{ json_data['description'] }}</span></p>
+                        <p class="fs-5"><span class="fw-semibold">Domains:</span>
+                            {% for domain in json_data['jose_domains'] %}
+                                {{ domain[1] }} <span class="fst-italic">({{ domain[0] }})</span>{% if not loop.last %},
+                            {% endif %}
+                            {% endfor %}</p>
+                        <hr>
+                        <div class="text-center">
+                            <img class="mx-auto" width="100%" style="margin: 2rem;"
+                                 src="{{ url_for('static', filename='img/netflax/' + node + '.png') }}">
+                        </div>
+                        <p>
+                            <a id="proteinClustersBtn" class="link-primary fw-medium text-decoration-none" type="button"
+                               data-bs-toggle="collapse"
+                               data-bs-target="#collapseWidthExample" aria-expanded="false"
+                               aria-controls="collapseWidthExample">
+                                Show protein clusters
+                            </a>
+                        </p>
+                        <div>
+                            <div class="collapse" id="collapseWidthExample">
+                                <div class="p-3  border bg-body-tertiary rounded">
+                                    <p class="fw-light font-monospace text-muted preserve-line-breaks"
+                                       style="margin: 0; max-height: 500px;
+                                       overflow-y: auto;"><small>{{ protein_clusters }}</small>
+                                    </p>
+                                </div>
+                                <p></p>
+                            </div>
+                        </div>
+                        <hr>
+                        <table>
+                            {{ table|safe }}
+                        </table>
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p></p>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+    <script>
+        var json_data_dict =
+            {{ json_data['at']|tojson|safe }};
+    </script>
+    <script src="{{ url_for('static', filename='js/netflax_tables.js') }}"></script>
+{% endblock %}

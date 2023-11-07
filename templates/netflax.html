@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}NetFlax{% endblock %}
+{% block head %}
+    <script src="{{ url_for('static', filename='lib/bindings/utils.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js"
+            integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link href="{{ url_for('static', filename='lib/tom-select/tom-select.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='lib/tom-select/tom-select.complete.min.js') }}"></script>
+{% endblock %}
+{% block body_class %} class="netflax"{% endblock %}
+{% block content %}
+    <div class="container">
+        <p></p>
+        <div class="row justify-content-center">
+            <div class="col-lg-11">
+                <div class="row justify-content-center">
+                    <div class="col-lg-5 text-center">
+                        <img class="mx-auto" width="69%"
+                             src="{{ url_for("static", filename="img/netflax_logo.png") }}">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-11 no-background shadow">
+                <div class="row g-3">
+                    <div class="col-md-12" style="margin-bottom: 0">
+                        <p></p>
+                        <h4>The Netflax toxin-antitoxin network</h4>
+                        </p>
+                        <p class="fs-5_5" style="margin: 0;">Scroll, click and drag to explore, or search by node
+                            number.</p>
+                    </div>
+                    <div class="col-12" name="NETWORK">
+                        <div class="card" style="width: 100%; border: 0; margin: 0; padding-top: 0;">
+                            <div class="card-body" style="margin-top: 0;  padding: 0; ">
+                                <p><span class="fw-semibold">Version:</span> {{ version }} <br>
+                                    {%- if version == "pruned" -%}
+                                        <a class="text-decoration-none fw-semibold"
+                                           href="{{ url_for('netflax', version='unpruned') }}">Switch to the unpruned
+                                            version</a>{%- else -%}
+                                        <a class="text-decoration-none fw-semibold" href="{{ url_for('netflax') }}">Switch
+                                            to the pruned version</a>{%- endif -%}
+                                </p>
+
+                                <div id="select-menu" style="background-color: white;">
+                                    <div class="row" style="margin-top: 0;">
+                                        <div class="col-lg-6 pb-2" style="border: 0;">
+                                            <select class="form-select" id="select-node"
+                                                    onchange="selectNode([value]);"
+                                                    aria-label="Default select example">
+                                                <option selected>Select a Node by ID</option>
+                                                {% for node in netflax_nodes %}
+                                                    <option value="{{ node }}">{{ node }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-2 pb-2">
+                                            <button type="button" class="btn btn-outline-primary btn-sm"
+                                                    onclick="neighbourhoodHighlight({nodes: []});">
+                                                Reset Selection
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="loadingBar">
+                                    <div class="outerBorder">
+                                        <div id="text"></div>
+                                        <div id="border">
+                                            <div id="bar" class="progress">
+                                                <div id="progressBar"
+                                                     class="progress-bar"
+                                                     role="progressbar" aria-valuenow="0"
+                                                     aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="mynetwork"></div>
+                            </div>
+                        </div>
+                        <hr style="margin-bottom:0;">
+                    </div>
+                    <div class="col-12">
+                        <h3>Reference</h3>
+                        <p class="fs-6">
+                            Karin Ernits, Chayan Kumar Saha, Tetiana Brodiazhenko, Bhanu Chouhan, Aditi Shenoy, Julian J
+                            Duque-Pedraza, Veda Bojar, Jose A Nakamoto, Tatsuaki Kurata, Artyom Egorov, Lena Shyrokova,
+                            Marcus J. O. Johansson, Toomas Mets, Aytan Rustamova, Jelisaveta Dzigurski, Tanel Tenson,
+                            Abel Garcia-Pino, Arne Elofsson, Vasili Hauryliuk, Gemma Catherine Atkinson, <span
+                                class="fw-semibold"> The structural basis of hyperpromiscuity in a core combinatorial
+                            network of Type II toxin-antitoxin and related phage defence systems,</span>
+                            <span class="fst-italic"> The Proceedings of the National Academy of Sciences (PNAS),
+                                120 (33) e2305393120;
+                                doi:<a href="https://doi.org/10.1073/pnas.2305393120">10.1073/pnas.2305393120</a></span>
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <p></p>
+    </div>
+    <script src="{{ url_for('static', filename='js/netflax_network_' + version + '.js') }}"></script>
+{% endblock %}

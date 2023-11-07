@@ -1,0 +1,1 @@
+{"id": "G2#G12#DUF4065", "type": "A", "description": "ATP-binding protein", "at": {"WP_026320269.1-WP_018712311.1": "WP_018712311.1-WP_026320269.1.pdb", "WP_031542768.1-WP_031542771.1": "WP_031542768.1-WP_031542771.1.pdb"}, "jose_domains": [["cdd", "AAA"], ["pdb", "1HQC_B"], ["pfam", "DUF815.16"]]}

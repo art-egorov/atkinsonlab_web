@@ -59,6 +59,7 @@ def run_uorf4u(processed_arguments):
                                                                                                "config"]})
         processed_arguments["run_name"] = processed_arguments["run_name"].replace("{current_date}",
                                                                                   time.strftime("%Y_%m_%d-%H_%M"))
+        job.meta["run_name"] = processed_arguments["run_name"]
         parameters.arguments["output_dir"] = os.path.join(job_folder, processed_arguments["run_name"])
         atkinsonlab_web.methods.update_meta_with_logs(job, log_file)
         if "fasta" not in parameters.arguments.keys():
@@ -130,7 +131,9 @@ def uorf4u_on_success(job, connection, result, *args, **kwargs):
     shutil.move(job_folder, success_folder)
     request_email = job.args[0]["email"]
     atkinsonlab_web.methods.send_email(os.path.join(app.config['STATIC_FOLDER'], "email", "uorf4u_job_finished.html"),
-                                       request_email, f"https://server.atkinson-lab.com/results/uorf4u/{job.id}",
+                                       request_email,
+                                       f"https://server.atkinson-lab.com/results/uorf4u/{job.id}",
+                                       job.meta["run_name"],
                                        "uORF4u results")
     cleaning_job = queues["helper"].enqueue_in(datetime.timedelta(hours=int(app.config["RESULTS_TTL"][:-1])),
                                                atkinsonlab_web.methods.remove_results, success_folder)
@@ -143,12 +146,13 @@ def uorf4u_on_failure(job, connection, type, value, traceback):
     shutil.move(job_folder, failure_folder)
     request_email = job.args[0]["email"]
     atkinsonlab_web.methods.send_email(os.path.join(app.config['STATIC_FOLDER'], "email", "uorf4u_job_failed.html"),
-                                       request_email, f"https://server.atkinson-lab.com/results/uorf4u/{job.id}",
+                                       request_email,
+                                       f"https://server.atkinson-lab.com/results/uorf4u/{job.id}",
+                                       job.meta["run_name"],
                                        "uORF4u results")
-    """
+
     cleaning_job = queues["helper"].enqueue_in(datetime.timedelta(hours=int(app.config["RESULTS_TTL"][:-1])),
                                                atkinsonlab_web.methods.remove_results, failure_folder)
-    """
 
     return None
 
@@ -188,6 +192,7 @@ def run_msa4u(processed_arguments):
                 processed_arguments["run_name"] = os.path.basename(processed_arguments["fasta"])
             if "alignments" in processed_arguments.keys():
                 processed_arguments["run_name"] = os.path.basename(processed_arguments["alignments"])
+        job.meta["run_name"] = processed_arguments["run_name"]
         parameters.arguments["label"] = processed_arguments["label"]
         if "fasta" in processed_arguments.keys():
             aln_filename = os.path.join(job_folder,
@@ -229,7 +234,9 @@ def msa4u_on_success(job, connection, result, *args, **kwargs):
     shutil.move(job_folder, success_folder)
     request_email = job.args[0]["email"]
     atkinsonlab_web.methods.send_email(os.path.join(app.config["STATIC_FOLDER"], "email", "msa4u_job_finished.html"),
-                                       request_email, f"https://server.atkinson-lab.com/results/msa4u/{job.id}",
+                                       request_email,
+                                       f"https://server.atkinson-lab.com/results/msa4u/{job.id}",
+                                       job.meta["run_name"],
                                        "MSA4u results")
 
     cleaning_job = queues["helper"].enqueue_in(datetime.timedelta(hours=int(app.config["RESULTS_TTL"][:-1])),
@@ -243,12 +250,13 @@ def msa4u_on_failure(job, connection, type, value, traceback):
     shutil.move(job_folder, failure_folder)
     request_email = job.args[0]["email"]
     atkinsonlab_web.methods.send_email(os.path.join(app.config["STATIC_FOLDER"], "email", "msa4u_job_failed.html"),
-                                       request_email, f"https://server.atkinson-lab.com/results/msa4u/{job.id}",
+                                       request_email,
+                                       f"https://server.atkinson-lab.com/results/msa4u/{job.id}",
+                                       job.meta["run_name"],
                                        "MSA4u results")
-    """
+
     cleaning_job = queues["helper"].enqueue_in(datetime.timedelta(hours=int(app.config["RESULTS_TTL"][:-1])),
                                                atkinsonlab_web.methods.remove_results, failure_folder)
-    """
     return None
 
 
@@ -278,6 +286,7 @@ def run_webflags(processed_arguments):
 
         processed_arguments["run_name"] = processed_arguments["run_name"].replace("{current_date}",
                                                                                   time.strftime("%Y_%m_%d-%H_%M"))
+        job.meta["run_name"] = processed_arguments["run_name"]
         webflags_folder = os.path.join(job_folder, "FlaGs_output")
         if not os.path.isdir(webflags_folder):
             os.mkdir(webflags_folder)
@@ -289,17 +298,25 @@ def run_webflags(processed_arguments):
             uorf4u_parameters.arguments["blastp_evalue_cutoff"] = processed_arguments["blastp_evalue"]
             uorf4u_parameters.arguments["blastp_hit_list_size"] = processed_arguments["blastp_hit_list_size"]
             uorf4u_parameters.arguments["blastp_max_number_of_alignments"] = processed_arguments["blastp_hit_list_size"]
+            uorf4u_parameters.arguments["blastp_pident_to_query_length_cutoff"] = 0
             uorf4u_parameters.arguments["output_dir"] = os.path.join(job_folder)
             if "accession_number" in processed_arguments.keys():
                 refseq_protein = uorf4u.data_processing.RefSeqProtein(
                     accession_number=processed_arguments["accession_number"],
                     parameters=uorf4u_parameters)
+                refseq_protein.get_record()
             if "protein_sequence" in processed_arguments.keys():
                 record = Bio.SeqIO.read(io.StringIO(processed_arguments["protein_sequence"]), "fasta")
                 refseq_protein = uorf4u.data_processing.RefSeqProtein(accession_number=record.id,
                                                                       parameters=uorf4u_parameters)
                 refseq_protein.add_record(record)
-            homologues_list = refseq_protein.blastp_searching_for_homologues()[1:]
+
+            if processed_arguments["blastp_database"] == "reduced":
+                local_db = "/home/webapp/WebServer/atkinsonlab_web/static/databases/reducedDB/reducedRefseqDbAA"
+                homologues_list = refseq_protein.local_blastp_searching_for_homologues(local_db)
+            else:
+                uorf4u_parameters.arguments["blastp_database"] = processed_arguments["blastp_database"]
+                homologues_list = refseq_protein.blastp_searching_for_homologues()
             processed_arguments["homologues_list"] = homologues_list
 
         hl_input = processed_arguments["homologues_list"]
@@ -310,6 +327,8 @@ def run_webflags(processed_arguments):
             input_file_txt = "\n".join(["\t".join(i.strip().split()) for i in hl_input])
         elif processed_arguments["input_type"] == {1}:
             input_file_txt = "\n".join(hl_input)
+        else:
+            input_file_txt = ""
         input_file.write(input_file_txt)
         input_file.close()
         atkinsonlab_web.methods.update_meta_with_logs(job, log_file)
@@ -376,7 +395,9 @@ def webflags_on_success(job, connection, result, *args, **kwargs):
     shutil.move(job_folder, success_folder)
     request_email = job.args[0]["email"]
     atkinsonlab_web.methods.send_email(os.path.join(app.config["STATIC_FOLDER"], "email", "webflags_job_finished.html"),
-                                       request_email, f"https://server.atkinson-lab.com/results/webflags/{job.id}",
+                                       request_email,
+                                       f"https://server.atkinson-lab.com/results/webflags/{job.id}",
+                                       job.meta["run_name"],
                                        "webFlaGs results")
 
     cleaning_job = queues["helper"].enqueue_in(datetime.timedelta(hours=int(app.config["RESULTS_TTL"][:-1])),
@@ -390,10 +411,12 @@ def webflags_on_failure(job, connection, type, value, traceback):
     shutil.move(job_folder, failure_folder)
     request_email = job.args[0]["email"]
     atkinsonlab_web.methods.send_email(os.path.join(app.config["STATIC_FOLDER"], "email", "webflags_job_failed.html"),
-                                       request_email, f"https://server.atkinson-lab.com/results/webflags/{job.id}",
+                                       request_email,
+                                       f"https://server.atkinson-lab.com/results/webflags/{job.id}",
+                                       job.meta["run_name"],
                                        "webFlaGs results")
-    """
+
     cleaning_job = queues["helper"].enqueue_in(datetime.timedelta(hours=int(app.config["RESULTS_TTL"][:-1])),
                                                atkinsonlab_web.methods.remove_results, failure_folder)
-    """
+
     return None

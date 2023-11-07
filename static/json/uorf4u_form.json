@@ -13,10 +13,10 @@
     "homologues_list",
     "mandatory_arguments_error",
     "optional_arguments_header",
+    "blastp_database",
     "blastp_hit_list_size",
     "blastp_pident_to_query_length_cutoff",
     "max_number_of_assemblies",
-    "assemblies_list",
     "upstream_region_length",
     "downstream_region_length",
     "check_assembly_annotation",
@@ -25,6 +25,7 @@
     "alignment_type",
     "orfs_presence_cutoff",
     "config",
+    "assemblies_list",
     "config_file",
     "run_parameters_header",
     "email",
@@ -174,6 +175,31 @@
       "header": {
         "text": "Optional arguments"
       }
+    },
+    "blastp_database": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "label",
+        "select",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label",
+        "for": "at"
+      },
+      "label_value": "blastp database",
+      "select": {
+        "class": "form-select",
+        "name": "blastp_database",
+        "id": "bdb",
+        "aria-label": "Default select example"
+      },
+      "options": {
+        "refseq_select": "refseq_select (representative records)",
+        "refseq_protein": "refseq_protein (full)"
+      },
+      "selected": "refseq_select",
+      "form-text": "Online blastp database to perform blastp searching."
     },
     "blastp_hit_list_size": {
       "div_class": "col-md-4",

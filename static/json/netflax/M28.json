@@ -1,0 +1,1 @@
+{"id": "G70#G19#DUF4065", "type": "A", "description": "cold shock domain-containing protein", "at": {"WP_092619006.1-WP_092619003.1": "WP_092619006.1-WP_092619003.1.pdb", "WP_152876609.1-WP_152876608.1": "WP_152876609.1-WP_152876608.1.pdb"}, "jose_domains": [["cdd", "CSP_CDS"], ["pdb", "6Y6E_A"], ["pfam", "CSD.25"]]}

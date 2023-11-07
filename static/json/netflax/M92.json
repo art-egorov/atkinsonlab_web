@@ -1,0 +1,1 @@
+{"id": "G83#G20#G13#G12#DUF4065", "type": "A", "description": "RNA methyltransferase", "at": {"WP_013520824.1-WP_013520823.1": "WP_013520824.1-WP_013520823.1.pdb", "WP_051603217.1-WP_027996340.1": "WP_051603217.1-WP_027996340.1.pdb"}, "jose_domains": [["cdd", "THUMP_AdoMetMT"], ["pdb", "3K0B_A"], ["pfam", "Methyltransf_29.19"]]}

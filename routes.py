@@ -1,5 +1,7 @@
+import pandas as pd
 import rq.job
 import flask
+import json
 import os
 import rq
 
@@ -24,13 +26,46 @@ def tool(tool):
         if flask.request.args.get("demo"):
             form = app.config[f"DEMO_FORM_{tool}"]
         if flask.request.method == "POST":
-            print(dict(flask.request.form))
             validation_job = atkinsonlab_web.enqueuing.enqueue_for_validation(flask.request,
                                                                               flask.request.remote_addr,
                                                                               tool, form["files_to_keep"])
             return flask.redirect(flask.url_for("request_validation", tool=tool, id=validation_job.id))
         return flask.render_template(f"{tool}.html", form=form)
     else:
+        return flask.render_template("404.html"), 404
+
+
+@app.route("/netflax", methods=["GET"])
+def netflax():
+    version = flask.request.args.get("version", "pruned")
+    if version != "pruned" and version != "unpruned":
+        version = "pruned"
+    netflax_nodes = sorted(
+        [i[:-4] for i in os.listdir(os.path.join(app.config["STATIC_FOLDER"], "tables", "netflax_tables"))],
+        key=atkinsonlab_web.methods.sort_by_number)
+    if version == "pruned":
+        with open(os.path.join(app.config["STATIC_FOLDER"], "txt", "netflax_pruned.txt"), 'r') as f:
+            not_included = [line.strip() for line in f.readlines()]
+        netflax_nodes = [i for i in netflax_nodes if i not in not_included]
+    return flask.render_template("netflax.html", netflax_nodes=netflax_nodes, version=version)
+
+
+@app.route("/netflax/<node>")
+def netflax_node(node):
+    try:
+        table = pd.read_table(os.path.join(app.config["STATIC_FOLDER"], "tables", "netflax_tables", f"{node}.tsv"),
+                              sep="\t")
+        table.columns = ["Taxa/Species", "Toxin", "Antitoxin", "AlphaFold2 pDockQ score"]
+        table[''] = '<a  href="#" class="details-control text-decoration-none">Show structure</a>'
+        table = table.to_html(classes="table table-hover", header="true", index=False,
+                              table_id="myTable", escape=False, border=0)
+        with open(os.path.join(app.config["STATIC_FOLDER"], "json", "netflax", f"{node}.json")) as f:
+            json_data = json.load(f)
+        with open(os.path.join(app.config["STATIC_FOLDER"], "txt", "netflax", f"{node}.txt")) as f:
+            protein_clusters = f.read().strip()
+        return flask.render_template("netflax_node.html", node=node, table=table, json_data=json_data,
+                                     protein_clusters=protein_clusters)
+    except:
         return flask.render_template("404.html"), 404
 
 
