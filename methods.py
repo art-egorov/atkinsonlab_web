@@ -27,9 +27,9 @@ def preprocess_request(request, request_ip, old_request_files=None):
 
 
 def get_full_job_status(job):
-    full_status = dict(status=job.get_status(refresh=True), position=str(job.get_position()),
+    full_status = dict(status=job.get_status(refresh=True).value, position=str(job.get_position()),
                        enqueued_at=job.enqueued_at, started_at=job.started_at, ended_at=job.ended_at,
-                       meta=job.get_meta(refresh=True))
+                       meta=job.get_meta(refresh=True), fully_finished=0, time_elapsed = 0)
     full_status["stored_until"] = None
     for k, v in full_status.items():
         if k in ["enqueued_at", "started_at", "ended_at"] and v:
@@ -38,18 +38,32 @@ def get_full_job_status(job):
                 full_status["stored_until"] = (
                         v + datetime.timedelta(hours=int(app.config["RESULTS_TTL"][:-1]))).strftime(
                     "%m.%d %H:%M UTC")
+    if job.ended_at is not None:
+        time_elapsed = datetime.datetime.utcnow() - job.ended_at
+        if time_elapsed.total_seconds() >= 10:
+            full_status["fully_finished"] = 1
+            full_status["time_elapsed"] = time_elapsed.total_seconds()
     return full_status
 
 
-def clean_text(text):
-    normalized_text = unicodedata.normalize("NFKD", text)
-    cleaned_text = "".join(c for c in normalized_text if c.isalnum())
+def clean_text(text, normalize=False):
+    if normalize:
+        text = unicodedata.normalize("NFKD", text.strip())
+    lines = text.splitlines()
+    cleaned_lines = []
+    for line in lines:
+        words = line.split()
+        cleaned_words = [os.path.basename(word) if os.path.exists(word) else word for word in words]
+        cleaned_lines.append(" ".join(cleaned_words))
+    cleaned_text = "\n".join(cleaned_lines)
+    if normalize:
+        cleaned_text = "".join(c for c in unicodedata.normalize("NFKD", text.strip()) if c.isalnum())
     return cleaned_text
 
 
 def update_meta_with_logs(job, log_file):
-    job.meta["log"] = log_file.getvalue().strip()
-    job.meta["cleanlog"] = clean_text(log_file.getvalue())
+    job.meta["log"] = clean_text(log_file.getvalue())
+    job.meta["cleanlog"] = clean_text(log_file.getvalue(), normalize=True)
     job.save_meta()
 
 

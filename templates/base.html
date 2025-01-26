@@ -11,8 +11,7 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-ESRYZHFX82"></script>
     <script src="{{ url_for('static', filename='js/google_analytics.js') }}"></script>
     <meta name="google-site-verification" content="sz0up6EyqHFTjSvRxB2ilCmiALbGBj-eYLpRqpBLLJE"/>
-    <meta name="description" content="The Atkinson Lab WebServer. It provides access to our bioinformatics tools
-                    and services. Key words: webflags, uORF4u, MSA4u.">
+    <meta name="description" content="The Atkinson Lab WebServer.">
     {%- block head %}
     {% endblock -%}
 </head>
@@ -20,8 +19,8 @@
 <nav class="navbar sticky-top navbar-expand-lg navbar-dark" data-bs-theme="dark" id="topnavbar">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">
-            <span class="fw-semibold tal">The Atkinson lab </span> <span class="text-muted">|</span>
-            <span class="fw-medium"> 4U</span>
+            <span class="fw-semibold tal">The Atkinson lab </span> <span class="fw-medium text-muted">| 4u</span>
+            <span class="fw-medium foru"> </span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_area"
                 aria-controls="collapse_area" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,6 +31,9 @@
 
             </ul>
             <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link fw-bold" href="/ilund4u">iLund4u</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link fw-bold" href="/netflax">NetFlax</a>
                 </li>

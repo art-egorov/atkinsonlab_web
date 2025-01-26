@@ -1,4 +1,5 @@
 import Bio.SeqIO
+import Bio.Data
 import subprocess
 import copy
 import time
@@ -545,5 +546,124 @@ def webflags_form_validation(request):
             if request["email"] not in jobs_emails:
                 form["top_warning_message"] += "<br><span class='fst-italic'>" \
                                                "Changing e-mail address doesn't help 👻</span>"
+
+    return form, parsed_arguments, files_to_keep
+
+def ilund4u_form_validation(request):
+    job = rq.get_current_job()
+    files_to_keep = dict()
+    form = copy.deepcopy(app.config["DEFAULT_FORM_ilund4u"])
+    parsed_arguments = dict(accept=True)
+    for k, v in request.items():
+        if k in form["float_variables"]:
+            request[k] = float(v)
+    # Check mandatory arguments:
+    mandatory_arguments = {k: v for k, v in request.items() if
+                           k in form["mandatory_arguments"]}
+    selected_mandatory_arguments = {k: v for k, v in mandatory_arguments.items() if bool(v)}
+    if len(selected_mandatory_arguments) != 1:
+        form["elements"]["mandatory_arguments_error"][
+            "error_text"] = "Please, select <b>one</b> mandatory argument."
+        parsed_arguments["accept"] = False
+    if len(selected_mandatory_arguments) > 1:
+        form["elements"]["mandatory_arguments_error"]["error_text"] = "Please, select <b>only one</b> argument."
+        for key, value in selected_mandatory_arguments.items():
+            form["elements"][key]["textarea"]["class"] += " is-invalid"
+            form["elements"][key]["textarea"]["value"] = value
+
+    if len(selected_mandatory_arguments) == 1:
+        key, value = selected_mandatory_arguments.popitem()
+        try:
+            value = value.strip()
+            form["elements"][key]["textarea_value"] = value.strip()
+            form["elements"][key]["textarea"]["rows"] = value.count("\n") + 1
+            if value.count(">") == 0:
+                value = ">query_sequence\n" + value.strip()
+            records = [record for record in Bio.SeqIO.parse(io.StringIO(value.strip()), "fasta")]
+            num_of_records = len(records)
+            if num_of_records > 1:
+                form["elements"][key]["textarea"]["class"] += " is-invalid"
+                form["elements"][key]["invalid_feedback"] = f"Your input has more than one sequence; "
+            elif num_of_records == 0:
+                form["elements"][key]["textarea"]["class"] += " is-invalid"
+                form["elements"][key]["invalid_feedback"] = f"No correct sequence in was found; Please, " \
+                                                            f"check your input. "
+            else:
+                record = records[0]
+                valid_aa_characters = set(Bio.Data.IUPACData.protein_letters)
+                if len(record.seq) < 9:
+                    form["elements"][key]["textarea"]["class"] += " is-invalid"
+                    form["elements"][key]["invalid_feedback"] = f"Your sequence is too short. At least 9 amino" \
+                                                                f" acids are needed."
+                elif not set(record.seq).issubset(valid_aa_characters):
+                    form["elements"][key]["textarea"]["class"] += " is-invalid"
+                    form["elements"][key]["invalid_feedback"] = f"Your sequence doesn't look like correct." \
+                                                                f" Allowed symbols: {','.join(valid_aa_characters)}."
+                else:
+                    form["elements"][key]["textarea"]["class"] += " is-valid"
+                    parsed_arguments["protein_records"] = records
+        except:
+            form["elements"][key]["textarea"]["class"] += " is-invalid"
+            form["elements"][key]["invalid_feedback"] = f"Unable to build a record. Please, " \
+                                                        f"check your input. "
+    # Check optional
+    optional_arguments = {k: v for k, v in request.items() if
+                          (k not in form["mandatory_arguments"] and k not in ["email", "run_name", "request_ip"])}
+    checkboxes = ["report_not_flanked"]
+    for checkbox in checkboxes:
+        if checkbox not in optional_arguments.keys():
+            optional_arguments[checkbox] = 0
+        optional_arguments[checkbox] = int(bool(optional_arguments[checkbox]))
+    for key, value in optional_arguments.items():
+        if "check-input" in form["elements"][key].keys():
+            form["elements"][key]["check-input"]["class"] += " is-valid"
+            parsed_arguments[key] = value
+            if value:
+                form["elements"][key]["checked"] = 1
+            else:
+                form["elements"][key]["checked"] = 0
+        if "select" in form["elements"][key].keys():
+            form["elements"][key]["select"]["class"] += " is-valid"
+            form["elements"][key]["selected"] = value
+            parsed_arguments[key] = value
+        if "input" in form["elements"][key].keys():
+            if form["elements"][key]["input"]["type"] == "file":
+                if value:
+                    if sys.getsizeof(value.getvalue()) > 512000:
+                        form["elements"][key]["input"]["class"] += " is-invalid"
+                        form["elements"][key]["invalid_feedback"] = f"Your file is too big (>500KB)"
+                    else:
+                        # parsed_file = io.StringIO(value.read().decode("UTF-8"))
+                        form["elements"][key]["input"]["class"] += " is-valid"
+                        form["elements"][key]["valid_feedback"] = f"Your file was successfully " \
+                                                                  "loaded."
+                        parsed_arguments[key] = value
+                        files_to_keep[key] = value
+            if form["elements"][key]["input"]["type"] == "text":
+                form["elements"][key]["input"]["class"] += " is-valid"
+                form["elements"][key]["input"]["value"] = value
+                parsed_arguments[key] = value
+    # Check run parameters:
+    run_parameters = {k: v for k, v in request.items() if k in ["email", "run_name"]}
+    if request["email"].split("@")[1] == "gmail.com":
+        request["email"] = f"{request['email'].split('@')[0].replace('.', '')}@gmail.com"
+    for key, value in run_parameters.items():
+        form["elements"][key]["input"]["value"] = value
+        parsed_arguments[key] = value
+
+    for key, value in form["elements"].items():
+        in_cl = ""
+        if "input" in value["subelements"]:
+            in_cl = "input"
+        if "textarea" in value["subelements"]:
+            in_cl = "textarea"
+        if in_cl and "is-invalid" in value[in_cl]["class"]:
+            parsed_arguments["accept"] = False
+    if not parsed_arguments["accept"]:
+        form["top_warning_message"] = "Your request didn't pass the validation. " \
+                                      "Please, fix the highlighted errors and resubmit."
+
+    parsed_arguments["request_ip"] = request["request_ip"]
+    parsed_arguments["queue"] = "ilund4u_standard"
 
     return form, parsed_arguments, files_to_keep

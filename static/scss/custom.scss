@@ -3,8 +3,11 @@
 
 // Include any default variable overrides here (though functions won't be available)
 
-$blue: #126e8e;
+//$blue: #126e8e;
+$blue: #355066;
 $yellow: #FFD167;
+$uorf4u_blue: #126e8e;
+$uorf4u_yellow: #FFD167;
 $lightpink: #f2a49c;
 $pink: #f28482;
 $darkblue: #84A59D;
@@ -12,10 +15,23 @@ $webflags_red: #C24765;
 $webflags_blue: #1E93B2;
 $webflags_red_sp: #C24765CC;
 $webflags_blue_sp: #1E93B2E6;
+$ilund4u_blue: #355066;
+$ilund4u_light_blue: #C7D3DD;
+$ilund4u_yellow: #FFD168;
 $red: #C24765;
+$navdark: #233442;
 
+$box-shadow: 0 .4rem 0.85rem rgba($navdark, .18);
 
 @import "../bootstrap-5.3.0/scss/bootstrap";
+
+
+
+.hover:hover {
+    background-color: #f0f8ff; /* Replace with your desired colour */
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
 
 .form-label.required:after {
   content: "*";
@@ -46,20 +62,36 @@ $red: #C24765;
   src: url("/static/fonts/GreycliffCF-Medium.ttf") format('truetype');
 }
 
+.ilund4_logo_svg:hover .st2 {
+  stroke: $ilund4u_yellow;
+}
+
+.ilund4u_logo_svg:hover .st7, .uorf4u_logo_svg:hover .st3 {
+  fill: $ilund4u_yellow;
+}
+
+.ilund4u_logo_svg:hover .st5 {
+  stroke: $ilund4u_blue;
+}
+
+.ilund4u_logo_svg:hover .st6 {
+  fill: $ilund4u_blue;
+}
+
 .uorf4u_logo_svg:hover .st2 {
-  stroke: $yellow;
+  stroke: $uorf4u_yellow;
 }
 
 .uorf4u_logo_svg:hover .st7, .uorf4u_logo_svg:hover .st3 {
-  fill: $yellow;
+  fill: $uorf4u_yellow;
 }
 
 .uorf4u_logo_svg:hover .st5 {
-  stroke: $blue;
+  stroke: $uorf4u_blue;
 }
 
 .uorf4u_logo_svg:hover .st6 {
-  fill: $blue;
+  fill: $uorf4u_blue;
 }
 
 .msa4u_logo_svg .stm7, .msa4u_logo_svg .stm8 {
@@ -87,16 +119,19 @@ $red: #C24765;
   opacity: 100%;
 }
 
-
 .navbar-brand:hover, .navbar-brand:hover .fw-bold {
   color: $yellow;
 }
 
 .navbar-brand:hover .tal {
-  color: $blue;
+  color: $yellow;
 }
 
 .navbar-brand:hover .st1 {
+  stroke: $yellow;
+}
+
+.navbar-brand:hover .foru {
   stroke: $lightpink;
 }
 
@@ -128,6 +163,26 @@ $red: #C24765;
   border: 5px solid;
   border-color: $blue;
   border-right-color: $yellow;
+  animation: spinner-d3wgkg 1s infinite linear;
+}
+
+.spinner-ilund4u {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 9px solid;
+  border-color: $ilund4u_light_blue;
+  border-right-color: $ilund4u_yellow;
+  animation: spinner-d3wgkg 1s infinite linear;
+}
+
+.spinner-ilund4u_small {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: 5px solid;
+  border-color: $ilund4u_light_blue;
+  border-right-color: $ilund4u_yellow;
   animation: spinner-d3wgkg 1s infinite linear;
 }
 
@@ -177,6 +232,13 @@ a:hover {
 
 body.uorf4u {
   background-image: url("/static/img/background_uorf4u.svg");
+  background-repeat: repeat;
+  background-size: 100%;
+  background-attachment: fixed;
+}
+
+body.ilund4u {
+  background-image: url("/static/img/background_ilund4u.webp");
   background-repeat: repeat;
   background-size: 100%;
   background-attachment: fixed;
@@ -238,9 +300,12 @@ body.main {
   color: $yellow;
 }
 
-
-nav {
+/*nav {
   background-color: #212C31;
+}
+*/
+nav {
+  background-color: $navdark;
 }
 
 #mynetwork {

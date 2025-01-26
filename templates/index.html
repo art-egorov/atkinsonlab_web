@@ -4,28 +4,45 @@
 {% endblock %}
 {% block body_class %} class="main"{% endblock %}
 {% block content %}
-    <div class="container ">
+    <div class="container">
         <div class="row justify-content-center">
             <div class="col-10 text-center">
-                <h1 class="display-5"><a class="text-decoration-none" href="https://atkinson-lab.com">The Atkinson
-                    Lab</a>
-                    Server Portal</h1>
+                <h1 class="display-5"><a class="text-decoration-none" href="https://atkinson-lab.com">
+                    The Atkinson Lab</a> Server Portal</h1>
+                <p class="fs-4"><span class="fw-medium">Welcome!</span> Here we provide access to our online tools and
+                    services.<br>
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-lg-10 no-background shadow">
-                <div class="row g-2">
+            <div class="col-lg-10 no-background shadow rounded">
+                <div class="row g-2 justify-content-center">
                     <div class="col-12">
                         <p></p>
-                        <h3>Welcome!</h3>
-                        <p class="fs-5"><span class="fw-medium"></span> This server portal provides access to our online
-                            tools
-                            and services.<br>
-                        </p>
-                        <hr style="margin: 0">
+
+                        <h3>Tools and Databases</h3>
                     </div>
                     <div class="col-12">
-                        <h3>Tools and Databases</h3>
+                        <div class="card border-0" style="margin-left: 0;">
+                            <div class="row g-1" style="margin-left: 0;">
+                                <div class="col-md-9 text-left" style="margin-left: 0;">
+                                    <h5 class="card-title text-left"><a href="/ilund4u  "
+                                                                        class="fw-bold text-decoration-none">iLund4u</a>
+                                    </h5>
+                                    <p class="card-text fs-5_5">iLund4u is a bioinformatics tool for search and
+                                        annotation of accessory genes and hotspots in a large set of proteomes. With web
+                                        version you can find whether homologues of your query protein are encoded in
+                                        variable islands and hotspots.
+                                    </p>
+                                </div>
+                                <div class="col-md-3 align-self-center mx-auto">
+                                    <a href="/ilund4u">
+                                        <img width="90%"
+                                             src="{{ url_for('static', filename='img/ilund4u_logo.png') }}"
+                                             class="img-fluid" style="max-width: 20rem;"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="border opacity-50">
                     </div>
                     <div class="col-12">
                         <div class="card border-0" style="margin-left: 0;">
@@ -41,7 +58,7 @@
                                 </div>
                                 <div class="col-md-3 align-self-center mx-auto">
                                     <a href="/netflax">
-                                        <img width="85%"
+                                        <img width="81%"
                                              src="{{ url_for('static', filename='img/netflax_logo.png') }}"
                                              class="img-fluid" style="max-width: 20rem;"></a>
                                 </div>
@@ -116,15 +133,21 @@
                             </div>
                         </div>
                     </div>
-                    <hr>
+                    <p></p>
+                </div>
+            </div>
+            <p></p>
+            <div class="col-lg-10 shadow rounded">
+                <div class="row g-3">
                     <div class="col-md-12">
+                        <p></p>
                         <h3>Contact</h3>
                         <p class="fs-5_5"><span class="fw-medium">The Atkinson lab <a class="text-decoration-none"
                                                                                       href="https://atkinson-lab.com">Home Page</a></span>
                         </p>
 
                         <p class="fs-5_5">We are located at the BMC as part of the Faculty of Medicine, Lund
-                            University.</p>
+                            University, Sweden 🇸🇪</p>
                         <p class="fs-6"><span class="fw-semibold fs-5">Mailing address:</span><br>
                             Gemma Atkinson<br>BMC, Lund University<br> Sölvegatan 17, C13, 223 62 Lund, Sweden</p>
                         <p class="fs-6" style="margin-bottom: 0.2rem"><span class="fw-semibold fs-5">You can also contact us by e-mail:</span>
@@ -137,21 +160,24 @@
                         <p class="fs-6"><span class="fw-semibold">Artyom A. Egorov</span>, PhD student and developer<br>
                             <a class="text-decoration-none" href="mailto:artem-dot-egorov-wow-med.lu.se ">artem.egorov(at)med.lu.se</a>
                             (for technical questions)
+                        </p>
                     </div>
-                    <p></p>
                 </div>
             </div>
             <p></p>
-            <div class="col-lg-10 bg-light-subtle shadow">
+            <div class="col-lg-10 bg-light-subtle shadow rounded">
                 <div class="row g-3">
                     <div class="col-12">
                         <p></p>
-                        <h4>News & updates</h4>
-                        <p class="fs-6" style="margin-bottom: 0.3rem;"><span class="fw-bold">2023.04.07:</span> New
+                        <h4>Server news & updates</h4>
+                        <p class="fs-6" style="margin-bottom: 0.3rem;"><span class="fw-bold">2025.01:</span> First
+                            version of iLund4u web version is available supporting protein search against iLund4u
+                            databases.</p>
+                        <p class="fs-6" style="margin-bottom: 0.3rem;"><span class="fw-bold">2023.04:</span> New
                             NetFlax-predicted toxin-antitoxin pairs interface is now available.</p>
-                        <p class="fs-6" style="margin-bottom: 0.3rem;"><span class="fw-bold">2023.02.11:</span> Updated
+                        <p class="fs-6" style="margin-bottom: 0.3rem;"><span class="fw-bold">2023.02:</span> Updated
                             webFlaGs is now available.</p>
-                        <p class="fs-6"><span class="fw-bold">2023.01.22: </span> First release is now online; Currently
+                        <p class="fs-6"><span class="fw-bold">2023.01: </span> First release is now online; Currently
                             uORF4u and MSA4u are available; new version of webFlaGs is under construction.</p>
                     </div>
                 </div>

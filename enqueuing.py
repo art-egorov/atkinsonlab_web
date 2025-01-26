@@ -21,6 +21,10 @@ def enqueue_for_validation(request, request_ip, tool, previous_request_files=Non
         validation_job = queues["helper"].enqueue(atkinsonlab_web.form_validation.webflags_form_validation,
                                                   preprocessed_request,
                                                   job_timeout="10m", result_ttl="1h", failure_ttl="1h")
+    elif tool == "ilund4u":
+        validation_job = queues["helper"].enqueue(atkinsonlab_web.form_validation.ilund4u_form_validation,
+                                                  preprocessed_request,
+                                                  job_timeout="10m", result_ttl="1h", failure_ttl="1h")
     return validation_job
 
 
@@ -46,5 +50,12 @@ def enqueue_for_run(parsed_arguments, tool):
                                                         meta=dict(log="", cleanlog=""),
                                                         on_success=atkinsonlab_web.applications.webflags_on_success,
                                                         on_failure=atkinsonlab_web.applications.webflags_on_failure)
+    elif tool == "ilund4u":
+        job = queues[parsed_arguments["queue"]].enqueue(atkinsonlab_web.applications.run_ilund4u, parsed_arguments,
+                                                        job_timeout="2h", result_ttl=app.config["RESULTS_TTL"],
+                                                        failure_ttl=app.config["RESULTS_TTL"],
+                                                        meta=dict(log="", cleanlog=""),
+                                                        on_success=atkinsonlab_web.applications.ilund4u_on_success,
+                                                        on_failure=atkinsonlab_web.applications.ilund4u_on_failure)
 
     return job

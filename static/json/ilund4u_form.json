@@ -1,0 +1,292 @@
+{
+  "mandatory_arguments": [
+    "protein_sequence"
+  ],
+  "order": [
+    "protein_sequence",
+    "mandatory_arguments_error",
+    "optional_arguments_header",
+    "ilund4u_database",
+    "query_label",
+    "report_not_flanked",
+    "mmseqs_search_qcov",
+    "mmseqs_search_tcov",
+    "mmseqs_search_fident",
+    "run_parameters_header",
+    "email",
+    "run_name"
+  ],
+  "float_variables": [
+    "mmseqs_search_qcov",
+    "mmseqs_search_tcov",
+    "mmseqs_search_fident"
+  ],
+  "int_variables": [
+  ],
+  "files_to_keep": {},
+  "top_warning_message": "",
+  "elements": {
+    "mandatory_arguments_header": {
+      "div_class": "col-md-12",
+      "subelements": [
+        "header"
+      ],
+      "header": {
+        "text": "Mandatory argument"
+      }
+    },
+    "protein_sequence": {
+      "div_class": "col-md-8",
+      "subelements": [
+        "label",
+        "textarea",
+        "invalid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label",
+        "for": "ps"
+      },
+      "label_value": "Protein sequence",
+      "textarea": {
+        "class": "form-control",
+        "name": "protein_sequence",
+        "id": "ps",
+        "type": "text",
+        "rows": "3"
+      },
+      "required": 1,
+      "textarea_value": "",
+      "invalid_feedback": "",
+      "form-text": "Amino acid sequence in fasta format or just as a sequence (without <i>>id</i> line; can be multiple lines). MMseqs2 will be run to find homologues in the iLund4u database."
+    },
+    "mandatory_arguments_error": {
+      "div_class": "col-md-12",
+      "subelements": [
+        "error_alert"
+      ],
+      "error_text": ""
+    },
+    "optional_arguments_header": {
+      "div_class": "col-md-12",
+      "subelements": [
+        "header"
+      ],
+      "header": {
+        "text": "Optional arguments"
+      }
+    },
+    "ilund4u_database": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "label",
+        "select",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label",
+        "for": "at"
+      },
+      "label_value": "iLund4u database",
+      "select": {
+        "class": "form-select",
+        "name": "ilund4u_database",
+        "id": "idb",
+        "aria-label": "Default select example"
+      },
+      "options": {
+        "phages": "Phages",
+        "plasmids": "Plasmids"
+      },
+      "selected": "phages",
+      "form-text": "iLund4u database to perform searching."
+    },
+    "query_label": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "label",
+        "input",
+        "invalid_feedback",
+        "valid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label",
+        "for": "key"
+      },
+      "label_value": "Query label",
+      "input": {
+        "class": "form-control",
+        "name": "query_label",
+        "id": "key",
+        "type": "text",
+        "value": ""
+      },
+      "required": 0,
+      "invalid_feedback": "",
+      "form-text": "Feature label to show for homologous proteins."
+    },
+    "mmseqs_search_qcov": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "label",
+        "input",
+        "invalid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label required",
+        "for": "bid"
+      },
+      "label_value": "MMseqs search query coverage cutoff",
+      "input": {
+        "class": "form-control",
+        "name": "mmseqs_search_qcov",
+        "id": "bid",
+        "type": "text",
+        "min": "0",
+        "max": "1",
+        "value": "0.65",
+        "pattern": "^0*(\\.\\d+)?$"
+      },
+      "required": 1,
+      "invalid_feedback": "",
+      "form-text": "MMseqs search query coverage cutoff in search of homologous proteins. Allowed values: [0:1]."
+    },
+    "mmseqs_search_tcov": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "label",
+        "input",
+        "invalid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label required",
+        "for": "bid"
+      },
+      "label_value": "MMseqs search target coverage cutoff",
+      "input": {
+        "class": "form-control",
+        "name": "mmseqs_search_tcov",
+        "id": "bid",
+        "type": "text",
+        "min": "0",
+        "max": "1",
+        "value": "0.65",
+        "pattern": "^0*(\\.\\d+)?$"
+      },
+      "required": 1,
+      "invalid_feedback": "",
+      "form-text": "MMseqs search target coverage cutoff in search of homologous proteins. Allowed values: [0:1]."
+    },
+    "mmseqs_search_fident": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "label",
+        "input",
+        "invalid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label required",
+        "for": "bid"
+      },
+      "label_value": "MMseqs search fident cutoff",
+      "input": {
+        "class": "form-control",
+        "name": "mmseqs_search_fident",
+        "id": "bid",
+        "type": "text",
+        "min": "0",
+        "max": "1",
+        "value": "0.2",
+        "pattern": "^0*(\\.\\d+)?$"
+      },
+      "required": 1,
+      "invalid_feedback": "",
+      "form-text": "MMseqs search fident (fraction of identical matches) cutoff in search of homologous proteins. Allowed values: [0:1]."
+    },
+    "report_not_flanked": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "check_subdiv_open",
+        "label",
+        "check-input",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-check-label",
+        "for": "annot"
+      },
+      "label_value": "Report not flanked hotspots",
+      "check-input": {
+        "class": "form-check-input",
+        "name": "report_not_flanked",
+        "id": "annot",
+        "type": "checkbox",
+        "role": "switch",
+        "value": "213123"
+      },
+      "checked": 0,
+      "form-text": "Report in results hotspots that have flanked conserved genes only on one side (located on the end of non-circular sequences)."
+    },
+    "run_parameters_header": {
+      "div_class": "col-md-12",
+      "subelements": [
+        "header"
+      ],
+      "header": {
+        "text": "Run parameters"
+      }
+    },
+    "email": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "label",
+        "input",
+        "invalid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label required",
+        "for": "email"
+      },
+      "label_value": "E-mail",
+      "input": {
+        "class": "form-control",
+        "name": "email",
+        "id": "email",
+        "type": "email"
+      },
+      "required": 1,
+      "invalid_feedback": "",
+      "form-text": "Please, enter your e-mail address to receive your results link."
+    },
+    "run_name": {
+      "div_class": "col-md-4",
+      "subelements": [
+        "label",
+        "input",
+        "invalid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label",
+        "for": "run_name"
+      },
+      "label_value": "Run name",
+      "input": {
+        "class": "form-control",
+        "name": "run_name",
+        "id": "run_name",
+        "type": "text",
+        "pattern": "^[^\\\\/:*?\"<>|\\r\\n]+$",
+        "value": "iLund4u_{current_date}"
+      },
+      "required": 0,
+      "invalid_feedback": "",
+      "form-text": "Will be used in output folder name."
+    }
+  }
+}

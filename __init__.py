@@ -3,17 +3,20 @@ import dotenv
 import redis
 import json
 import rq
+import rq_scheduler
 import os
 
 app = flask.Flask(__name__)
 app.config["STATIC_FOLDER"] = os.path.join(os.path.dirname(__file__), "static")
 app.config["JOBS_FOLDER"] = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir, "jobs"))
-app.config["TOOLS"] = ["uorf4u", "msa4u", "webflags"]
+app.config["TOOLS"] = ["uorf4u", "msa4u", "webflags", "ilund4u"]
 
 app.config["DEFAULT_FORM_uorf4u"] = json.load(open(os.path.join(app.config["STATIC_FOLDER"], "json/uorf4u_form.json")))
 app.config["DEFAULT_FORM_msa4u"] = json.load(open(os.path.join(app.config["STATIC_FOLDER"], "json/msa4u_form.json")))
 app.config["DEFAULT_FORM_webflags"] = json.load(
     open(os.path.join(app.config["STATIC_FOLDER"], "json/webflags_form.json")))
+app.config["DEFAULT_FORM_ilund4u"] = json.load(
+    open(os.path.join(app.config["STATIC_FOLDER"], "json/ilund4u_form.json")))
 
 env_config = dotenv.dotenv_values(".env")
 app.config["QUEUE_KEY"] = env_config["queue_pass"]
@@ -28,7 +31,9 @@ queues = dict(uorf4u_standard=rq.Queue(name="uorf4u_standard", connection=redis_
               msa4u=rq.Queue(name="msa4u", connection=redis_connection),
               webflags_prioritised=rq.Queue(name="webflags_prioritised", connection=redis_connection),
               webflags_standard=rq.Queue(name="webflags_standard", connection=redis_connection),
+              ilund4u_standard=rq.Queue(name="ilund4u_standard", connection=redis_connection),
               helper=rq.Queue(name="helper", connection=redis_connection))
+scheduler = rq_scheduler.Scheduler(queue=queues["helper"], connection=redis_connection)
 
 from . import routes
 from . import methods

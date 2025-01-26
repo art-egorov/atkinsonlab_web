@@ -1,9 +1,11 @@
 import subprocess
 import Bio.SeqRecord
 import Bio.Seq
+import Bio.SeqIO
 import traceback
 import datetime
 import shutil
+import ilund4u
 import uorf4u
 import msa4u
 import flask
@@ -19,8 +21,11 @@ import rq
 import atkinsonlab_web.methods
 from atkinsonlab_web import app
 from atkinsonlab_web import queues
+from atkinsonlab_web import scheduler
 import atkinsonlab_web.routes
 
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
 
 def run_uorf4u(processed_arguments):
     try:
@@ -135,9 +140,9 @@ def uorf4u_on_success(job, connection, result, *args, **kwargs):
                                        f"https://server.atkinson-lab.com/results/uorf4u/{job.id}",
                                        job.meta["run_name"],
                                        "uORF4u results")
-    cleaning_job = queues["helper"].enqueue_in(datetime.timedelta(hours=int(app.config["RESULTS_TTL"][:-1])),
-                                               atkinsonlab_web.methods.remove_results, success_folder)
-    return None
+    cleaning_job = scheduler.enqueue_in(datetime.timedelta(hours=int(app.config["RESULTS_TTL"][:-1])),
+                                        atkinsonlab_web.methods.remove_results, success_folder)
+    return cleaning_job
 
 
 def uorf4u_on_failure(job, connection, type, value, traceback):
@@ -151,10 +156,10 @@ def uorf4u_on_failure(job, connection, type, value, traceback):
                                        job.meta["run_name"],
                                        "uORF4u results")
 
-    cleaning_job = queues["helper"].enqueue_in(datetime.timedelta(hours=int(app.config["RESULTS_TTL"][:-1])),
-                                               atkinsonlab_web.methods.remove_results, failure_folder)
+    cleaning_job = scheduler.enqueue_in(datetime.timedelta(hours=int(app.config["RESULTS_TTL"][:-1])),
+                                        atkinsonlab_web.methods.remove_results, failure_folder)
 
-    return None
+    return cleaning_job
 
 
 def run_msa4u(processed_arguments):
@@ -239,9 +244,9 @@ def msa4u_on_success(job, connection, result, *args, **kwargs):
                                        job.meta["run_name"],
                                        "MSA4u results")
 
-    cleaning_job = queues["helper"].enqueue_in(datetime.timedelta(hours=int(app.config["RESULTS_TTL"][:-1])),
-                                               atkinsonlab_web.methods.remove_results, success_folder)
-    return None
+    cleaning_job = scheduler.enqueue_in(datetime.timedelta(hours=int(app.config["RESULTS_TTL"][:-1])),
+                                        atkinsonlab_web.methods.remove_results, success_folder)
+    return cleaning_job
 
 
 def msa4u_on_failure(job, connection, type, value, traceback):
@@ -255,9 +260,9 @@ def msa4u_on_failure(job, connection, type, value, traceback):
                                        job.meta["run_name"],
                                        "MSA4u results")
 
-    cleaning_job = queues["helper"].enqueue_in(datetime.timedelta(hours=int(app.config["RESULTS_TTL"][:-1])),
-                                               atkinsonlab_web.methods.remove_results, failure_folder)
-    return None
+    cleaning_job = scheduler.enqueue_in(datetime.timedelta(hours=int(app.config["RESULTS_TTL"][:-1])),
+                                        atkinsonlab_web.methods.remove_results, failure_folder)
+    return cleaning_job
 
 
 def run_webflags(processed_arguments):
@@ -400,9 +405,9 @@ def webflags_on_success(job, connection, result, *args, **kwargs):
                                        job.meta["run_name"],
                                        "webFlaGs results")
 
-    cleaning_job = queues["helper"].enqueue_in(datetime.timedelta(hours=int(app.config["RESULTS_TTL"][:-1])),
-                                               atkinsonlab_web.methods.remove_results, success_folder)
-    return None
+    cleaning_job = scheduler.enqueue_in(datetime.timedelta(hours=int(app.config["RESULTS_TTL"][:-1])),
+                                        atkinsonlab_web.methods.remove_results, success_folder)
+    return cleaning_job
 
 
 def webflags_on_failure(job, connection, type, value, traceback):
@@ -416,7 +421,118 @@ def webflags_on_failure(job, connection, type, value, traceback):
                                        job.meta["run_name"],
                                        "webFlaGs results")
 
-    cleaning_job = queues["helper"].enqueue_in(datetime.timedelta(hours=int(app.config["RESULTS_TTL"][:-1])),
-                                               atkinsonlab_web.methods.remove_results, failure_folder)
+    cleaning_job = scheduler.enqueue_in(datetime.timedelta(hours=int(app.config["RESULTS_TTL"][:-1])),
+                                        atkinsonlab_web.methods.remove_results, failure_folder)
 
-    return None
+    return cleaning_job
+
+
+def run_ilund4u(processed_arguments):
+    try:
+        job = rq.get_current_job()
+        job_folder = os.path.join(app.config["JOBS_FOLDER"], "ilund4u", job.id)
+        log_file_path = os.path.join(job_folder, "log.txt")
+        log_file = io.StringIO()
+        sys.stdout = log_file
+        sys.stderr = log_file
+        results_dict = dict()
+        if not os.path.isdir(job_folder):
+            os.mkdir(job_folder)
+        job_request_file_folder = os.path.join(job_folder, "request_files")
+        if not os.path.isdir(job_request_file_folder):
+            os.mkdir(job_request_file_folder)
+        with open(os.path.join(job_request_file_folder, "request.json"), "w") as request_json:
+            json.dump({k: v for k, v in processed_arguments.items() if
+                       not isinstance(v, io.StringIO) and k != "protein_records"}, request_json)
+        for k, f in {k: v for k, v in processed_arguments.items() if isinstance(v, io.StringIO)}.items():
+            file_path = os.path.join(job_request_file_folder, f.filename)
+            with open(file_path, "w") as rf:
+                rf.write(f.getvalue())
+                f.close()
+            processed_arguments[k] = file_path
+        fasta_path = os.path.join(job_request_file_folder, "query_fasta.fa")
+        with open(fasta_path, "w") as handle:
+            Bio.SeqIO.write(processed_arguments["protein_records"], handle, "fasta")
+
+        processed_arguments["run_name"] = processed_arguments["run_name"].replace("{current_date}",
+                                                                                  time.strftime("%Y_%m_%d-%H_%M"))
+        job.meta["run_name"] = processed_arguments["run_name"]
+        parameters = ilund4u.manager.Parameters()
+        parameters.load_config()
+        parameters.args["debug"] = True
+        parameters.args["fast_mmseqs_search_mode"] = True
+        parameters.args["output_dir"] = os.path.join(job_folder, processed_arguments["run_name"])
+        parameters.args["query_label"] = processed_arguments["query_label"]
+        parameters.args["mmseqs_search_qcov"] = processed_arguments["mmseqs_search_qcov"]
+        parameters.args["mmseqs_search_tcov"] = processed_arguments["mmseqs_search_tcov"]
+        parameters.args["mmseqs_search_fident"] = processed_arguments["mmseqs_search_fident"]
+        parameters.args["report_not_flanked"] = processed_arguments["report_not_flanked"]
+
+        if processed_arguments["ilund4u_database"] == "phages":
+            db_pkl_path = "/home/webapp/WebServer/databases/iLund4uPhages_DB.pkl"
+            db_path = "/home/webapp/WebServer/databases/iLund4uPhages_DB"
+        elif processed_arguments["ilund4u_database"] == "plasmids":
+            db_pkl_path = "/home/webapp/WebServer/databases/iLund4uPlasmids_DB.pkl"
+            db_path = "/home/webapp/WebServer/databases/Plasmids/iLund4uPlasmids_DB"
+        database_manager = ilund4u.data_manager.DatabaseManager(parameters)
+        database = database_manager.load_pkl_database(pkl_file = db_pkl_path, db_path=db_path)  # !!!
+        atkinsonlab_web.methods.update_meta_with_logs(job, log_file)
+        database.protein_search_mode(query_fasta=fasta_path, query_label=parameters.args["query_label"])
+        atkinsonlab_web.methods.update_meta_with_logs(job, log_file)
+        results_dict["archive"] = os.path.basename(f"{parameters.args['output_dir']}.zip")
+        shutil.make_archive(base_name=job_folder, format="zip", root_dir=job_folder)
+        shutil.move(f"{job_folder}.zip", f"{parameters.args['output_dir']}.zip")
+        with open(log_file_path, "w") as lf:
+            lf.write(log_file.getvalue())
+            log_file.close()
+    except SystemExit:
+        atkinsonlab_web.methods.update_meta_with_logs(job, log_file)
+        with open(log_file_path, "w") as lf:
+            lf.write(log_file.getvalue())
+            log_file.close()
+        results_dict["archive"] = os.path.basename(f"{parameters.args['output_dir']}.zip")
+        shutil.make_archive(base_name=job_folder, format="zip", root_dir=job_folder)
+        shutil.move(f"{job_folder}.zip", f"{parameters.args['output_dir']}.zip")
+    except Exception as e:
+        with open(os.path.join(job_folder, "traceback.txt"), "w") as traceback_f:
+            traceback_f.write(traceback.format_exc())
+        for i in ((traceback.format_exc()).split('\n')):
+            if 'iLund4uError:' in i:
+                print(f"ilund4uError 💔: {i.split(':')[1]}", file=sys.stderr)
+        atkinsonlab_web.methods.update_meta_with_logs(job, log_file)
+        raise e
+    sys.stdout = sys.__stdout__
+    sys.stderr = sys.__stderr__
+    return results_dict
+
+
+def ilund4u_on_success(job, connection, result, *args, **kwargs):
+    job_folder = os.path.join(app.config["JOBS_FOLDER"], "ilund4u", job.id)
+    success_folder = os.path.join(app.config["JOBS_FOLDER"], "ilund4u", "successful_jobs", job.id)
+    shutil.move(job_folder, success_folder)
+    request_email = job.args[0]["email"]
+    atkinsonlab_web.methods.send_email(os.path.join(app.config["STATIC_FOLDER"], "email", "ilund4u_job_finished.html"),
+                                       request_email,
+                                       f"https://server.atkinson-lab.com/results/ilund4u/{job.id}",
+                                       job.meta["run_name"],
+                                       "iLund4u results")
+
+    cleaning_job = scheduler.enqueue_in(datetime.timedelta(hours=int(app.config["RESULTS_TTL"][:-1])),
+                                        atkinsonlab_web.methods.remove_results, success_folder)
+    return cleaning_job
+
+
+def ilund4u_on_failure(job, connection, type, value, traceback):
+    job_folder = os.path.join(app.config["JOBS_FOLDER"], "ilund4u", job.id)
+    failure_folder = os.path.join(app.config["JOBS_FOLDER"], "ilund4u", "failed_jobs", job.id)
+    shutil.move(job_folder, failure_folder)
+    request_email = job.args[0]["email"]
+    atkinsonlab_web.methods.send_email(os.path.join(app.config["STATIC_FOLDER"], "email", "ilund4u_job_failed.html"),
+                                       request_email,
+                                       f"https://server.atkinson-lab.com/results/ilund4u/{job.id}",
+                                       job.meta["run_name"],
+                                       "iLund4u results")
+
+    cleaning_job = scheduler.enqueue_in(datetime.timedelta(hours=int(app.config["RESULTS_TTL"][:-1])),
+                                        atkinsonlab_web.methods.remove_results, failure_folder)
+    return cleaning_job

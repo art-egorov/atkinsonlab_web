@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+{% block title %}uORF4u{% endblock %}
+{% block head %}
+{% endblock %}
+{% block body_class %} class="ilund4u"{% endblock %}
+{% block content %}
+    <div class="container">
+        <p></p>
+        <div class="row justify-content-center">
+            <div class="col-10">
+                <div class="row justify-content-center">
+                    <div class="col-md-4" style="margin-bottom: 1em">
+                        <img width="90%" src="{{ url_for('static', filename='img/ilund4u_logo.png') }}">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-10 no-background shadow rounded">
+                <div class="row g-3">
+                    <div class="col-md-12" style="margin-bottom: 0">
+                        <p></p>
+                        <h3>Description</h3>
+                        <p class="fs-6"><b>iLund4u</b> is a bioinformatics tool designed for the search and annotation
+                            of accessory genes and hotspots across large proteome datasets. This web application focuses
+                            on iLund4u's protein annotation mode, enabling users to determine whether homologues of a
+                            query protein are encoded within variable islands and hotspots.<br>
+                            It can help in protein function prediction by applying principles such as guilt by
+                            association, and co-localisation.
+                        <p class="fs-6 fw-semibold" style="margin-bottom: 0.2rem;">Source code available at the
+                            <a class="text-decoration-none" href="https://github.com/art-egorov/ilund4u"><i
+                                    class="fab fa-github"></i> GitHub Page</a>.</p>
+                        <p class="fs-6 " style="margin-bottom: 1rem;">We also recommend visiting the tool's<a
+                                class="fw-semibold text-decoration-none"
+                                href="https://art-egorov.github.io/ilund4u/">
+                            detailed documentation website</a> that provides an algorithm description, example-driven
+                            guide, and documentation to the command-line version and python API.<br>
+                            See our preprint:
+                            <a class="text-decoration-none" href="https://doi.org/10.1101/2024.10.15.618418">
+                                Egorov et al. <i>bioRxiv, 2024</i></a></p>
+
+                        <p class="fs-6 fw-semibold" style="margin-bottom: 0.2rem;">iLund4u pipeline</p>
+                        <img width="90%" src="{{ url_for('static', filename='img/ilundu4_pipeline.png') }}">
+                        <p class="fs-6 fw-semibold">Currently only protein mode is available as web tool.</p>
+                    </div>
+                    <div class="col-12" style="margin: 0">
+                        <hr style="margin-bottom:0;">
+                    </div>
+                    <div class="col-md-7">
+                        <h3>Databases</h3>
+                        <p class="fs-6">iLund4u has two precomputed databases of hotspots built on phage and plasmid
+                            sequences.
+                            The database of phages was built based on running hotspot annotation mode on all
+                            available PhageScope database sequences (~870K genomes, version of September 2024). For
+                            plasmids database we took IMG/PR database of plasmids (~700K sequences, version of June
+                            2024).
+                        </p>
+                    </div>
+                    <div class="col-md-5 text-center">
+                        <p></p>
+                        <img width="90%" src="{{ url_for('static', filename='img/ilund4u_dbs.png') }}">
+                    </div>
+                    <p></p>
+                </div>
+            </div>
+            <p></p>
+            <div class="col-lg-10 no-background shadow rounded">
+                <div class="row g-3">
+                    <div class="col-12" id="ilund4u_form">
+                        <p></p>
+                        <h3>Submission form</h3>
+                        <p></p>
+                        {%- if form["top_warning_message"] -%}
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                <strong>Ooops...</strong> {{ form["top_warning_message"]|safe }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                            </div>
+                        {%- endif -%}
+                        <form class="row gx-5 gy-3 needs-validation" method="POST"
+                              enctype="multipart/form-data">
+                            {% for name in form["order"] %}
+                                {%- set element = form["elements"][name] -%}
+                                <div class="{{ element['div_class'] }}">
+                                    {%- for subelement in element['subelements'] -%}
+                                        {%- if subelement == "header" %}
+                                            <h5>{{ element[subelement]["text"] }}</h5>
+                                        {%- endif -%}
+                                        {%- if subelement == "header_info" %}
+                                            {{ element[subelement]["text"]|safe }}
+                                        {%- endif -%}
+                                        {%- if subelement == "error_alert" and element["error_text"] != "" %}
+                                            <div class="alert alert-danger" role="alert">
+                                                <div>
+                                                    {{ element["error_text"]|safe }}
+                                                </div>
+                                            </div>
+                                        {%- endif -%}
+                                        {%- if subelement == "label" %}
+                                            <label {%- for k,v in element[subelement].items() %} {{ k }}="{{ v }}"
+                                        {%- endfor %}> {{ element["label_value"] }} </label>
+                                        {%- endif -%}
+                                        {%- if subelement == "textarea" %}
+                                            <textarea {%- for k,v in element[subelement].items() %} {{ k }}="{{ v }}"
+                                        {% endfor %}>{{ element["textarea_value"] }} </textarea>
+                                        {%- endif -%}
+                                        {%- if subelement == "input" %}
+                                            <input {%- for k,v in element[subelement].items() %} {{ k }}="{{ v }}"
+                                        {% endfor %}
+                                            {% if element['required'] == 1 %}required{% endif %}>
+                                        {%- endif -%}
+                                        {%- if subelement == "invalid_feedback" %}
+                                            <div class="invalid-feedback">{{ element["invalid_feedback"]|safe }}</div>
+                                        {%- endif -%}
+                                        {%- if subelement == "valid_feedback" %}
+                                            <div class="valid-feedback">{{ element["valid_feedback"]|safe }}</div>
+                                        {%- endif -%}
+                                        {%- if subelement == "form-text" %}
+                                            <div class="form-text">{{ element["form-text"]|safe }}</div>
+                                        {%- endif -%}
+                                        {% if subelement == "check_subdiv_open" %}
+                                            <div class="form-check form-switch">{%- endif %}
+                                    {%- if subelement == "check-input" %}
+                                        <input {%- for k,v in element[subelement].items() %} {{ k }}="{{ v }}"
+                                    {% endfor %}
+                                        {%- if element['checked'] == 1 %} checked{% endif %}>
+                                        </div>
+                                    {%- endif -%}
+                                        {%- if subelement == "select" %}
+                                            <select{% for k,v in element[subelement].items() %} {{ k }}="{{ v }}"
+                                        {% endfor %}>
+                                            {% for k,v in element["options"].items() -%}
+                                                <option value={{ k }} {% if element['selected'] == k %}selected
+                                                {%- endif %}>{{ v }}</option>
+                                            {% endfor -%}
+                                            </select>
+                                        {%- endif -%}
+                                    {%- endfor %}
+                                </div>
+                            {%- endfor %}
+                            <div class="col-12">
+                                <button class="btn btn-outline-primary" id="submit_button" type="submit">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                    <p></p>
+                </div>
+            </div>
+            <p></p>
+            <div class="col-lg-10 bg-light-subtle shadow rounded">
+                <div class="row g-3">
+                    <div class="col-12">
+                        <p></p>
+                        <h3>Reference</h3>
+                        <p class="fs-6"><span class="fw-bold">If you find iLund4u useful, please cite:</span><br>
+                            Artyom. A. Egorov, Vasili Hauryliuk, Gemma C. Atkinson, <span class="fw-semibold"> Systematic
+                                annotation of hyper-variability hotspots in phage genomes and plasmids</span>
+                            <span class="fst-italic"> bioRxiv 22024.10.15.618418; doi:
+                                <a href="https://doi.org/10.1101/2024.10.15.618418">10.1101/2024.10.15.618418</a></span>
+                        </p>
+                        <hr style="margin-bottom:0;">
+                    </div>
+                    <div class="col-12">
+                        <h3>Authors & Contact </h3>
+                        <p class="fs-6">iLund4u is developed by Artyom Egorov at the Atkinson Lab, Department of
+                            Experimental Medical Science, Lund University, Sweden. <br>
+                            We are open for suggestions of how we can extend and improve iLund4u functionality. Please
+                            don't hesitate to share your ideas or
+                            feature requests.
+                        </p>
+                        <p>
+                            Please contact us by <a class="text-decoration-none"
+                                                    href="mailto:artem-dot-egorov-wow-med.lu.se ">e-mail</a> or use
+                            <a class="text-decoration-none" href="https://github.com/art-egorov/ilund4u/issues?q=">GitHub
+                                Issues</a> to report any technical problems related to iLund4u.
+                            You can also use <a class="text-decoration-none"
+                                                href="https://github.com/art-egorov/ilund4u/discussions">Discussions</a>
+                            section for sharing your ideas or feature requests!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p></p>
+    </div>
+    {%- if "request_validation" in request.path or request.args.get("demo") %}
+        <script>
+            var element_id = "ilund4u_form"
+        </script>
+        <script src="{{ url_for('static', filename='js/auto_scroll.js') }}"></script>
+    {% endif -%}
+{% endblock %}
