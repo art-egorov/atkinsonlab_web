@@ -6,58 +6,59 @@
     <title>{% block title %}{% endblock %}</title>
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
     <!--<link href="{{ url_for('static', filename='bootstrap-5.3.0/css/bootstrap.min.css') }}" rel="stylesheet">-->
-    <!-- node-sass custom.scss ../css/styles.css -->
+    <!-- sass custom.scss ../css/styles.css -->
     <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+    <script src="{{ url_for('static', filename='js/node_modules/chart.js/dist/chart.umd.js') }}"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-ESRYZHFX82"></script>
     <script src="{{ url_for('static', filename='js/google_analytics.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='molstar/molstar.css') }}">
     <meta name="google-site-verification" content="sz0up6EyqHFTjSvRxB2ilCmiALbGBj-eYLpRqpBLLJE"/>
-    <meta name="description" content="The Atkinson Lab WebServer.">
+    <meta name="description"
+          content="The Atkinson Lab server portal. Access our online tools and services, including iLund4u, webFlaGs, and uORF4u.">
     {%- block head %}
     {% endblock -%}
 </head>
 <body {%- block body_class %}{% endblock %}>
-<nav class="navbar sticky-top navbar-expand-lg navbar-dark" data-bs-theme="dark" id="topnavbar">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/">
-            <span class="fw-semibold tal">The Atkinson lab </span> <span class="fw-medium text-muted">| 4u</span>
-            <span class="fw-medium foru"> </span>
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_area"
-                aria-controls="collapse_area" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="collapse_area">
-            <ul class="navbar-nav me-auto">
-
-            </ul>
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link fw-bold" href="/ilund4u">iLund4u</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fw-bold" href="/netflax">NetFlax</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fw-bold" href="/webflags">webFlaGs</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fw-bold" href="/uorf4u">uORF4u</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fw-bold" href="/msa4u">MSA4u</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="https://twitter.com/gem__atkinson/"><i class="fab fa-twitter"></i></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="https://github.com/GCA-VH-lab/"><i class="fab fa-github"></i></a>
-                </li>
-            </ul>
+{% if (not hide_header) and (not tool or tool != 'ilund4u') %}
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark" data-bs-theme="dark" id="topnavbar">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <span class="fw-semibold tal">The Atkinson lab </span> <span class="fw-medium text-muted">| 4u</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_area"
+                    aria-controls="collapse_area" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapse_area">
+                <ul class="navbar-nav me-auto">
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" href="/ilund4u">iLund4u</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" href="/ilund4udb">iLund4u DB</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" href="/webflags">webFlaGs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" href="/uorf4u">uORF4u</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://twitter.com/gem__atkinson/"><i class="fab fa-twitter"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://github.com/GCA-VH-lab/"><i class="fab fa-github"></i></a>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
+{%- endif -%}
 {% block content %}
 {% endblock %}
+<script src="{{ url_for('static', filename='molstar/molstar.js') }}"></script>
 <script src="https://kit.fontawesome.com/94897c8b37.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
         integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"

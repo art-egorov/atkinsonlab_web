@@ -23,8 +23,9 @@
                             </p>
                         </div>
                         <div class="col-12">
-                            <p class="fs-5"><span
-                                    class="fw-medium">Position in the queue:</span> {{ status['position'] }}<br>
+                            <p class="fs-5">
+                                <span class="fw-medium">Job id:</span> {{ id }}<br>
+                                <span class="fw-medium">Position in the queue:</span> {{ status['position'] }}<br>
                                 <span class="fw-medium">Queued at:</span> {{ status['enqueued_at'] }}</p>
                         </div>
                     {% endif %}
@@ -33,7 +34,9 @@
                             <p class="fs-5">Your job is started! </p>
                         </div>
                         <div class="col-12">
-                            <p class="fs-5"><span class="fw-medium">Queued at:</span> {{ status['enqueued_at'] }}<br>
+                            <p class="fs-5">
+                                <span class="fw-medium">Job id:</span> {{ id }}<br>
+                            <span class="fw-medium">Queued at:</span> {{ status['enqueued_at'] }}<br>
                                 <span class="fw-medium">Started at:</span> {{ status['started_at'] }}</p>
                         </div>
                     {% endif %}
@@ -43,6 +46,8 @@
                         </div>
                         <div class="col-12">
                             <p class="fs-5">
+                                <span class="fw-medium">Job id:</span> {{ id }}<br>
+                                <span class="fw-medium">Job name:</span> {{ results_data['run_name'] }}<br>
                                 <span class="fw-medium">Started at:</span> {{ status["started_at"] }}<br>
                                 <span class="fw-medium">Finished at:</span> {{ status["ended_at"] }}</p>
                             <p class="fs-5">This page will be available until <span
@@ -50,6 +55,9 @@
                         </div>
                     {% endif %}
                     {% if status['status'] == "failed" %}
+                        <div class="col-12">
+                            <p class="fs-5"><span class="fw-medium">Job name:</span> {{ results_data['run_name'] }} </p>
+                        </div>
                         <p class="fs-5">Something went wrong, we're sorry 😿 <br> Please, resubmit your job. </p>
                         <p class="fs-5 fw-light">Сontact us if the problem remains, we store traceback of each
                             run and we'll be happy to help!</p>
@@ -60,7 +68,7 @@
                             <h2>Results</h2>
                             <div id="pdf-container" style="margin-bottom: 1rem;">
                                 <embed id="pdf-viewer" type="application/pdf"
-                                       src="{{ url_for("getfile", id=id, tool = "webflags", filename=results["pdf"]) }}"
+                                       src="{{ url_for("getfile", id=id, tool = "webflags", filepath=results["pdf"]) }}"
                                        width="100%"/>
                             </div>
 
@@ -111,8 +119,7 @@
                     {% if status["status"] != "finished" and status["status"] != "failed" %}
                         <hr>
                         <div class="col-auto">
-                            <p class="fs-5 fw-light">This page will be auto reloaded if status of your job is
-                                changed...</p>
+                            <p class="fs-5 fw-light">This page will be auto reloaded if the status of your job changes...</p>
                         </div>
                         <div class="col-auto">
                             <div class="spinner-webflags_small"></div>
@@ -126,7 +133,10 @@
     {% if status["status"] == "finished" %}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
         <script>
-            const pdfUrl = "{{ url_for("getfile", id=id, tool="webflags", filename=results["pdf"]) }}";
+            const pdfUrl = "{{ url_for("getfile", id=id, tool="webflags", filepath=results["pdf"]) }}";
+
+
+
         </script>
         <script src="{{ url_for('static', filename='js/fit_pdf.js') }}"></script>
     {% endif %}
@@ -135,7 +145,10 @@
             var job_id = "{{ id }}";
             var current_status = "{{ status["status"] }}";
             var current_position = "{{ status["position"] }}"
-            var current_logs = "{{ status["meta"]["cleanlog"]}}"
+            var current_logs = "{{ status["meta"]["cleanlog"] }}"
+
+
+
         </script>
         <script src="{{ url_for("static", filename="js/page_updates_results.js") }}"></script>
     {% endif -%}

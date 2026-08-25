@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+{% block title %}AD4u DB{% endblock %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/rowreorder/1.3.3/css/rowReorder.bootstrap5.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/rowreorder/1.3.3/js/dataTables.rowReorder.min.js"></script>
+    <script src="https://3Dmol.org/build/3Dmol-min.js"></script>
+    <script src="https://3Dmol.org/build/3Dmol.ui-min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-3.0.0.min.js" charset="utf-8"></script>
+    <script src="https://3Dmol.org/build/3Dmol-min.js"></script>
+    <script src="https://3Dmol.org/build/3Dmol.ui-min.js"></script>
+{% endblock %}
+{% block body_class %} class="ad4u"{% endblock %}
+{% block content %}
+    <div class="container">
+        <div style="margin-bottom: 20px;"></div>
+        <div class="row justify-content-center">
+            <div class="col-lg-10 no-background shadow rounded">
+                <div id="protein_family_summary" class="row g-3">
+                    <div class="col-12">
+                        <div style="margin-bottom: 15px;"></div>
+                        <h4>Candidate protein summary</h4>
+                        <hr style="margin-top:0;">
+                        <span class="fw-semibold">Representative protein name and id</span>: {{ candidate_dict["Name"] }}
+                        ({{ candidate_dict["id_initial"] }})<br>
+            
+                        <span class="fw-semibold">hmmscan annotatiion </span>: {{ candidate_dict["hmmscan hit"] }} {% if candidate_dict["hmmscan hit"] != "-" %}({{ candidate_dict["hmmscan hit (db)"] }}){% endif %}<br>
+                        <span class="fw-semibold">Length (amino acids)</span>: {{ candidate_dict["Length"] }}<br>
+                        <div class="p-2 d-inline-block w-auto text-break border bg-body-tertiary rounded">
+                            <p class="fw-light font-monospace text-muted preserve-line-breaks"
+                               style="margin: 0;"><small style="padding: 0;">{{ candidate_dict["fasta_sequence"] }}</small></p>
+                        </div>
+                    </div>                    
+                    <hr class="border opacity-25" style="margin-bottom:0;">
+                    <div class="col-md-12">
+                        <span class="fw-semibold">Results of hhblits search versus Pfam</span><br>
+                        <span>Annotation was performed using an HHpred-like pipeline. First, a multiple sequence alignment (MSA) was built for each protein cluster using MMseqs2 to search against UniRef50. The resulting MSA was then used for an HHblits HMM-HMM search against the Pfam database.</span><br>
+                        <div style="margin-bottom: 10px;"></div>
+                        
+                        {% if pfam_results != "NA" %}
+                            {{ pfam_results | safe }}
+                        {% else %}
+                            <span class="fw-semibold">No hits</span>
+                        {% endif %}
+                    </div>
+                    <hr class="border opacity-25" style="margin-bottom:0;">
+                    <div class="col-md-12">
+                        <span class="fw-semibold">iLund4u statistics</span><br>
+                        Protein cluster memebers are encoded on <span class="fw-medium"> {{ candidate_dict["# Hotspot islands"] }} hotspot islands</span> that were clustered to 
+                        <span class="fw-medium"> {{candidate_dict["# Hotspots"]}} distinct hotspots</span>.<br>
+                        Among <span class="fw-medium"> {{candidate_dict["total_neighbours"]}} the candidate gene neighbours in islands, {{candidate_dict["ad_neighbours"]}} are anti-defence genes</span>.
+                        For hotspots encoding the candidate, <span class="fw-medium"> average fraction of anti-defence cargo genes is {{candidate_dict["ad_hotspot_fraction"]}}</span>.<br> 
+                        <a class="fst-italic" data-bs-toggle="collapse" href="#hotspot_pdf_collapse" role="button" aria-expanded="false" aria-controls="hotspot_pdf_collapse">Click to view the hotspot PDF with the candidate</a>
+                        <div class="collapse" id="hotspot_pdf_collapse"> 
+                        <div style="margin-bottom: 10px;"></div>
+                        <embed id="pdf-viewer-hotspot" type="application/pdf"
+                                                   src="/files/ad4udb/ilund4u_pdfs_hotspots/{{candidate_id}}.pdf" width="100%" height="400px"/>
+                        </div>
+                    </div>
+                    <hr class="border opacity-25" style="margin-bottom:0;">
+                    <div class="col-md-12">
+                        <span class="fw-semibold">Homologues set</span><br>
+                        The total number of protein homologues used for co-folding is <span class="fw-medium"> {{candidate_dict["MSA depth"]}}</span>.<br>
+                        <a class="fst-italic" data-bs-toggle="collapse" href="#MSA_png_collapse" role="button" aria-expanded="false" aria-controls="MSA_png_collapse">Click to view the MSA</a>
+                        <div class="collapse" id="MSA_png_collapse">
+                        <div style="margin-bottom: 10px;"></div>
+                        <img src="/files/ad4udb/msa_png/{{candidate_id}}.png" alt="MSA" class="img-fluid">
+                        <a href="/files/ad4udb/msa_fastas/{{candidate_id}}.fa" target="_blank" class="btn btn-outline-primary btn-sm">
+                                                                Download MSA fasta</a>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 20px;"></div>
+                </div>
+            </div>
+            <div style="margin-bottom: 20px;"></div>
+            <div class="col-lg-10 no-background shadow rounded">
+                <div id="protein_family_location" class="row g-3">
+                    <div class="col-12">
+                        <div style="margin-bottom: 15px;"></div>
+                        <h4>DefenseFinder co-folding hits</h4>
+                        <hr style="margin-top:0;">
+                        <span class="fw-medium">Number of DefenseFinder hits with the candidate protein:  {{candidate_dict["DF_binding_count"]}}</span><br>
+                        <span ><a class="text-decoration-none" href="https://defensefinder.mdmlab.fr/wiki/defense-systems" target="_blank">Defense Finder</a> protein co-folding hits are listed below. <span class="fw-medium">Row title annotation: Defence system (defence protein) [ipTM score median]</span></span>
+                        <div style="margin-bottom: 10px;"></div>
+                        <div class="accordion" id="accordionPanelsStayOpenExample">
+                            {% for df_dict in candidate_dict["DF_binding"] %}
+                                <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#df_gene-{{ df_dict['ind'] }}" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">
+                                    <span><span class="fw-semibold">{{ df_dict['ind'] }}. {{df_dict['d_subsystem']}}  ({{ df_dict['Protein']  }}) {{ [df_dict['iptm_median']] }}</span>
+                                </button>
+                                </h2>
+                                <div id="df_gene-{{ df_dict['ind'] }}" class="accordion-collapse collapse">
+                                <div class="accordion-body">
+                                    <span class="fw-medium">Defense protein length </span>: {{ df_dict['d_length'] }} <br>
+                                    <span class="fw-medium">Defence protein domains</span>: {{ df_dict['d_pfam'] }} <br>
+                                    <span class="fw-medium">Defence protein sequence</span>:<br>
+                                    <div class="p-2 d-inline-block w-auto text-break border bg-body-tertiary rounded">
+                                    <p class="fw-light font-monospace text-muted preserve-line-breaks"
+                                    style="margin: 0;"><small style="padding: 0;">{{ df_dict["fasta_sequence"] }}</small></p>
+                                    </div>
+
+                                    <hr class="border opacity-25" style="margin-bottom:0;">
+                                    <div style="margin-bottom: 10px;"></div>
+
+                                    <span class="fw-medium">Co-folding statistics of binder homologues</span>:<br>
+                                    <span>ipTM Q1: {{ df_dict['iptm_Q1'] }}; ipTM Median: {{ df_dict['iptm_median'] }}; 
+                                        ipTM Q3: {{ df_dict['iptm_Q3'] }}; pTM median: {{ df_dict['ptm_median'] }}; pLDDT median: {{ df_dict['plddt_median'] }}; # contacts: {{ df_dict['N_contact'] }} </span><br>
+                                    <div class="row">
+                                    <div class="col-md-8">
+                                    <img style="100%" class="img-fluid"  src="/files/ad4udb/contact_maps_DF/{{df_dict['d_system']}}---{{candidate_id}}-1.png" alt="Contact map">
+                                    </div>
+                                    </div>
+                                    <hr class="border opacity-25" style="margin-bottom:0;">
+                                    <div style="margin-bottom: 10px;"></div>
+                                    <span class="fw-medium">Max ipTM AlphaFold3 prediction (ipTM = {{ df_dict['iptm_max'] }})</span>:<br>
+                                    
+                                    <div class="row">
+                                    <div class="col-md-8">
+                                          <small>AlphaFold 3-predicted structure of the <span style="color: #494845;">defence</span> vs <span style="color: #a5a72f;">anti-defence</span> protein complex<br></small>
+                                            <div style="width:100%; height:300px; position:relative; overflow:hidden;">
+                                                <div
+                                                    id="molstar-{{df_dict['model_with_max_iptm']}}"
+                                                    class="molstar-viewer"
+                                                    style="position:absolute; inset:0; width:100%;"
+                                                    data-cif="/files/ad4udb/defence_finder_cif_grouped/{{candidate_id}}___{{df_dict['d_system']}}/{{df_dict['model_with_max_iptm']}}.cif">
+                                                </div>
+                                            </div>
+                                            <div style="margin-bottom: 3px;"></div>
+                                            <a href="/files/ad4udb/defence_finder_cif_grouped/{{candidate_id}}___{{df_dict['d_system']}}/{{df_dict['model_with_max_iptm']}}.cif" target="_blank" class="btn btn-outline-primary btn-sm">
+                                            Download cif</a> 
+                                            <a href="/files/ad4udb/defence_finder_cif_grouped/{{candidate_id}}___{{df_dict['d_system']}}.zip" target="_blank" class="btn btn-outline-primary btn-sm ">
+                                            Download zip with {{candidate_dict["MSA depth"]}} co-foldings </a>
+                                    </div>
+                                    </div>
+
+                                    <div style="margin-bottom: 5px;"></div>
+                                </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div style="margin-bottom: 20px;"></div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-bottom: 20px;"></div>
+            
+            <div class="col-lg-10 bg-light shadow rounded">
+                <div class="row g-3">
+                    <div class="col-12">
+                        <div style="margin-bottom: 15px;"></div>
+                        <h4>Reference</h4>
+                        <p class="fs-6"><span
+                                class="fw-bold">If you find AD4u DB useful, please cite:</span><br>
+                            Artyom. A. Egorov, xxx, <span class="fw-semibold"> xxx</span>
+                            <span class="fst-italic"> bioRxiv xxx; doi:
+                                <a href="https://doi.org/10.1101/2024.10.15.618418">xxx</a></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="margin-bottom: 20px;"></div>
+    </div>
+
+    <script src="{{ url_for('static', filename='/js/ad4udb_mol_structure.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/ilund4u_hmmscan_table.js') }}"></script>
+{% endblock %}

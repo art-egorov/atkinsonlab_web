@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% block title %}iLund4u DB{% endblock %}
+{% block head %}
+    <link href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css" rel="stylesheet"/>
+    <script src="https://unpkg.com/gridjs/dist/gridjs.umd.js"></script>
+{% endblock %}
+{% block body_class %} class="ilund4u"{% endblock %}
+{% block content %}
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark" data-bs-theme="dark" id="topnavbar">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <span class="fw-semibold tal">The Atkinson lab </span> <span class="fw-medium text-muted">| 4u</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_area"
+                    aria-controls="collapse_area" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapse_area">
+                <ul class="navbar-nav mx-auto nav-pills">
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" href="#description">Description</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" href="#database_entries">Database entries</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" href="#ref">Reference</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link fw-semibold" href="/ilund4u">iLund4u search tool</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://github.com/art-egorov/ilund4u"><i
+                                class="fab fa-github"></i></a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <p></p>
+        <div data-bs-spy="scroll" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true">
+            <div class="row justify-content-center">
+                <div class="col-10">
+                    <div class="row justify-content-center">
+                        <div class="col-md-4 text-center" style="margin-bottom: 1em">
+                            <img width="90%" src="{{ url_for('static', filename='img/ilund4u_db_logo.png') }}">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-11 no-background shadow rounded">
+                    <div class="row g-3">
+                        <div id="description" class="col-md-12" style="margin-bottom: 0">
+                            <div style="margin-bottom: 15px;"></div>
+                            <h3>Description</h3>
+                            <hr style="margin-top:0;">
+                            <p class="fs-6 fw-bold">Welcome to the iLund4u phage database!</p>
+                            <p class="fs-6"><b>iLund4u</b> is a bioinformatics tool designed for the search and
+                                annotation of accessory genes and hotspots across large datasets. We recommend
+                                visiting
+                                the tool's <a class="fw-semibold text-decoration-none"
+                                              href="https://art-egorov.github.io/ilund4u/">Home page</a>, where you can
+                                find a detailed description of the algorithm and full documentation.</p>
+                            <p class="fs-6">This <b>iLund4u phage database</b> provides an interactive platform to
+                                explore hotspot-encoded phage proteins annotated with iLund4u, using the complete
+                                <a class="text-decoration-none" href="https://phagescope.deepomics.org">PhageScope
+                                    database</a> of 873K phage genomes as input.</p>
+                            <div class="row">
+                                <div class="col-md-10 text-center" style="margin-bottom: 1em">
+                                    <img width="100%"
+                                         src="{{ url_for('static', filename='img/ilund4u_db_phages_pipeline.png') }}">
+                                </div>
+                            </div>
+
+                            <p></p>
+                            <p class="fs-6" style="margin-bottom: 0.15rem" ;>You can also access the <a
+                                    class="text-decoration-none" href="/ilund4u">web version</a>
+                                of iLund4u on our server portal which can be used to find whether homologues of your
+                                query protein are encoded in hotspots.
+                            </p>
+                            <p class="fs-6">The results generated in the web version are directly linked to the data
+                                and
+                                pages of this database.</p>
+
+                            <hr class="border opacity-25" style="margin-bottom:0;">
+                        </div>
+                        <div class="col-md-9">
+                            <h5>Database overview</h5>
+                            <p class="fs-6">iLund4u includes two precomputed hotspot databases derived from phage and
+                                plasmid sequences. This online resource catalogues phage-associated hotspots and
+                                accessory protein clusters. It consists of <b>242.8K protein clusters</b> encoded in <b>16K
+                                    hotspots</b> across <b>218K phage genomes</b>, remaining after deduplication and
+                                filtering of the
+                                initial PhageScope dataset.
+
+                            </p>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <p></p>
+                            <img width="88%"
+                                 src="{{ url_for('static', filename='img/ilund4u_phage_db_overview.png') }}">
+                        </div>
+                        <div style="margin-bottom: 20px;"></div>
+                    </div>
+                </div>
+                <div style="margin-bottom: 20px;"></div>
+                <div id="database_entries" class="col-lg-11 no-background shadow rounded">
+                    <div id="protein_family_location" class="row g-3">
+                        <div class="col-12">
+                            <div style="margin-bottom: 15px;"></div>
+                            <h4>Protein Clusters</h4>
+                            <hr style="margin-top:0;">
+                            <p class="fs-6">Here you can find all protein clusters encoded at least once as cargo in
+                                phage hotspots — a total of 242,773 representative sequences. Each protein cluster has
+                                its own database page with a detailed description. Note that you can also find protein clusters
+                                homologous to your query protein using the
+                                <a class="text-decoration-none" href="/ilund4u">iLund4u web search tool</a>.</p>
+                            <div id="pf_table"></div>
+                            <div style="margin-bottom: 10px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-bottom: 20px;"></div>
+                <div id="database_entries" class="col-lg-11 no-background shadow rounded">
+                    <div id="protein_family_location" class="row g-3">
+                        <div class="col-12">
+                            <div style="margin-bottom: 15px;"></div>
+                            <h4>Phages</h4>
+                            <hr style="margin-top:0;">
+                            <p class="fs-6">This dataset includes 217,963 phage genomes that remained after
+                                deduplication and filtering of the initial PhageScope collection using the iLund4u
+                                algorithm. Each phage has its own database page containing description and
+                                classification of its proteins as variable, conserved, or intermediate. In addition,
+                                each phage is assigned to a proteome community — a group of related phages
+                                sharing a core proteins.</p>
+                            <div id="p_table"></div>
+                            <div style="margin-bottom: 10px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-bottom: 20px;"></div>
+                <div class="col-lg-11 bg-light shadow rounded">
+                    <div class="row g-3">
+                        <div id="ref" class="col-12">
+                            <div style="margin-bottom: 15px;"></div>
+                            <h4>Reference</h4>
+                            <p class="fs-6"><span
+                                    class="fw-bold">If you find iLund4u useful, please cite:</span><br>
+                                Artyom. A. Egorov, Vasili Hauryliuk, Gemma C. Atkinson, <span class="fw-semibold"> Systematic
+                                annotation of hyper-variability hotspots in phage genomes and plasmids</span>
+                                <span class="fst-italic"> bioRxiv 22024.10.15.618418; doi:
+                                <a href="https://doi.org/10.1101/2024.10.15.618418">10.1101/2024.10.15.618418</a></span>
+                            </p>
+                            <hr class="border opacity-25">
+                            <h4>Authors & Contact </h4>
+                            <p class="fs-6">iLund4u is developed by Artyom Egorov at the Atkinson Lab, Department of
+                                Experimental Medical Science, Lund University, Sweden. <br>
+                                We are open for suggestions of how we can extend and improve iLund4u functionality.
+                                Please
+                                don't hesitate to share your ideas or
+                                feature requests.
+                            </p>
+                            <p>
+                                Please contact us by <a class="text-decoration-none"
+                                                        href="mailto:artem-dot-egorov-wow-med.lu.se ">e-mail</a> or use
+                                <a class="text-decoration-none"
+                                   href="https://github.com/art-egorov/ilund4u/issues?q=">GitHub
+                                    Issues</a> to report any technical problems related to iLund4u.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p></p>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/ilund4u_phage_db_tables.js') }}"></script>
+{% endblock %}

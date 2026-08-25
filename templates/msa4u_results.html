@@ -74,7 +74,7 @@
                             <h2>MSA plot</h2>
                             <div id="pdf-container" style="margin-bottom: 1rem;">
                                 <embed id="pdf-viewer" type="application/pdf"
-                                       src="{{ url_for('getfile', id=id, tool = 'msa4u', filename=results['pdf_filename']) }}"
+                                       src="{{ url_for('getfile', id=id, tool = 'msa4u', filepath=results['pdf_filename']) }}"
                                        width="100%"/>
                             </div>
                         </div>
@@ -96,13 +96,13 @@
                         </div>
                         <div class="col-auto">
                             <a class="btn btn-outline-primary"
-                               href="{{ url_for('getfile', tool = 'msa4u', id = id, filename=results['pdf_filename']) }}"
+                               href="{{ url_for('getfile', tool = 'msa4u', id = id, filepath=results['pdf_filename']) }}"
                                download>MSA plot (PDF)</a>
                         </div>
                         {%- if "alignments" in results %}
                             <div class="col-auto">
                                 <a class="btn btn-outline-primary"
-                                   href="{{ url_for('getfile', tool = 'msa4u', id = id, filename=results['alignments']) }}"
+                                   href="{{ url_for('getfile', tool = 'msa4u', id = id, filepath=results['alignments']) }}"
                                    download>MSA (fasta)</a>
                             </div>
                         {% endif -%}
@@ -116,7 +116,7 @@
     {% if status["status"] == "finished" %}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
         <script>
-            const pdfUrl = "{{ url_for('getfile', id=id, tool = 'msa4u', filename=results['pdf_filename']) }}";
+            const pdfUrl = "{{ url_for('getfile', id=id, tool = 'msa4u', filepath=results['pdf_filename']) }}";
         </script>
         <script src="{{ url_for('static', filename='js/fit_pdf.js') }}"></script>
     {% endif %}

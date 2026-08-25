@@ -1,6 +1,8 @@
 {
   "mandatory_arguments": [
-    "protein_sequence"
+    "protein_sequence",
+    "gff3_file",
+    "gff3_text"
   ],
   "order": [
     "protein_sequence",
@@ -35,8 +37,32 @@
         "text": "Mandatory argument"
       }
     },
+    "ilund4u_mode": {
+      "div_class": "col-md-4 disabled",
+      "subelements": [
+        "label",
+        "select",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label",
+        "for": "ilsm"
+      },
+      "label_value": "iLund4u mode ",
+      "select": {
+        "class": "form-select",
+        "name": "ilund4u_mode",
+        "id": "ilsm",
+        "aria-label": "Default select example"
+      },
+      "options": {
+        "protein": "Proteins search"
+      },
+      "selected": "protein",
+      "form-text": "iLund4u mode to perform searching."
+    },
     "protein_sequence": {
-      "div_class": "col-md-8",
+      "div_class": "col-md-9 protein-fields",
       "subelements": [
         "label",
         "textarea",
@@ -55,10 +81,62 @@
         "type": "text",
         "rows": "3"
       },
-      "required": 1,
+      "required": 0,
       "textarea_value": "",
       "invalid_feedback": "",
       "form-text": "Amino acid sequence in fasta format or just as a sequence (without <i>>id</i> line; can be multiple lines). MMseqs2 will be run to find homologues in the iLund4u database."
+    },
+    "gff3_text": {
+      "div_class": "col-md-8 genome-fields",
+      "subelements": [
+        "label",
+        "textarea",
+        "invalid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label",
+        "for": "gff3t"
+      },
+      "label_value": "GFF3 file",
+      "textarea": {
+        "class": "form-control",
+        "name": "gff3_text",
+        "id": "gff3t",
+        "type": "text",
+        "rows": "3"
+      },
+      "required": 0,
+      "textarea_value": "",
+      "invalid_feedback": "",
+      "form-text": "GFF3 in plain text."
+    },
+    "gff3_file": {
+      "div_class": "col-md-4 genome-fields",
+      "subelements": [
+        "label",
+        "input",
+        "invalid_feedback",
+        "valid_feedback",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-label",
+        "for": "gff3f"
+      },
+      "label_value": "GFF3 file",
+      "input": {
+        "class": "form-control",
+        "name": "gff3_file",
+        "id": "gff3f",
+        "type": "file",
+        "accept": ".gff,.gff3",
+        "size": "512000"
+      },
+      "required": 0,
+      "invalid_feedback": "",
+      "valid_feedback": "",
+      "form-text": "GFF3 annotation file with concatenated nucleotide fast sequence.<br>(designed to handle pharokka/prokka produced annotation files)"
     },
     "mandatory_arguments_error": {
       "div_class": "col-md-12",
@@ -102,7 +180,7 @@
       "form-text": "iLund4u database to perform searching."
     },
     "query_label": {
-      "div_class": "col-md-4",
+      "div_class": "col-md-4  protein-fields",
       "subelements": [
         "label",
         "input",
@@ -151,7 +229,7 @@
       },
       "required": 1,
       "invalid_feedback": "",
-      "form-text": "MMseqs search query coverage cutoff in search of homologous proteins. Allowed values: [0:1]."
+      "form-text": "MMseqs search query coverage cutoff in search for homologous proteins. Allowed values: [0:1]."
     },
     "mmseqs_search_tcov": {
       "div_class": "col-md-4",
@@ -200,12 +278,36 @@
         "type": "text",
         "min": "0",
         "max": "1",
-        "value": "0.2",
+        "value": "0.25",
         "pattern": "^0*(\\.\\d+)?$"
       },
       "required": 1,
       "invalid_feedback": "",
       "form-text": "MMseqs search fident (fraction of identical matches) cutoff in search of homologous proteins. Allowed values: [0:1]."
+    },
+    "circular_genome": {
+      "div_class": "col-md-4 genome-fields",
+      "subelements": [
+        "check_subdiv_open",
+        "label",
+        "check-input",
+        "form-text"
+      ],
+      "label": {
+        "class": "form-check-label",
+        "for": "circular_g"
+      },
+      "label_value": "Query genome is circular",
+      "check-input": {
+        "class": "form-check-input",
+        "name": "circular_genome",
+        "id": "circular_g",
+        "type": "checkbox",
+        "role": "switch",
+        "value": "213231"
+      },
+      "checked": 1,
+      "form-text": "Consider the query genome as circular. This means that first and last proteins will be considered to be neighbours."
     },
     "report_not_flanked": {
       "div_class": "col-md-4",
@@ -229,7 +331,7 @@
         "value": "213123"
       },
       "checked": 0,
-      "form-text": "Report in results hotspots that have flanked conserved genes only on one side (located on the end of non-circular sequences)."
+      "form-text": "Report hotspots that are flanked by conserved genes on only one side (located on the end of non-circular sequences)."
     },
     "run_parameters_header": {
       "div_class": "col-md-12",

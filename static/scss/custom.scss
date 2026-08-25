@@ -23,13 +23,27 @@ $navdark: #233442;
 
 $box-shadow: 0 .4rem 0.85rem rgba($navdark, .18);
 
+
+$table-th-font-weight: 500;
+
+
 @import "../bootstrap-5.3.0/scss/bootstrap";
 
+/* Custom CSS for smaller tab buttons */
+.nav-tabs .nav-link {
+    font-size: 0.9rem !important;  /* smaller font size */
+    height: auto;  /* Ensure the button doesn't take excessive height */
+    line-height: 1.1;  /* Control button height */
+}
 
 
 .hover:hover {
     background-color: #f0f8ff; /* Replace with your desired colour */
     transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+.small-875 {
+  font-size: $font-size-base * .85 !important;;
 }
 
 
@@ -171,17 +185,17 @@ $box-shadow: 0 .4rem 0.85rem rgba($navdark, .18);
   height: 70px;
   border-radius: 50%;
   border: 9px solid;
-  border-color: $ilund4u_light_blue;
+  border-color: $ilund4u_blue;
   border-right-color: $ilund4u_yellow;
   animation: spinner-d3wgkg 1s infinite linear;
 }
 
 .spinner-ilund4u_small {
-  width: 35px;
-  height: 35px;
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
-  border: 5px solid;
-  border-color: $ilund4u_light_blue;
+  border: 4px solid;
+  border-color: $ilund4u_blue;
   border-right-color: $ilund4u_yellow;
   animation: spinner-d3wgkg 1s infinite linear;
 }
@@ -228,6 +242,14 @@ $box-shadow: 0 .4rem 0.85rem rgba($navdark, .18);
 
 a:hover {
   color: $yellow; /* color of link when hovered over */
+}
+
+
+body.ad4u {
+  background-image: url("/static/img/background_ad4u.svg");
+  background-repeat: repeat;
+  background-size: 100%;
+  background-attachment: fixed;
 }
 
 body.uorf4u {
@@ -304,8 +326,10 @@ body.main {
   background-color: #212C31;
 }
 */
-nav {
+.navbar {
   background-color: $navdark;
+  border-bottom: 1px solid $ilund4u_blue;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 #mynetwork {

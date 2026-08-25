@@ -1,0 +1,323 @@
+{% extends "base.html" %}
+{% block title %}iLund4u DB{% endblock %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/rowreorder/1.3.3/css/rowReorder.bootstrap5.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/rowreorder/1.3.3/js/dataTables.rowReorder.min.js"></script>
+    <script src="https://3Dmol.org/build/3Dmol-min.js"></script>
+    <script src="https://3Dmol.org/build/3Dmol.ui-min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-3.0.0.min.js" charset="utf-8"></script>
+    <script src="https://3Dmol.org/build/3Dmol-min.js"></script>
+    <script src="https://3Dmol.org/build/3Dmol.ui-min.js"></script>
+{% endblock %}
+{% block body_class %} class="ilund4u"{% endblock %}
+{% block content %}
+    <div class="container">
+        <div style="margin-bottom: 20px;"></div>
+        <div class="row justify-content-center">
+            <div class="col-lg-10 no-background shadow rounded">
+                <div id="protein_family_summary" class="row g-3">
+                    <div class="col-12">
+                        <div style="margin-bottom: 15px;"></div>
+                        <h4>Protein cluster summary</h4>
+                        <hr style="margin-top:0;">
+                        <span class="fw-semibold">Representative protein name and id</span>: {{ family_data_dict["name"] }}
+                        ({{ family_id }})<br>
+                        <span class="fw-semibold">Topology annotated with DeepTMHMM</span>: {{ family_data_dict["TM_annot"] }}<br>
+                        <span class="fw-semibold">Length (amino acids)</span>: {{ family_data_dict["seq_length"] }}<br>
+                        <div class="p-2 d-inline-block w-auto text-break border bg-body-tertiary rounded">
+                            <p class="fw-light font-monospace text-muted preserve-line-breaks"
+                               style="margin: 0;"><small style="padding: 0;">{{ family_data_dict["fasta_sequence"] }}</small></p>
+                        </div>
+                    </div>
+                    <hr class="border opacity-25" style="margin-bottom:0;">
+                    <div class="col-md-12">
+                        <span class="fw-medium">Results of pyhmmer hmmscan search</span> <i>(versus
+                        DefenceFinder, CasFinder, PADLOC, dbAPIS_Acr, AMRFinderPlus, VFDB databases)</i>:<br>
+                        {% if hmmscan_results != "NA" %}
+                            {{ hmmscan_results | safe }}
+                        {% else %}
+                            <span class="fw-semibold">No hits</span>
+                        {% endif %}
+                    </div>
+                    <hr class="border opacity-25" style="margin-bottom:0;">
+                    <div class="col-md-12">
+                        <span class="fw-medium">Results of hhblits search versus Pfam</span><br>
+                        <span>Annotation was performed using an HHpred-like pipeline. First, a multiple sequence alignment (MSA) was built for each protein cluster using MMseqs2 to search against UniRef50. The resulting MSA was then used for an HHblits HMM-HMM search against the Pfam database.</span><br>
+                        <div style="margin-bottom: 10px;"></div>
+                        
+                        {% if pfam_results != "NA" %}
+                            {{ pfam_results | safe }}
+                        {% else %}
+                            <span class="fw-semibold">No hits</span>
+                        {% endif %}
+                    </div>
+                    <div style="margin-bottom: 20px;"></div>
+                </div>
+            </div>
+            <div style="margin-bottom: 20px;"></div>
+            <div class="col-lg-10 no-background shadow rounded">
+                <div id="protein_family_location" class="row g-3">
+                    <div class="col-12">
+                        <div style="margin-bottom: 15px;"></div>
+                        <h4>Protein location summary</h4>
+                    </div>
+                    <hr style="margin-top:0;">
+                    <div class="d-inline-block w-auto m-0">
+                        <span class="fw-semibold">Protein family members are encoded in {{ family_data_dict["total_num_of_communities"] }} phage communities</span><br>
+                        <span style="color: #F27289;"><span class="fw-semibold">Annotated as variable</span> <i>(encoded in <25% of members)</i></span>:
+                        <span class="fw-medium">{{ family_data_dict["variable"] }} ({{ (family_data_dict["variable"] / family_data_dict["total_num_of_communities"] * 100) | round }}%)</span><br>
+                        <span style="color: #F1B953;"><span class="fw-semibold">Intermediate</span> <i>(encoded in >=25% and <=75% of members)</i></span>:
+                        <span class="fw-medium">{{ family_data_dict["intermediate"] }} ({{ (family_data_dict["intermediate"] / family_data_dict["total_num_of_communities"] * 100) | round }}%)</span><br>
+                        <span style="color: #858B8E;"><span class="fw-semibold">Conserved</span> <i>(encoded in >=75% of members)</i></span>:
+                        <span class="fw-medium">{{ family_data_dict["conserved"] }} ({{ (family_data_dict["conserved"] / family_data_dict["total_num_of_communities"] * 100) | round }}%)</span><br>
+                    </div>
+                    <div class="col-5 col-md-2 m-0">
+                        <div style="max-width: 130px;">
+                            <canvas id="donutChartFamilyClasses"></canvas>
+                        </div>
+                    </div>
+                    <hr class="border opacity-25" style="margin-bottom:0;">
+                    <div class="col-12">
+                        In case of being non-conserved, protein family members are found on <span
+                            class="fw-medium">{{ family_data_dict["N_Hotpot_islands"] + family_data_dict["N_Non_hotspot_islands"] }} variable islands.</span>
+                        <span class="fw-medium">{{ family_data_dict["N_Hotpot_islands"] }}</span> of them were
+                        clustered to <span class="fw-medium">{{ family_data_dict["N_Hotspot_communities"] }} distinct hotspots.</span>
+                    </div>
+                    {% if  family_data_dict["N_island_neighbours"] > 0 %}
+                        <div class="d-inline-block w-auto">
+                            <span class="fw-semibold">Functional annotation of {{ family_data_dict["N_island_neighbours"] }} island neighbours:</span><br>
+                            {% if family_data_dict["N_defence_island_neighbours"] > 0 %}
+                                <span style="color: #B264A8;"><span class="fw-semibold">Defence</span></span>
+                                <i>(PADLOC and DefenseFinder)</i>:
+                                <span class="fw-medium">{{ family_data_dict["N_defence_island_neighbours"] }} ({{ (family_data_dict["N_defence_island_neighbours"] / family_data_dict["N_island_neighbours"] * 100) | round }}%)</span>
+                                <br>
+                            {% endif %}
+                            {% if family_data_dict["N_anti-defence_island_neighbours"] > 0 %}
+                                <span style="color: #5EA5D9;"><span class="fw-semibold">Anti-defence</span></span>
+                                <i>(dbAPIS)</i>:
+                                <span class="fw-medium">{{ family_data_dict["N_anti-defence_island_neighbours"] }} ({{ (family_data_dict["N_anti-defence_island_neighbours"] / family_data_dict["N_island_neighbours"] * 100) | round }}%)</span>
+                                <br>
+                            {% endif %}
+                            {% if family_data_dict["N_virulence_island_neighbours"] > 0 %}
+                                <span style="color: #F15A55;"><span class="fw-semibold">Virulence</span></span>
+                                <i>(VFDB)</i>:
+                                <span class="fw-medium">{{ family_data_dict["N_virulence_island_neighbours"] }} ({{ (family_data_dict["N_virulence_island_neighbours"] / family_data_dict["N_island_neighbours"] * 100) | round }}%)</span>
+                                <br>
+                            {% endif %}
+                            {% if family_data_dict["N_AMR_island_neighbours"] > 0 %}
+                                <span style="color: #FAA43B;"><span class="fw-semibold">AMR</span></span>
+                                <i>(AMRFinderPlus)</i>:
+                                <span class="fw-medium">{{ family_data_dict["N_AMR_island_neighbours"] }} ({{ (family_data_dict["N_AMR_island_neighbours"] / family_data_dict["N_island_neighbours"] * 100) | round }}%)</span>
+                                <br>
+                            {% endif %}
+                            {% if family_data_dict["N_island_neighbours_others"] > 0 %}
+                                <span style="color: #858B8E;"><span class="fw-semibold">Others</span></span>:
+                                <span class="fw-medium">{{ family_data_dict["N_island_neighbours_others"] }} ({{ (family_data_dict["N_island_neighbours_others"] / family_data_dict["N_island_neighbours"] * 100) | round }}%)</span>
+                                <br>
+                            {% endif %}
+                        </div>
+                        <div class="col-5 col-md-2">
+                            <div style="max-width: 130px;">
+                                <canvas id="donutChartIslandNeighbours"></canvas>
+                            </div>
+                        </div>
+                        <hr class="border opacity-25" style="margin-bottom:0;">
+                    {% endif %}
+
+                    {% if  family_data_dict["hcom_data_complete"] %}
+                        <div class="col-md-7">
+                            <span class="fw-medium">Functional enrichment of hotspots that encode the protein family members</span>:<br>
+                            (<i>Fraction of cargo that were annotated with as corresponding class</i>)<br>
+                            <div style="margin-bottom: 10px;"></div>
+
+                            <span style="color: #B264A8;"><span class="fw-semibold">Defence</span></span>:
+                            {{ family_data_dict["defence_cargo_normalised"]["max_value"] }}
+                            ({{ family_data_dict["defence_cargo_normalised"]["percentile"] }} percentile)
+                            <br>
+                            <span style="color: #F15A55;"><span class="fw-semibold">Virulence</span></span>:
+                            {{ family_data_dict["virulence_cargo_normalised"]["max_value"] }}
+                            ({{ family_data_dict["virulence_cargo_normalised"]["percentile"] }} percentile)
+                            <br>
+                            <span style="color: #FAA43B;"><span class="fw-semibold">AMR</span></span>:
+                            {{ family_data_dict["AMR_cargo_normalised"]["max_value"] }}
+                            ({{ family_data_dict["AMR_cargo_normalised"]["percentile"] }} percentile)
+                            <br>
+                            <span style="color: #5EA5D9;"><span class="fw-semibold">Anti-defence</span></span>:
+                            {{ family_data_dict["anti_defence_cargo_normalised"]["max_value"] }}
+                            ({{ family_data_dict["anti_defence_cargo_normalised"]["percentile"] }} percentile)
+                            <br>
+                        </div>
+                        <div class="col-md-5">
+                            <nav>
+                                <div class="nav nav-tabs btn-sm" id="nav-tab" role="tablist">
+                                    <button class="nav-link active btn-sm" id="nav-defence" data-bs-toggle="tab"
+                                            type="button" role="tab"
+                                            aria-selected="true">Defence
+                                    </button>
+                                    <button class="nav-link btn-sm" id="nav-AMR" data-bs-toggle="tab"
+                                            type="button" role="tab"
+                                            aria-selected="false">AMR
+                                    </button>
+                                    <button class="nav-link btn-sm" id="nav-virulence" data-bs-toggle="tab"
+                                            type="button" role="tab"
+                                            aria-selected="false">Virulence
+                                    </button>
+                                    <button class="nav-link btn-sm" id="nav-anti_defence" data-bs-toggle="tab"
+                                            type="button" role="tab"
+                                            aria-selected="false">Anti-defence
+                                    </button>
+                                </div>
+                            </nav>
+                            <div id="hotspot_cargo_plot" style="height: 220px;"></div>
+                        </div>
+                        <hr class="border opacity-25" style="margin-bottom:0;">
+                    {% endif %}
+                    {% if family_data_dict["DS_data_complete"] %}
+                        <div class="col-md-7">
+                            <span class="fw-semibold">Defence Association Score</span><br>
+                            Based on the distribution across defence cargo enriched hotspots and islands (combination of
+                            guilt-by-association and guilt-by-location)<br>
+                            <span class="fw-medium">Defence Association Score</span>: {{ family_data_dict["defence_score"] | round(2) }}<br>
+                            <span class="fw-medium">DAS percentile</span>: {{ family_data_dict["DS_percentile"] }} <br>
+                        </div>
+                        <div class="col-md-5 m-0">
+                            <div id="DS_distribution" style="height: 220px;"></div>
+                        </div>
+                    {% endif %}
+                    <div style="margin-bottom: 15px;"></div>
+                </div>
+            </div>
+            <div style="margin-bottom: 20px;"></div>
+            {% if family_data_dict["taxinfo_data_complete"] %}
+                <div class="col-lg-10 no-background shadow rounded">
+                    <div id="Taxononomical_distribution" class="row g-3">
+                        <div class="col-12">
+                            <div style="margin-bottom: 15px;"></div>
+                            <h4>Taxononomical distribution</h4>
+                        </div>
+                        <hr style="margin-top:0;">
+                        <div class="col-md-5 m-0">
+                            <span class="fw-semibold">Taxonomical distribution of homologues (GTDB database)</span><br>
+                            <span>Encoded in {{ family_data_dict["bacteria_perc"] }}% of bacterial, and {{ family_data_dict["archaea_perc"] }}% of archaea genomes.</span><br>
+                            {% if family_data_dict["Enterobacteriaceae"] %}
+                                <span> Encoded in Enterobacteriaceae family.</span><br>
+                            {% endif %}
+                            {% if family_data_dict["Bacillaceae"] %}
+                                <span> Encoded in Bacillaceae family.</span><br>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-7 m-0">
+                            <canvas id="taxBarChart"></canvas>
+                        </div>
+                        <div style="margin-bottom: 5px;"></div>
+                    </div>
+                </div>
+                <div style="margin-bottom: 20px;"></div>
+            {% endif %}
+            {% if pdb_path != "NA" %}
+                <div class="col-lg-10 no-background shadow rounded">
+                    <div id="Structural_information" class="row g-3">
+                        <div class="col-12">
+                            <div style="margin-bottom: 15px;"></div>
+                            <h4>Structural information</h4>
+                        </div>
+                        <hr style="margin-top:0;">
+                        <div class="col-md-8 m-0">
+                            <span class="fw-medium">ESM-Fold structure prediction <i>(average pLDDT score = {{ family_data_dict["avg_pLDDT"] }})</i></span>.
+                            <div style="margin-bottom: 8px;"></div>
+                            <span class="fw-medium">Foldseek search results against <a class="text-decoration-none"
+                                                                                       href="https://bfvd.foldseek.com">BFVD</a>:</span>
+                            {% if foldseek_search != "NA" %}
+                                {{ foldseek_search | safe }}
+                                <div style="margin-bottom: 10px;"></div>
+                            {% else %}
+                                <span class="fw-semibold">No hits</span>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-4 m-0">
+                            <div id="pdbviewer-container"></div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-bottom: 20px;"></div>
+            {% endif %}
+            <div class="col-lg-10 no-background shadow rounded">
+                <div id="genomes_where_encoded" class="row g-3">
+                    <div class="col-12">
+                        <div style="margin-bottom: 15px;"></div>
+                        <h4>Phages encoding the family members</h4>
+                        <hr style="margin-top:0;">
+                        {{ pf_locations | safe }}
+                    </div>
+                    <div style="margin-bottom: 10px;"></div>
+                </div>
+            </div>
+            <div style="margin-bottom: 20px;"></div>
+            <div class="col-lg-10 bg-light shadow rounded">
+                <div class="row g-3">
+                    <div class="col-12">
+                        <div style="margin-bottom: 15px;"></div>
+                        <h4>Reference</h4>
+                        <p class="fs-6"><span
+                                class="fw-bold">If you find iLund4u useful, please cite:</span><br>
+                            Artyom. A. Egorov, Vasili Hauryliuk, Gemma C. Atkinson, <span class="fw-semibold"> Systematic
+                                annotation of hyper-variability hotspots in phage genomes and plasmids</span>
+                            <span class="fst-italic"> bioRxiv 22024.10.15.618418; doi:
+                                <a href="https://doi.org/10.1101/2024.10.15.618418">10.1101/2024.10.15.618418</a></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="margin-bottom: 20px;"></div>
+    </div>
+
+
+    <script>
+        window.CommunityClassesData = {{ community_classes | safe }};
+        {% if  family_data_dict["N_island_neighbours"] > 0 %}
+        window.IslandNeighboursData = {{ island_neighbours | safe }};
+        {% endif %}
+        {% if family_data_dict["hcom_data_complete"] %}
+        window.HcomCargoData = {{ hcom_distribution_plot_data | safe }};
+        {% endif %}
+        {% if family_data_dict["taxinfo_data_complete"] %}
+        window.TaxInfoData = {{ taxinfo | safe }};
+        {% endif %}
+        var pdbPath = "{{ pdb_path }}";
+        {% if family_data_dict["DS_data_complete"] %}
+        window.DS_distr = {{ family_data_dict["DS_bakcground"] | safe }};
+        window.DS_value = {{ family_data_dict["defence_score"] }} ;
+        window.DS_of_defence = {{ family_data_dict["DS_of_defence"] | safe }};
+        {% endif %}
+
+
+    </script>
+    <script src="{{ url_for('static', filename='js/ilund4uDB_pdb_vis.js') }}"></script>
+    {% if family_data_dict["hcom_data_complete"] %}
+        <script src="{{ url_for('static', filename='js/ilund4uDB_hcom_cargo_distributions.js') }}"></script>
+    {% endif %}
+    <script src="{{ url_for('static', filename='js/ilund4uDB_gene_type_donut.js') }}"></script>
+    {% if family_data_dict["taxinfo_data_complete"] %}
+
+        <script src="{{ url_for('static', filename='js/ilund4uDB_taxonomy_distr.js') }}"></script>
+    {% endif %}
+    {% if  family_data_dict["N_island_neighbours"] > 0 %}
+        <script src="{{ url_for('static', filename='js/ilund4uDB_gene_neighbours_donut.js') }}"></script>
+    {% endif %}
+    <script src="{{ url_for('static', filename='js/ilund4u_hmmscan_table.js') }}"></script>
+    {% if family_data_dict["DS_data_complete"] %}
+        <script src="{{ url_for('static', filename='js/ilund4uDB_DS_distr.js') }}"></script>
+    {% endif %}
+    <script src="{{ url_for('static', filename='js/ilund4u_foldseek_table.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/ilund4u_protein_family_locations_table.js') }}"></script>
+
+
+{% endblock %}

@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% block title %}iLund4u DB{% endblock %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/rowreorder/1.3.3/css/rowReorder.bootstrap5.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/rowreorder/1.3.3/js/dataTables.rowReorder.min.js"></script>
+    <script src="https://3Dmol.org/build/3Dmol-min.js"></script>
+    <script src="https://3Dmol.org/build/3Dmol.ui-min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-3.0.0.min.js" charset="utf-8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-scale@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-interpolate@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+{% endblock %}
+{% block body_class %} class="ilund4u"{% endblock %}
+{% block content %}
+    <div class="container">
+        <div style="margin-bottom: 20px;"></div>
+        <div class="row justify-content-center">
+            <div class="col-lg-10 no-background shadow rounded">
+                <div id="proteome_community_summary" class="row g-3">
+                    <div class="col-12">
+                        <div style="margin-bottom: 15px;"></div>
+                        <h4>Proteome community summary</h4>
+                        <hr style="margin-top:0;">
+                        <span class="fw-semibold">Proteome community id</span>: {{ community_id }}<br>
+                        <span class="fw-semibold">Proteome comnunity size</span>: {{ annotation_dict["size"] }}<br>
+                        <span class="fw-semibold">Average pairwise proteome similarity between memebers</span>: {{ annotation_dict["avg_weight"] }}<br>
+                        <span class="fw-semibold">Number of annotated hotspots</span>: {{ annotation_dict["N_of_hotspots"] }}<br>
+                        <span class="fw-semibold">Number of unique variable islands clustered to these hotspots</span>: {{ annotation_dict["N_of_uniq_islands"] }}<br>
+                    </div>
+                    {% if annotation_dict["hcom_data_complete"] %}
+                        <hr class="border opacity-25" style="margin-bottom:0;">
+                        <div class="col-md-7 mb-0">
+                            <span class="fw-medium">Functional enrichment of hotspots annotated in the community</span>:<br>
+                            (<i>Fraction of cargo that were annotated with as corresponding class</i>)<br>
+                            <div style="margin-bottom: 10px;"></div>
+                            <span style="color: #B264A8;"><span class="fw-semibold">Defence</span></span>:
+                            {{ annotation_dict["defence_cargo_normalised"]["max_value"] }}
+                            ({{ annotation_dict["defence_cargo_normalised"]["percentile"] }} percentile)
+                            <br>
+                            <span style="color: #F15A55;"><span class="fw-semibold">Virulence</span></span>:
+                            {{ annotation_dict["virulence_cargo_normalised"]["max_value"] }}
+                            ({{ annotation_dict["virulence_cargo_normalised"]["percentile"] }} percentile)
+                            <br>
+                            <span style="color: #FAA43B;"><span class="fw-semibold">AMR</span></span>:
+                            {{ annotation_dict["AMR_cargo_normalised"]["max_value"] }}
+                            ({{ annotation_dict["AMR_cargo_normalised"]["percentile"] }} percentile)
+                            <br>
+                            <span style="color: #5EA5D9;"><span class="fw-semibold">Anti-defence</span></span>:
+                            {{ annotation_dict["anti_defence_cargo_normalised"]["max_value"] }}
+                            ({{ annotation_dict["anti_defence_cargo_normalised"]["percentile"] }} percentile)
+                            <br>
+                            <div style="margin-bottom: 15px;"></div>
+                            <a class="fw-semibold text-decoration-none" data-bs-toggle="collapse" href="#pdf_collapse"
+                               role="button" aria-expanded="false" aria-controls="collapseExample">Show visualisation of
+                                hotspots</a>
+                        </div>
+                        <div class="col-md-5 mb-0">
+                            <nav class="m-0">
+                                <div class="nav nav-tabs btn-sm" id="nav-tab" role="tablist">
+                                    <button class="nav-link active btn-sm" id="nav-defence" data-bs-toggle="tab"
+                                            type="button" role="tab"
+                                            aria-selected="true">Defence
+                                    </button>
+                                    <button class="nav-link btn-sm" id="nav-AMR" data-bs-toggle="tab"
+                                            type="button" role="tab"
+                                            aria-selected="false">AMR
+                                    </button>
+                                    <button class="nav-link btn-sm" id="nav-virulence" data-bs-toggle="tab"
+                                            type="button" role="tab"
+                                            aria-selected="false">Virulence
+                                    </button>
+                                    <button class="nav-link btn-sm" id="nav-anti_defence" data-bs-toggle="tab"
+                                            type="button" role="tab"
+                                            aria-selected="false">Anti-defence
+                                    </button>
+                                </div>
+                            </nav>
+                            <div class="mb-0" id="hotspot_cargo_plot" style="height: 220px;"></div>
+                        </div>
+                        <div class="col-12 m-0">
+                            <div class="collapse m-0" id="pdf_collapse">
+                                <nav>
+                                    <div class="nav nav-tabs btn-sm m-0" id="nav-tab" role="tablist">
+                                        {% for file in annotation_dict["pdf_files"] %}
+                                            <button class="nav-link btn-sm {% if loop.first %}active{% endif %}"
+                                                    id="tab-{{ loop.index }}"
+                                                    data-bs-toggle="tab"
+                                                    data-bs-target="#content-{{ loop.index }}"
+                                                    type="button"
+                                                    role="tab"
+                                                    aria-selected="{{ 'true' if loop.first else 'false' }}">
+                                                {{ loop.index0 + 1 }}
+                                            </button>
+                                        {% endfor %}
+                                    </div>
+                                </nav>
+                                <!-- Tab content -->
+                                <div class="tab-content border border-top-0 p-1">
+                                    {% for file in annotation_dict["pdf_files"] %}
+                                        <div class="tab-pane fade {% if loop.first %}show active{% endif %}"
+                                             id="content-{{ loop.index }}" role="tabpanel">
+                                            <embed id="pdf-viewer-{{ loop.index }}" type="application/pdf"
+                                                   src="{{ file }}" width="100%" height="400px"/>
+
+                                            <a href="{{ file }}" target="_blank"
+                                               class="btn btn-sm btn-outline-secondary mb-2">
+                                                Open PDF in new tab
+                                            </a>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div style="margin-bottom: 15px;"></div>
+                </div>
+            </div>
+            <div style="margin-bottom: 20px;"></div>
+            <div class="col-lg-10 no-background shadow rounded">
+                <div id="proteome_community_summary" class="row g-3">
+                    <div class="col-12">
+                        <div style="margin-bottom: 15px;"></div>
+                        <h4>Community phage genomes</h4>
+                        <hr style="margin-top:0;">
+                    </div>
+                    <div class="col-md-9">
+                        {{ merged_proteome_data | safe }}
+                    </div>
+                    <div class="col-md-3">
+                        <div id="hostPieChart"></div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-bottom: 20px;"></div>
+            <div class="col-lg-10 bg-light shadow rounded">
+                <div class="row g-3">
+                    <div class="col-12">
+                        <div style="margin-bottom: 15px;"></div>
+                        <h4>Reference</h4>
+                        <p class="fs-6"><span class="fw-bold">If you find iLund4u useful, please cite:</span><br>
+                            Artyom. A. Egorov, Vasili Hauryliuk, Gemma C. Atkinson,
+                            <span class="fw-semibold"> Systematic
+                                annotation of hyper-variability hotspots in phage genomes and plasmids</span>
+                            <span class="fst-italic"> bioRxiv 22024.10.15.618418; doi:
+                                <a href="https://doi.org/10.1101/2024.10.15.618418">10.1101/2024.10.15.618418</a></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="margin-bottom: 20px;"></div>
+    </div>
+
+    <script>
+      window.HostPieData = {
+        labels: {{ annotation_dict["host_labels"] | tojson }},
+        values: {{ annotation_dict["host_values"] | tojson }}
+      };
+      {% if annotation_dict["hcom_data_complete"] %}
+        window.HcomCargoData = {{ hcom_distribution_plot_data | safe }};
+      {% endif %}
+    </script>
+    <script src="{{ url_for('static', filename='js/ilund4u_proteome_data_table.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/ilund4u_host_composition_donut.js') }}"></script>
+
+    {% if annotation_dict["hcom_data_complete"] %}
+        <script src="{{ url_for('static', filename='js/ilund4uDB_hcom_cargo_distributions.js') }}"></script>
+    {% endif %}
+
+
+{% endblock %}

@@ -417,6 +417,7 @@ caption {
 }
 
 th {
+  font-weight: 500;
   text-align: inherit;
   text-align: -webkit-match-parent;
 }
@@ -11558,9 +11559,20 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+/* Custom CSS for smaller tab buttons */
+.nav-tabs .nav-link {
+  font-size: 0.9rem !important; /* smaller font size */
+  height: auto; /* Ensure the button doesn't take excessive height */
+  line-height: 1.1; /* Control button height */
+}
+
 .hover:hover {
   background-color: #f0f8ff; /* Replace with your desired colour */
   transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+.small-875 {
+  font-size: 0.85rem !important;
 }
 
 .form-label.required:after {
@@ -11696,17 +11708,17 @@ textarea.form-control-lg {
   height: 70px;
   border-radius: 50%;
   border: 9px solid;
-  border-color: #C7D3DD;
+  border-color: #355066;
   border-right-color: #FFD168;
   animation: spinner-d3wgkg 1s infinite linear;
 }
 
 .spinner-ilund4u_small {
-  width: 35px;
-  height: 35px;
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
-  border: 5px solid;
-  border-color: #C7D3DD;
+  border: 4px solid;
+  border-color: #355066;
   border-right-color: #FFD168;
   animation: spinner-d3wgkg 1s infinite linear;
 }
@@ -11753,6 +11765,13 @@ textarea.form-control-lg {
 
 a:hover {
   color: #FFD167; /* color of link when hovered over */
+}
+
+body.ad4u {
+  background-image: url("/static/img/background_ad4u.svg");
+  background-repeat: repeat;
+  background-size: 100%;
+  background-attachment: fixed;
 }
 
 body.uorf4u {
@@ -11829,8 +11848,10 @@ body.main {
   background-color: #212C31;
 }
 */
-nav {
+.navbar {
   background-color: #233442;
+  border-bottom: 1px solid #355066;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 #mynetwork {

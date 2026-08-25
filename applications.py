@@ -25,7 +25,9 @@ from atkinsonlab_web import scheduler
 import atkinsonlab_web.routes
 
 import warnings
+
 warnings.simplefilter(action='ignore', category=FutureWarning)
+
 
 def run_uorf4u(processed_arguments):
     try:
@@ -317,6 +319,8 @@ def run_webflags(processed_arguments):
                 refseq_protein.add_record(record)
 
             if processed_arguments["blastp_database"] == "reduced":
+                uorf4u_parameters.arguments[
+                    "blastp"] = "/home/webapp/WebServer/workers/tools/ncbi-blast-2.13.0+/bin/blastp"
                 local_db = "/home/webapp/WebServer/atkinsonlab_web/static/databases/reducedDB/reducedRefseqDbAA"
                 homologues_list = refseq_protein.local_blastp_searching_for_homologues(local_db)
             else:
@@ -443,25 +447,26 @@ def run_ilund4u(processed_arguments):
             os.mkdir(job_request_file_folder)
         with open(os.path.join(job_request_file_folder, "request.json"), "w") as request_json:
             json.dump({k: v for k, v in processed_arguments.items() if
-                       not isinstance(v, io.StringIO) and k != "protein_records"}, request_json)
+                       not isinstance(v, io.StringIO) and k != "protein_records" and k != "gff3_as_str"}, request_json)
         for k, f in {k: v for k, v in processed_arguments.items() if isinstance(v, io.StringIO)}.items():
             file_path = os.path.join(job_request_file_folder, f.filename)
             with open(file_path, "w") as rf:
                 rf.write(f.getvalue())
                 f.close()
             processed_arguments[k] = file_path
-        fasta_path = os.path.join(job_request_file_folder, "query_fasta.fa")
-        with open(fasta_path, "w") as handle:
-            Bio.SeqIO.write(processed_arguments["protein_records"], handle, "fasta")
 
         processed_arguments["run_name"] = processed_arguments["run_name"].replace("{current_date}",
                                                                                   time.strftime("%Y_%m_%d-%H_%M"))
         job.meta["run_name"] = processed_arguments["run_name"]
+        #job.meta["ilund4u_mode"] = processed_arguments["ilund4u_mode"]
+        job.meta["ilund4u_mode"] = "protein"
         parameters = ilund4u.manager.Parameters()
         parameters.load_config()
         parameters.args["debug"] = True
         parameters.args["fast_mmseqs_search_mode"] = True
-        parameters.args["output_dir"] = os.path.join(job_folder, processed_arguments["run_name"])
+        parameters.args["output_dir"] = os.path.join(job_folder, processed_arguments["run_name"].replace(" ", "_"))
+        output_folder = os.path.join(job_folder, processed_arguments["run_name"].replace(" ", "_"))
+
         parameters.args["query_label"] = processed_arguments["query_label"]
         parameters.args["mmseqs_search_qcov"] = processed_arguments["mmseqs_search_qcov"]
         parameters.args["mmseqs_search_tcov"] = processed_arguments["mmseqs_search_tcov"]
@@ -471,14 +476,52 @@ def run_ilund4u(processed_arguments):
         if processed_arguments["ilund4u_database"] == "phages":
             db_pkl_path = "/home/webapp/WebServer/databases/iLund4uPhages_DB.pkl"
             db_path = "/home/webapp/WebServer/databases/iLund4uPhages_DB"
+            #db_pkl_path = "/Users/aegorov/Desktop/LU_Lab_Projects/Hotspots/Version_0.1.0_results/Data_for_web/iLund4uPhages_DB.pkl"
+            #db_path = "/Users/aegorov/Desktop/LU_Lab_Projects/Hotspots/Version_0.1.0_results/Scripts/iLund4uPhages_DB_new"
+
         elif processed_arguments["ilund4u_database"] == "plasmids":
             db_pkl_path = "/home/webapp/WebServer/databases/iLund4uPlasmids_DB.pkl"
-            db_path = "/home/webapp/WebServer/databases/Plasmids/iLund4uPlasmids_DB"
+            db_path = "/home/webapp/WebServer/databases/iLund4uPlasmids_DB"
+            #db_pkl_path = "/Users/aegorov/Desktop/LU_Lab_Projects/Hotspots/Version_0.1.0_results/Data_for_web/iLund4uPlasmids_DB.pkl"
+            #db_path = "/Users/aegorov/Desktop/LU_Lab_Projects/Hotspots/Version_0.1.0_results/Scripts/iLund4uPlasmids_DB_new"
+
         database_manager = ilund4u.data_manager.DatabaseManager(parameters)
-        database = database_manager.load_pkl_database(pkl_file = db_pkl_path, db_path=db_path)  # !!!
+        database = database_manager.load_pkl_database(pkl_file=db_pkl_path, db_path=db_path)  # !!!
+        #database = database_manager.load_database(db_path=db_path)
         atkinsonlab_web.methods.update_meta_with_logs(job, log_file)
-        database.protein_search_mode(query_fasta=fasta_path, query_label=parameters.args["query_label"])
-        atkinsonlab_web.methods.update_meta_with_logs(job, log_file)
+
+        if processed_arguments["ilund4u_mode"] == "protein":
+            fasta_path = os.path.join(job_request_file_folder, "query_fasta.fa")
+            with open(fasta_path, "w") as handle:
+                Bio.SeqIO.write(processed_arguments["protein_records"], handle, "fasta")
+
+            ps_output = database.protein_search_for_homologues(query_fasta=fasta_path)
+            homologous_groups, names = ps_output["groups"], ps_output["names"]
+            found_hotspots_list = ps_output["found_hotspots"]
+            atkinsonlab_web.methods.update_meta_with_logs(job, log_file)
+            for hgi, hg in enumerate(homologous_groups):
+                print(f"--- Analysis of {hgi + 1}/{len(homologous_groups)} family homologous to the query ---",
+                      file=sys.stdout)
+                atkinsonlab_web.methods.update_meta_with_logs(job, log_file)
+                database.protein_search_mode_using_single_homologue(homologous_group=hg,
+                                                                    query_fasta=fasta_path,
+                                                                    name=names[hgi],
+                                                                    found_hotspots_list=found_hotspots_list,
+                                                                    query_label=parameters.args["query_label"])
+            database.postprocess_protein_search_folder()
+            atkinsonlab_web.methods.update_meta_with_logs(job, log_file)
+
+        elif processed_arguments["ilund4u_mode"] == "genome":
+            gff_path = os.path.join(job_request_file_folder, "query_annotation.gff")
+            with open(gff_path, "w") as file:
+                file.write(processed_arguments["gff3_as_str"])
+            database.proteome_annotation_mode(query_gff=gff_path)
+            atkinsonlab_web.methods.update_meta_with_logs(job, log_file)
+            pdf_path = os.path.join(output_folder, "lovis4u_query_proteome_classes.pdf")
+            if os.path.exists(pdf_path):
+                svg_path = pdf_path.replace(".pdf", ".svg")
+                os.system(f"sudo pdf2svg {pdf_path} {svg_path}")
+
         results_dict["archive"] = os.path.basename(f"{parameters.args['output_dir']}.zip")
         shutil.make_archive(base_name=job_folder, format="zip", root_dir=job_folder)
         shutil.move(f"{job_folder}.zip", f"{parameters.args['output_dir']}.zip")
@@ -499,6 +542,7 @@ def run_ilund4u(processed_arguments):
         for i in ((traceback.format_exc()).split('\n')):
             if 'iLund4uError:' in i:
                 print(f"ilund4uError 💔: {i.split(':')[1]}", file=sys.stderr)
+        print(str(e), file=sys.stderr)
         atkinsonlab_web.methods.update_meta_with_logs(job, log_file)
         raise e
     sys.stdout = sys.__stdout__

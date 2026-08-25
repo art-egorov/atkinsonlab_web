@@ -17,9 +17,9 @@
             <div class="col-lg-10 no-background shadow rounded">
                 <div class="row g-2 justify-content-center">
                     <div class="col-12">
-                        <p></p>
-
-                        <h3>Tools and Databases</h3>
+                        <div style="margin-bottom: 15px;"></div>
+                        <h3>Online tools</h3>
+                        <hr style="margin-top:0;">
                     </div>
                     <div class="col-12">
                         <div class="card border-0" style="margin-left: 0;">
@@ -38,28 +38,6 @@
                                     <a href="/ilund4u">
                                         <img width="90%"
                                              src="{{ url_for('static', filename='img/ilund4u_logo.png') }}"
-                                             class="img-fluid" style="max-width: 20rem;"></a>
-                                </div>
-                            </div>
-                        </div>
-                        <hr class="border opacity-50">
-                    </div>
-                    <div class="col-12">
-                        <div class="card border-0" style="margin-left: 0;">
-                            <div class="row g-1" style="margin-left: 0;">
-                                <div class="col-md-9 text-left" style="margin-left: 0;">
-                                    <h5 class="card-title text-left"><a href="/netflax"
-                                                                        class="fw-bold text-decoration-none">NetFlax</a>
-                                    </h5>
-                                    <p class="card-text fs-5_5">Interactive NetFlax <i>(Network-FlaGs for toxins and
-                                        antitoxins)</i> predicted toxin-antitoxin pairs interface
-                                        with structural predictions.
-                                    </p>
-                                </div>
-                                <div class="col-md-3 align-self-center mx-auto">
-                                    <a href="/netflax">
-                                        <img width="81%"
-                                             src="{{ url_for('static', filename='img/netflax_logo.png') }}"
                                              class="img-fluid" style="max-width: 20rem;"></a>
                                 </div>
                             </div>
@@ -133,15 +111,121 @@
                             </div>
                         </div>
                     </div>
-                    <p></p>
+                    <div style="margin-bottom: 15px;"></div>
                 </div>
             </div>
-            <p></p>
-            <div class="col-lg-10 shadow rounded">
+            <div style="margin-bottom: 20px;"></div>
+            <div class="col-lg-10 no-background shadow rounded">
+                <div class="row g-2 justify-content-center">
+                    <div class="col-12">
+                        <div style="margin-bottom: 15px;"></div>
+                        <h3>Databases</h3>
+                        <hr style="margin-top:0;">
+                    </div>
+                    <div class="col-12">
+                        <div class="card border-0" style="margin-left: 0;">
+                            <div class="row g-1" style="margin-left: 0;">
+                                <div class="col-md-9 text-left" style="margin-left: 0;">
+                                    <h5 class="card-title text-left"><a href="/ilund4udb"
+                                                                        class="fw-bold text-decoration-none">iLund4u DB</a>
+                                    </h5>
+                                    <p class="card-text fs-5_5">iLund4u phage database provides an
+                                        interactive platform to explore hotspot-encoded phage proteins annotated with
+                                        iLund4u. It consists of 242.8K protein families encoded in 16K
+                                    hotspots across 218K phage genomes.
+                                    </p>
+                                </div>
+                                <div class="col-md-3 align-self-center mx-auto">
+                                    <a href="/ilund4udb">
+                                        <img width="95%"
+                                             src="{{ url_for('static', filename='img/ilund4u_db_logo.png') }}"
+                                             class="img-fluid" style="max-width: 20rem;"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="border opacity-50">
+                    </div>
+                    <!--
+                    <div class="col-12">
+                        <div class="card border-0" style="margin-left: 0;">
+                            <div class="row g-1" style="margin-left: 0;">
+                                <div class="col-md-9 text-left" style="margin-left: 0;">
+                                    <h5 class="card-title text-left"><a href="/ad4udb"
+                                                                        class="fw-bold text-decoration-none">AD4u DB</a>
+                                    </h5>
+                                    <p class="card-text fs-5_5">The AD4u database contains putative anti-defence proteins identified in <i>Enterobacteriaceae</i>
+                                        phage hotspots and predicted by AlphaFold to bind known bacterial defence system proteins. (numbers)
+                                    </p>
+                                </div>
+                                <div class="col-md-3 align-self-center mx-auto">
+                                    <a href="/ad4udb">
+                                        <img width="100%"
+                                             src="{{ url_for('static', filename='img/ad4u_logo.png') }}"
+                                             class="img-fluid" style="max-width: 20rem;"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="border opacity-50">
+                    </div>
+                    -->
+                    <div class="col-12">
+                        <div class="card border-0" style="margin-left: 0;">
+                            <div class="row g-1" style="margin-left: 0;">
+                                <div class="col-md-9 text-left" style="margin-left: 0;">
+                                    <h5 class="card-title text-left"><a href="https://vad.atkinson-lab.com"
+                                                                        target="_blank" rel="noopener noreferrer"
+                                                                        class="fw-bold text-decoration-none">VAD
+                                        Network</a>
+                                    </h5>
+                                    <p class="card-text fs-5_5">Web interface for exploring structural clusters in the
+                                        <i>Viral AlphaFold Database</i>. Includes structural predictions, sequence and
+                                        structure clusters, and metadata with hits to protein sequence and structure
+                                        databases.
+                                    </p>
+                                </div>
+                                <div class="col-md-3 align-self-center mx-auto">
+                                    <a href="https://vad.atkinson-lab.com" target="_blank" rel="noopener noreferrer">
+                                        <img width="65%"
+                                             src="{{ url_for('static', filename='img/vad_logo.png') }}"
+                                             class="img-fluid" style="max-width: 20rem;"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="border opacity-50">
+                    </div>
+                    <div class="col-12">
+                        <div class="card border-0" style="margin-left: 0;">
+                            <div class="row g-1" style="margin-left: 0;">
+                                <div class="col-md-9 text-left" style="margin-left: 0;">
+                                    <h5 class="card-title text-left"><a href="/netflax"
+                                                                        class="fw-bold text-decoration-none">NetFlax</a>
+                                    </h5>
+                                    <p class="card-text fs-5_5">Interactive NetFlax <i>(Network-FlaGs for toxins and
+                                        antitoxins)</i> predicted toxin-antitoxin pairs interface
+                                        with structural predictions.
+                                    </p>
+                                </div>
+                                <div class="col-md-3 align-self-center mx-auto">
+                                    <a href="/netflax">
+                                        <img width="81%"
+                                             src="{{ url_for('static', filename='img/netflax_logo.png') }}"
+                                             class="img-fluid" style="max-width: 20rem;"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 15px;"></div>
+                </div>
+            </div>
+            <div style="margin-bottom: 20px;"></div>
+            <div class="col-lg-10 bg-light shadow rounded">
                 <div class="row g-3">
                     <div class="col-md-12">
-                        <p></p>
+                        <div style="margin-bottom: 15px;"></div>
+
                         <h3>Contact</h3>
+                        <hr style="margin-top:0;">
+
                         <p class="fs-5_5"><span class="fw-medium">The Atkinson lab <a class="text-decoration-none"
                                                                                       href="https://atkinson-lab.com">Home Page</a></span>
                         </p>
@@ -157,40 +241,18 @@
                             <a class="text-decoration-none" href="mailto:gemma-dot-atkinson-wow-med.lu.se ">gemma.atkinson(at)med.lu.se</a>
                         </p>
 
-                        <p class="fs-6"><span class="fw-semibold">Artyom A. Egorov</span>, PhD student and developer<br>
+                        <p class="fs-6"><span class="fw-semibold">Artyom A. Egorov</span>, Developer<br>
                             <a class="text-decoration-none" href="mailto:artem-dot-egorov-wow-med.lu.se ">artem.egorov(at)med.lu.se</a>
-                            (for technical questions)
                         </p>
                     </div>
                 </div>
             </div>
-            <p></p>
-            <div class="col-lg-10 bg-light-subtle shadow rounded">
-                <div class="row g-3">
-                    <div class="col-12">
-                        <p></p>
-                        <h4>Server news & updates</h4>
-                        <p class="fs-6" style="margin-bottom: 0.3rem;"><span class="fw-bold">2025.01:</span> First
-                            version of iLund4u web version is available supporting protein search against iLund4u
-                            databases.</p>
-                        <p class="fs-6" style="margin-bottom: 0.3rem;"><span class="fw-bold">2023.04:</span> New
-                            NetFlax-predicted toxin-antitoxin pairs interface is now available.</p>
-                        <p class="fs-6" style="margin-bottom: 0.3rem;"><span class="fw-bold">2023.02:</span> Updated
-                            webFlaGs is now available.</p>
-                        <p class="fs-6"><span class="fw-bold">2023.01: </span> First release is now online; Currently
-                            uORF4u and MSA4u are available; new version of webFlaGs is under construction.</p>
-                    </div>
-                </div>
-            </div>
-
+            <div style="margin-bottom: 20px;"></div>
         </div>
-        <p></p>
     </div>
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid" style="margin-right: 1rem; margin-left: 1rem;">
-            <div class="navbar-expand ml-auto navbar-text ">
-            </div>
-            <div class="navbar-expand ml-auto navbar-text fw-medium">The Atkinson Lab Server Portal | Apr 2023 v1.05
+            <div class="navbar-expand mx-auto navbar-text fw-light">The Atkinson Lab Server Portal | 2026
             </div>
         </div>
     </nav>

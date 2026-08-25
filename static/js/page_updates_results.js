@@ -1,5 +1,4 @@
 setInterval(function () {
-    console.log("Script is running");
     // Send a request to the server to check the status of the task
     fetch("/check-status/" + job_id)
         .then(function (response) {
@@ -12,6 +11,6 @@ setInterval(function () {
                 location.reload();
             }
         });
-}, 1500);
+}, 5000);
 
 

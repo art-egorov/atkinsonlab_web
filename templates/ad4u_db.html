@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+{% block title %}AD4u DB{% endblock %}
+{% block head %}
+    <link href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css" rel="stylesheet"/>
+    <script src="https://unpkg.com/gridjs/dist/gridjs.umd.js"></script>
+{% endblock %}
+{% block body_class %} class="ad4u"{% endblock %}
+{% block content %}
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark" data-bs-theme="dark" id="topnavbar">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <span class="fw-semibold tal">The Atkinson lab </span> <span class="fw-medium text-muted">| 4u</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_area"
+                    aria-controls="collapse_area" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapse_area">
+                <ul class="navbar-nav mx-auto nav-pills">
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" href="#description">Description</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" href="#experimentally_verified">Experimentally validated inhibitors</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" href="#database_entries_C">Putative binders entries</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" href="#database_entries_DF">DefenseFinder entries</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" href="#ref">Reference</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link fw-semibold" href="/ad4u_search">AD4u search tool</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://github.com/art-egorov/ilund4u"><i
+                                class="fab fa-github"></i></a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <p></p>
+        <div data-bs-spy="scroll" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true">
+            <div class="row justify-content-center">
+                <div class="col-10">
+                    <div class="row justify-content-center">
+                        <div class="col-md-4 text-center" style="margin-bottom: 1em">
+                            <img width="100%" src="{{ url_for('static', filename='img/ad4u_logo.png') }}">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-11 no-background shadow rounded">
+                    <div class="row g-3">
+                        <div id="description" class="col-md-12" style="margin-bottom: 0">
+                            <div style="margin-bottom: 15px;"></div>
+                            <h3>Description</h3>
+                            <hr style="margin-top:0;">
+                            <p class="fs-6 fw-bold">Welcome to the AD4u protein database!</p>
+                            <p class="fs-6">This <b>AD4u database</b> provides an interactive platform to explore hotspot-encoded phage proteins 
+                                annotated with iLund4u, using 63K <i>Enterobacteriaceae</i>-infecting phage genomes from the 
+                                <a class="text-decoration-none" href="https://phagescope.deepomics.org">PhageScope database</a> 
+                                and the Durham, BASEL, and LUND phage collections. Using genomic location information, we reduced 
+                                the set of putative anti-defence and defence-trigger proteins to ~1.6K protein clusters and co-folded them by AlphaFold3 
+                                with a library of immune system proteins to identify putative binders of defence system protein.</p>
+                            <div class="row">
+                                <p class="fs-6 fw-semibold" style="margin-bottom: 0">Analysis pipeline</p>
+                                <div class="col-md-9 text-center" style="margin-bottom: 1em">
+                                    <img width="100%"
+                                         src="{{ url_for('static', filename='img/ad4u_pipeline.png') }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 10px;"></div>
+                    </div>
+                </div>
+                <div style="margin-bottom: 20px;"></div>
+                <div id="experimentally_verified" class="col-lg-11 no-background shadow rounded">
+                    <div id="experimentally_verified_list" class="row g-3">
+                        <div class="col-12">
+                            <div style="margin-bottom: 15px;"></div>
+                            <h4>Experimentally validated inhibitors</h4>
+                            <hr style="margin-top:0;">
+                            <p class="fs-6">Based on AlphaFold3 predictions of hotspot-encoded phage proteins, we experimentally tested 20 binder–defence 
+                                gene pairs. Of these, 10 pairs, comprising four unique binders, were experimentally validated. 
+                                These novel verified systems include anti-toxSAS, anti-RT, anti-Avs2, and anti-DRAKEN counter-defence proteins.
+                            </p>
+                            <div class="accordion" id="accordionPanelsStayOpenExample">
+                                {% for antidefence in verified_gene_dict.keys() %}
+                                    <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-{{ verified_gene_dict[antidefence]['Lab id'] }}" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">
+                                        <span class="fw-semibold">{{ verified_gene_dict[antidefence]['Name'] }}</span>
+                                    </button>
+                                    </h2>
+                                    <div id="panelsStayOpen-{{ verified_gene_dict[antidefence]['Lab id'] }}" class="accordion-collapse collapse">
+                                    <div class="accordion-body">
+                                        <span class="fw-medium">Tested  counter-defence protein</span>: {{ antidefence }}<br>
+                                        <span class="fw-medium">Sequence source</span>: {{ verified_gene_dict[antidefence]['organism'] }} ({{verified_gene_dict[antidefence]['nt_source']}})<br>
+                                        <span class="fw-medium">Length (amino acids)</span>: {{ verified_gene_dict[antidefence]['protein_length'] }}<br>
+                                        <span class="fw-medium">Protein sequence</span>:<br>
+                                        <div class="p-2 d-inline-block w-auto text-break border bg-body-tertiary rounded">
+                                            <p class="fw-light font-monospace text-muted preserve-line-breaks"
+                                            style="margin: 0;"><small style="padding: 0;">>{{antidefence}} {{verified_gene_dict[antidefence]['p_name']}}<br>{{ verified_gene_dict[antidefence]['protein_seq'] }}</small></p>
+                                        </div>
+                                        <div style="margin-bottom: 20px;"></div>
+                                        <span class="fw-medium">Inhibited defence system</span>:
+                                            <nav>
+                                                <div class="nav nav-tabs btn-sm m-0" id="nav-tab" role="tablist">
+                                                    {% for defence in verified_gene_dict[antidefence]['defences'] %}
+                                                        <button class="nav-link btn-sm"
+                                                                id="tab-{{ loop.index }}"
+                                                                data-bs-toggle="tab"
+                                                                data-bs-target="#content-{{defence['defence_gene']}}-{{ loop.index }}"
+                                                                type="button"
+                                                                role="tab"
+                                                                aria-selected="false">
+                                                            <span class="fw-medium">{{ defence['defence_description'] }}</span>
+                                                        </button>
+                                                    {% endfor %}
+                                                </div>
+                                            </nav>
+                                            <div class="tab-content ">
+                                                {% for defence in verified_gene_dict[antidefence]['defences'] %}
+                                                    <div class="tab-pane fade" id="content-{{defence['defence_gene']}}-{{ loop.index }}" role="tabpanel">
+                                                        <div style="margin-bottom: 10px;"></div>
+                                                        <span class="fw-medium">Defence system protein and source</span>: {{defence['defence_gene']}} ({{defence['source_name']}})<br> 
+                                                        <div style="margin-bottom: 10px;"></div>
+                                                        <div id="protein-{{defence['defence_gene']}}" class="row g-3">
+                                                            <div class="col-md-6">
+                                                                <small>AlphaFold 3-predicted structure of the <span style="color: #494845;">defence</span> vs <span style="color: #a5a72f;">anti-defence</span> protein complex.<br>
+                                                                <span class="fw-medium">iPTM</span> = {{defence['iptm']}}<br></small>
+                                                                <div style="width:100%; height:300px; position:relative; overflow:hidden;">
+                                                                    <div
+                                                                        id="molstar-{{defence['defence_gene']}}"
+                                                                        class="molstar-viewer"
+                                                                        style="position:absolute; inset:0; width:100%;"
+                                                                        data-cif="/files/ad4udb/cifs_of_validated/{{defence['cif_name']}}">
+                                                                    </div>
+                                                                </div>
+                                                                <a href="/files/ad4udb/cifs_of_validated/{{defence['cif_name']}}" target="_blank" class="btn btn-sm mb-2 btn-link">
+                                                                Download cif</a>
+                                                            </div>
+                                                            {% if defence['contact_plot_file'] != '-' %}
+                                                            <div class="col-md-6">
+                                                                <small> Homologues of the representative phage hotspot-protein ({{defence['representative_candidate_anti-defence']}}) 
+                                                                    were co-folded to assess interaction consistency using iPTM scores and contact density maps.
+                                                                 <span class="fw-medium">Num of models</span> = {{defence['N_models']}};  <span class="fw-medium">Median of iPTMs</span> = {{defence['iptm_M']}}</small>
+                                                                <img width="100%" src="/files/ad4udb/contact_maps_of_verified_png/{{defence['contact_plot_file']}}">
+                                                            </div>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                    </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div style="margin-bottom: 20px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-bottom: 20px;"></div>
+                <div id="database_entries_C" class="col-lg-11 no-background shadow rounded">
+                    <div id="putative_binder_table" class="row g-3">
+                        <div class="col-12">
+                            <div style="margin-bottom: 15px;"></div>
+                            <h4>Hotspot encoded putative binders of defence components</h4>
+                            <hr style="margin-top:0;">
+                            <p class="fs-6">This dataset includes 1,638 phage protein clusters that were annotated 
+                                across <i>Enterobacteriaceae</i>-infecting phage hotspot. After co-folding against the 
+                                library of 720 defence system proteins from <a class="text-decoration-none" href="https://defensefinder.mdmlab.fr/wiki/defense-systems" target="_blank">Defense Finder</a>
+                                 database (>1.1M combinations), we identified 598 putative binders of defence system proteins. The table below provides an overview of these proteins.
+                            </p>
+                            <div id="pb_table"></div>
+                            <div style="margin-bottom: 10px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-bottom: 20px;"></div>
+                <div id="database_entries_DF" class="col-lg-11 no-background shadow rounded">
+                    <div id="defence_table" class="row g-3">
+                        <div class="col-12">
+                            <div style="margin-bottom: 15px;"></div>
+                            <h4>DefenseFinder proteins with putative binder</h4>
+                            <hr style="margin-top:0;">
+                            <p class="fs-6">After co-folding we identified putative binders for 429 defence system proteins. The table below provides an overview of these defence components.
+                            </p>
+                            <div id="df_table"></div>
+                            <div style="margin-bottom: 10px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-bottom: 20px;"></div>
+                <div class="col-lg-11 bg-light shadow rounded">
+                    <div class="row g-3">
+                        <div id="ref" class="col-12">
+                            <div style="margin-bottom: 15px;"></div>
+                            <h4>Reference</h4>
+                            <p class="fs-6"><span
+                                class="fw-bold">If you find AD4u DB useful, please cite:</span><br>
+                            Artyom. A. Egorov, xxx, <span class="fw-semibold"> xxx</span>
+                            <span class="fst-italic"> bioRxiv xxx; doi:
+                                <a href="https://doi.org/10.1101/2024.10.15.618418">xxx</a></span>
+                            </p>
+                            <hr class="border opacity-25">
+                            <h4>Authors & Contact </h4>
+                            <p class="fs-6">iLund4u is developed by Artyom Egorov at the Atkinson Lab, Department of
+                                Experimental Medical Science, Lund University, Sweden. <br>
+                                We are open for suggestions of how we can extend and improve iLund4u functionality.
+                                Please
+                                don't hesitate to share your ideas or
+                                feature requests.
+                            </p>
+                            <p>
+                                Please contact us by <a class="text-decoration-none"
+                                                        href="mailto:artem-dot-egorov-wow-med.lu.se ">e-mail</a> or use
+                                <a class="text-decoration-none"
+                                   href="https://github.com/art-egorov/ilund4u/issues?q=">GitHub
+                                    Issues</a> to report any technical problems related to iLund4u.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p></p>
+    </div>
+
+<script src="{{ url_for('static', filename='/js/ad4udb_mol_structure.js') }}"></script>
+<script src="{{ url_for('static', filename='js/ad4udb_tables.js') }}"></script>
+
+
+{% endblock %}

@@ -549,6 +549,7 @@ def webflags_form_validation(request):
 
     return form, parsed_arguments, files_to_keep
 
+
 def ilund4u_form_validation(request):
     job = rq.get_current_job()
     files_to_keep = dict()
@@ -557,10 +558,17 @@ def ilund4u_form_validation(request):
     for k, v in request.items():
         if k in form["float_variables"]:
             request[k] = float(v)
+
     # Check mandatory arguments:
     mandatory_arguments = {k: v for k, v in request.items() if
                            k in form["mandatory_arguments"]}
-    selected_mandatory_arguments = {k: v for k, v in mandatory_arguments.items() if bool(v)}
+    request["ilund4u_mode"] = "protein"
+    #if request["ilund4u_mode"] == "protein":
+    #    del mandatory_arguments["gff3_text"]
+    #elif request["ilund4u_mode"] == "genome":
+    #    del mandatory_arguments["protein_sequence"]
+    selected_mandatory_arguments = {k: v.strip() if isinstance(v, str) else v for k, v in mandatory_arguments.items() if
+                                    (bool(v.strip()) if isinstance(v, str) else bool(v))}
     if len(selected_mandatory_arguments) != 1:
         form["elements"]["mandatory_arguments_error"][
             "error_text"] = "Please, select <b>one</b> mandatory argument."
@@ -568,52 +576,67 @@ def ilund4u_form_validation(request):
     if len(selected_mandatory_arguments) > 1:
         form["elements"]["mandatory_arguments_error"]["error_text"] = "Please, select <b>only one</b> argument."
         for key, value in selected_mandatory_arguments.items():
-            form["elements"][key]["textarea"]["class"] += " is-invalid"
-            form["elements"][key]["textarea"]["value"] = value
-
+            if "textarea" in form["elements"][key].keys():
+                form["elements"][key]["textarea"]["class"] += " is-invalid"
+                form["elements"][key]["textarea"]["value"] = value
+            elif "input" in form["elements"][key].keys():
+                form["elements"][key]["input"]["class"] += " is-invalid"
+                form["elements"][key]["input"]["value"] = value
     if len(selected_mandatory_arguments) == 1:
         key, value = selected_mandatory_arguments.popitem()
-        try:
-            value = value.strip()
-            form["elements"][key]["textarea_value"] = value.strip()
-            form["elements"][key]["textarea"]["rows"] = value.count("\n") + 1
-            if value.count(">") == 0:
-                value = ">query_sequence\n" + value.strip()
-            records = [record for record in Bio.SeqIO.parse(io.StringIO(value.strip()), "fasta")]
-            num_of_records = len(records)
-            if num_of_records > 1:
-                form["elements"][key]["textarea"]["class"] += " is-invalid"
-                form["elements"][key]["invalid_feedback"] = f"Your input has more than one sequence; "
-            elif num_of_records == 0:
-                form["elements"][key]["textarea"]["class"] += " is-invalid"
-                form["elements"][key]["invalid_feedback"] = f"No correct sequence in was found; Please, " \
-                                                            f"check your input. "
-            else:
-                record = records[0]
-                valid_aa_characters = set(Bio.Data.IUPACData.protein_letters)
-                if len(record.seq) < 9:
+        if key == "protein_sequence":
+            try:
+                value = value.strip()
+                form["elements"][key]["textarea_value"] = value.strip()
+                form["elements"][key]["textarea"]["rows"] = value.count("\n") + 1
+                if value.count(">") == 0:
+                    value = ">query_sequence\n" + value.strip()
+                records = [record for record in Bio.SeqIO.parse(io.StringIO(value.strip()), "fasta")]
+                num_of_records = len(records)
+                if num_of_records > 1:
                     form["elements"][key]["textarea"]["class"] += " is-invalid"
-                    form["elements"][key]["invalid_feedback"] = f"Your sequence is too short. At least 9 amino" \
-                                                                f" acids are needed."
-                elif not set(record.seq).issubset(valid_aa_characters):
+                    form["elements"][key]["invalid_feedback"] = f"Your input has more than one sequence; "
+                elif num_of_records == 0:
                     form["elements"][key]["textarea"]["class"] += " is-invalid"
-                    form["elements"][key]["invalid_feedback"] = f"Your sequence doesn't look like correct." \
-                                                                f" Allowed symbols: {','.join(valid_aa_characters)}."
+                    form["elements"][key]["invalid_feedback"] = f"No correct sequence in was found; Please, " \
+                                                                f"check your input. "
                 else:
-                    form["elements"][key]["textarea"]["class"] += " is-valid"
-                    parsed_arguments["protein_records"] = records
-        except:
-            form["elements"][key]["textarea"]["class"] += " is-invalid"
-            form["elements"][key]["invalid_feedback"] = f"Unable to build a record. Please, " \
-                                                        f"check your input. "
+                    record = records[0]
+                    record.id = record.id.replace("|", "")
+                    valid_aa_characters = set(Bio.Data.IUPACData.protein_letters)
+                    if len(record.seq) < 9:
+                        form["elements"][key]["textarea"]["class"] += " is-invalid"
+                        form["elements"][key]["invalid_feedback"] = f"Your sequence is too short. At least 9 amino" \
+                                                                    f" acids are needed."
+                    elif not set(record.seq).issubset(valid_aa_characters):
+                        form["elements"][key]["textarea"]["class"] += " is-invalid"
+                        form["elements"][key]["invalid_feedback"] = f"Your sequence doesn't look like correct." \
+                                                                    f" Allowed symbols: {','.join(valid_aa_characters)}."
+                    else:
+                        form["elements"][key]["textarea"]["class"] += " is-valid"
+                        parsed_arguments["protein_records"] = records
+            except:
+                form["elements"][key]["textarea"]["class"] += " is-invalid"
+                form["elements"][key]["invalid_feedback"] = f"Unable to build a record. Please, " \
+                                                            f"check your input. "
+        elif key == "gff3_file":
+            files_to_keep[key] = value
+            form["elements"][key]["input"]["class"] += " is-valid"
+            form["elements"][key]["valid_feedback"] = f"Your file was successfully loaded."
+            parsed_arguments["gff3_as_str"] = value.getvalue()
+        elif key == "gff3_text":
+            form["elements"][key]["textarea"]["class"] += " is-valid"
+            parsed_arguments["gff3_as_str"] = value
+
     # Check optional
     optional_arguments = {k: v for k, v in request.items() if
                           (k not in form["mandatory_arguments"] and k not in ["email", "run_name", "request_ip"])}
-    checkboxes = ["report_not_flanked"]
+    checkboxes = ["report_not_flanked", "circular_genome"]
     for checkbox in checkboxes:
         if checkbox not in optional_arguments.keys():
             optional_arguments[checkbox] = 0
         optional_arguments[checkbox] = int(bool(optional_arguments[checkbox]))
+
     for key, value in optional_arguments.items():
         if "check-input" in form["elements"][key].keys():
             form["elements"][key]["check-input"]["class"] += " is-valid"
@@ -665,5 +688,6 @@ def ilund4u_form_validation(request):
 
     parsed_arguments["request_ip"] = request["request_ip"]
     parsed_arguments["queue"] = "ilund4u_standard"
+    print(parsed_arguments)
 
     return form, parsed_arguments, files_to_keep

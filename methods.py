@@ -29,7 +29,8 @@ def preprocess_request(request, request_ip, old_request_files=None):
 def get_full_job_status(job):
     full_status = dict(status=job.get_status(refresh=True).value, position=str(job.get_position()),
                        enqueued_at=job.enqueued_at, started_at=job.started_at, ended_at=job.ended_at,
-                       meta=job.get_meta(refresh=True), fully_finished=0, time_elapsed = 0)
+                       meta=job.get_meta(refresh=True), fully_finished=0, time_elapsed=0)
+
     full_status["stored_until"] = None
     for k, v in full_status.items():
         if k in ["enqueued_at", "started_at", "ended_at"] and v:
